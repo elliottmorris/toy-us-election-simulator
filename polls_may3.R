@@ -4,6 +4,8 @@ library(politicaldata)
 library(pbapply)
 library(parallel)
 
+
+# wrangle data ------------------------------------------------------------
 # weights
 states2016 <- read_csv('2016.csv') %>%
   mutate(score = clinton_count / (clinton_count + trump_count),
@@ -19,17 +21,21 @@ names(state_weights) <- states2016$state
 # read in the polls
 all_polls <- read_csv('polls.csv')
 
+head(all_polls)
+
 # remove any polls if biden or trump blank
 all_polls <- all_polls %>% filter(!is.na(biden),!is.na(trump))#, include == "TRUE")
-
-regression_weight <- 
-  sqrt((all_polls %>% filter(state != '--') %>% pull(number.of.observations) %>% mean) / 
-         (all_polls %>% filter(state != '--') %>% pull(number.of.observations) %>% mean))
 
 all_polls <- all_polls %>%
   filter(mdy(end.date) >= (Sys.Date()-60) ) %>%
   mutate(weight = sqrt(number.of.observations / mean(number.of.observations)))
 
+# ow much should we weight regression by compared to polls?
+regression_weight <-  1
+  #sqrt((all_polls %>% filter(state != '--') %>% pull(number.of.observations) %>% mean * 0.5) / 
+  #       (all_polls %>% filter(state != '--') %>% pull(number.of.observations) %>% mean))
+
+# average national and state polls
 national_biden_margin <- all_polls %>%
   filter(state == '--',
          grepl('phone',tolower(mode))) %>%
@@ -43,7 +49,7 @@ state_averages <- all_polls %>%
             num_polls = n(),
             sum_weights = sum(weight,na.rm=T))
 
-# make projection in states without polls
+# get 2016 results
 results <- politicaldata::pres_results %>% 
   filter(year == 2016) %>%
   mutate(clinton_margin = dem-rep) %>%
@@ -59,13 +65,15 @@ state <- results %>%
          dem_lean_2020_polls = mean_biden_margin - national_biden_margin) %>%
   left_join(coefs)
 
-# train a model
+
+# model to fill in polling gaps -------------------------------------------
+# pretty basic model
 model <- lm(mean_biden_margin ~ 
               clinton_margin + 
               log(pop_density) +
               wwc_pct,
    data = state,
-   weight=sum_weights)
+   weight = sum_weights)
 
 summary(model)
 
@@ -80,18 +88,22 @@ state <- state %>%
 ) %>%
   mutate(mean_biden_margin = ifelse(mean_biden_margin==999,NA,mean_biden_margin))
 
+# plot them vs the polls
 ggplot(state, aes(mean_biden_margin, mean_biden_margin_hat,label=state)) +
   geom_text(aes(size=num_polls)) + 
   geom_abline() + 
   geom_smooth(method='lm')
 
-adj_national_biden_margin = national_biden_margin#weighted.mean(state$mean_biden_margin_hat,state_weights)
+# adjust biden national margin?
+adj_national_biden_margin <- national_biden_margin # weighted.mean(state$mean_biden_margin_hat,state_weights)
 
-state$dem_lean_2020 =  state$mean_biden_margin_hat - adj_national_biden_margin 
+# generate new state leans
+state$dem_lean_2020 <-  state$mean_biden_margin_hat - adj_national_biden_margin 
 
-national_biden_margin = adj_national_biden_margin
+# save new biden national margin
+national_biden_margin <- adj_national_biden_margin
 
-# clean
+# clean up estimates
 final <- state %>%
   select(state,clinton_margin,dem_lean_2016,
          mean_biden_margin = mean_biden_margin_hat,
@@ -105,6 +117,7 @@ final <- final %>%
   left_join(read_csv('state_region_crosswalk.csv') %>% 
               dplyr::select(state=state_abb,region))
 
+# plot shift from 2016 to 2020
 final %>% 
   filter(abs(clinton_margin) < 0.1) %>% # num_polls > 0
   ggplot(., aes(y=reorder(state,shift),x=shift,
@@ -124,7 +137,6 @@ final %>%
         axis.ticks.y=element_blank()) +
   labs(subtitle='Swing toward Democrats in relative Democratic vote margin\nSized by electoral votes',
        x='Biden state margin relative to national margin\nminus Clinton state margin relative to national margin')
-
 
 # tipping point state
 final %>%
@@ -171,7 +183,6 @@ state_and_national_errors %>%
   summarise(sd = sd(sim_biden_margin)) %>% 
   pull(sd) %>% mean
   
-
 # calc the new tipping point
 tipping_point <- state_and_national_errors %>%
   do.call('bind_rows',.) %>%
@@ -287,7 +298,7 @@ tipping_point %>%
            case_when(dem_ev >= 270 & dem_nat_pop_margin > 0 ~ 'D EC D vote',
                      dem_ev >= 270 & dem_nat_pop_margin < 0 ~ 'D EC R vote',
                      dem_ev <  270 & dem_nat_pop_margin > 0 ~ 'R EC D vote',
-                     dem_ev <  270 & dem_nat_pop_margin < 0 ~ 'D EC R vote',
+                     dem_ev <  270 & dem_nat_pop_margin < 0 ~ 'R EC R vote',
                      )) %>%
   group_by(scenario) %>%
   summarise(prop = n()) %>%
