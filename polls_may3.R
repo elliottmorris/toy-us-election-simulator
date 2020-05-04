@@ -1,11 +1,8 @@
-rm(list=ls())
 library(tidyverse)
 library(lubridate)
 library(politicaldata)
 library(pbapply)
 library(parallel)
-
-setwd('~/Desktop')
 
 # weights
 states2016 <- read_csv('2016.csv') %>%
