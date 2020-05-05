@@ -135,7 +135,7 @@ final %>%
         axis.text.y=element_blank(),
         axis.title.y=element_blank(),
         axis.ticks.y=element_blank()) +
-  labs(subtitle='Swing toward Democrats in relative Democratic vote margin\nSized by electoral votes',
+  labs(subtitle='Swing toward Democrats in relative presidential vote margin\nSized by electoral votes',
        x='Biden state margin relative to national margin\nminus Clinton state margin relative to national margin')
 
 # tipping point state
@@ -208,20 +208,59 @@ tipping_point <- pblapply(1:max(tipping_point$draw),
                             
                             return(temp)
                           }) %>%
-  do.call('bind_rows',.)
+  do.call('bind_rows',.) %>%
+  ungroup()
+
+
+# state-level correlations?
+tipping_point %>%
+  dplyr::select(draw,state,sim_biden_margin) %>%
+  spread(state,sim_biden_margin) %>%
+  dplyr::select(-draw) %>%
+  cor 
 
 # what is the tipping point
 tipping_point %>%
+  group_by(draw) %>%
   mutate(cumulative_ev = cumsum(ev)) %>%
   filter(cumulative_ev >= 270) %>%
   filter(row_number() == 1) %>% 
   group_by(state) %>%
   summarise(prop = n()) %>%
-  mutate(prop = prop / sum(prop)) %>%
-  arrange(desc(prop))
+  mutate(prop = round(prop / sum(prop)*100,1)) %>%
+  arrange(desc(prop)) 
+
+left_join(tipping_point %>%
+      group_by(draw) %>%
+      mutate(cumulative_ev = cumsum(ev)) %>%
+      filter(cumulative_ev >= 270) %>%
+      filter(row_number() == 1) %>% 
+      group_by(state) %>%
+      summarise(prop = n()) %>%
+      mutate(prop = round(prop / sum(prop)*100,1)) %>%
+      arrange(desc(prop))  %>% 
+      head(20) %>%
+        mutate(row_number = row_number()),
+      tipping_point %>%
+        group_by(draw) %>%
+        mutate(cumulative_ev = cumsum(ev)) %>%
+        filter(cumulative_ev >= 270) %>%
+        filter(row_number() == 1) %>% 
+        group_by(state) %>%
+        summarise(prop = n()) %>%
+        mutate(prop = round(prop / sum(prop)*100,1)) %>%
+        arrange(desc(prop))  %>% 
+        tail(nrow(.)-20)%>%
+        mutate(row_number = row_number()),
+      by='row_number'
+      ) %>% 
+  select(-row_number) %>%
+  setNames(.,c('State','Tipping point chance (%)','State','Tipping point chance (%)')) %>%
+  knitr::kable(.)
 
 # ev-popvote divide?
 tipping_point %>%
+  group_by(draw) %>%
   mutate(cumulative_ev = cumsum(ev)) %>%
   filter(cumulative_ev >= 270) %>%
   filter(row_number() == 1)  %>%
@@ -249,7 +288,6 @@ urbnmapr::states %>%
                        limits = c(-20,20)) +
   theme_void() + 
   theme(legend.position = 'top')
-
 
 # graph win probabilities
 urbnmapr::states %>%
@@ -287,7 +325,7 @@ tipping_point %>%
   group_by(draw) %>%
   summarise(dem_ev = sum(ev * (sim_biden_margin > 0))) %>%
   ungroup() %>%
-  summarise(mean(dem_ev >=270))
+  summarise(dem_ev_majority = mean(dem_ev >=270))
 
 # scenarios
 tipping_point %>%
