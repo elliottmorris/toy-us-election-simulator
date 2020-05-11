@@ -100,6 +100,7 @@ training <- state %>%
                 wwc_pct,
                 college_pct,
                 median_age,
+                region,
                 average_log_pop_within_5_miles
                 ) %>%
   na.omit()
@@ -109,7 +110,7 @@ model <- train(mean_biden_margin ~ .,
                 method = "glmnet",
                 metric = "RMSE",
                 trControl = trainControl(method="LOOCV"),
-                preProcess = c("center","scale"),
+                #preProcess = c("center","scale"),
                tuneLength = 20)
 
 # look @ model
@@ -185,13 +186,13 @@ final %>%
   ggplot(.,aes(x=average_log_pop_within_5_miles,y=mean_biden_margin-clinton_margin,label=state,
                col = clinton_margin > 0,group=NA)) + 
   geom_text_repel() + 
-  geom_smooth(method='lm') + 
+  geom_smooth(method='lm',col='black',linetype=2) + 
   scale_y_continuous(breaks=seq(-1,1,0.02), labels = function(x){round(x*100)}) +
   scale_color_manual(values=c('TRUE'='blue','FALSE'='red')) +
   theme_minimal() + 
   theme(panel.grid.minor = element_blank(),
         legend.position = 'none') +
-  labs(subtitle='Swing toward Democrats in presidential vote margin',
+  labs(subtitle='Swing towards Biden in presidential vote margin',
        x='Average population within 5 miles of each resident (log scale)',
        y='')
   
