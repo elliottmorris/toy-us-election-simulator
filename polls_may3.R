@@ -3,7 +3,8 @@ library(lubridate)
 library(politicaldata)
 library(pbapply)
 library(parallel)
-
+library(ggrepel)
+library(caret)
 
 # wrangle data ------------------------------------------------------------
 # weights
@@ -38,7 +39,8 @@ regression_weight <-  1
 # average national and state polls
 national_biden_margin <- all_polls %>%
   filter(state == '--',
-         grepl('phone',tolower(mode))) %>%
+         grepl('phone',tolower(mode))
+         ) %>%
   summarise(mean_biden_margin = weighted.mean(biden-trump,weight)) %>%
   pull(mean_biden_margin)/100
 
@@ -57,25 +59,61 @@ results <- politicaldata::pres_results %>%
 
 # coefs for a simple model
 coefs <- read_csv('coefs.csv')
+region <- read_csv('state_region_crosswalk.csv') %>%
+  select(state=state_abb,region)
+urbanicity <- read_csv('urbanicity_index.csv')
 
 # bind everything together
+# make log pop density
 state <- results %>%
   left_join(state_averages) %>%
   mutate(dem_lean_2016 = clinton_margin - 0.021,
          dem_lean_2020_polls = mean_biden_margin - national_biden_margin) %>%
-  left_join(coefs)
+  left_join(coefs) %>%
+  left_join(region) %>%
+  left_join(urbanicity) %>%
+  mutate(log_pop_density = log(pop_density))
+
 
 
 # model to fill in polling gaps -------------------------------------------
-# pretty basic model
+# simple lm
 model <- lm(mean_biden_margin ~ 
               clinton_margin + 
-              log(pop_density) +
-              wwc_pct,
-   data = state,
-   weight = sum_weights)
+              black_pct +
+              hisp_other_pct +
+              wwc_pct +
+              college_pct +
+              median_age +
+              average_log_pop_within_5_miles,
+            data = state,
+            weight = sum_weights)
 
 summary(model)
+
+# glmnet model fit using caret
+training <- state %>% 
+  dplyr::select(mean_biden_margin,
+                clinton_margin,
+                black_pct,
+                hisp_other_pct,
+                wwc_pct,
+                college_pct,
+                median_age,
+                average_log_pop_within_5_miles
+                ) %>%
+  na.omit()
+
+model <- train(mean_biden_margin ~ ., 
+                data = training,
+                method = "glmnet",
+                metric = "RMSE",
+                trControl = trainControl(method="LOOCV"),
+                preProcess = c("center","scale"),
+               tuneLength = 20)
+
+# look @ model
+model
 
 # make the projections
 state <- state %>%
@@ -109,7 +147,8 @@ final <- state %>%
          mean_biden_margin = mean_biden_margin_hat,
          dem_lean_2020_polls,
          dem_lean_2020, 
-         num_polls) %>%
+         num_polls,
+         average_log_pop_within_5_miles) %>%
   mutate(shift = dem_lean_2020 - dem_lean_2016)
 
 final <- final %>%
@@ -117,7 +156,9 @@ final <- final %>%
   left_join(read_csv('state_region_crosswalk.csv') %>% 
               dplyr::select(state=state_abb,region))
 
-# plot shift from 2016 to 2020
+
+# shift from 2016 to 2020 -------------------------------------------------
+# plot
 final %>% 
   filter(abs(clinton_margin) < 0.1) %>% # num_polls > 0
   ggplot(., aes(y=reorder(state,shift),x=shift,
@@ -138,7 +179,23 @@ final %>%
   labs(subtitle='Swing toward Democrats in relative presidential vote margin\nSized by electoral votes',
        x='Biden state margin relative to national margin\nminus Clinton state margin relative to national margin')
 
-# tipping point state
+# any realtionship with urbanicity?
+final %>%
+  filter(state != 'DC') %>%
+  ggplot(.,aes(x=average_log_pop_within_5_miles,y=mean_biden_margin-clinton_margin,label=state,
+               col = clinton_margin > 0,group=NA)) + 
+  geom_text_repel() + 
+  geom_smooth(method='lm') + 
+  scale_y_continuous(breaks=seq(-1,1,0.02), labels = function(x){round(x*100)}) +
+  scale_color_manual(values=c('TRUE'='blue','FALSE'='red')) +
+  theme_minimal() + 
+  theme(panel.grid.minor = element_blank(),
+        legend.position = 'none') +
+  labs(subtitle='Swing toward Democrats in presidential vote margin',
+       x='Average population within 5 miles of each resident (log scale)',
+       y='')
+  
+# tipping point state?
 final %>%
   arrange(desc(mean_biden_margin)) %>%
   mutate(cumulative_ev = cumsum(ev)) %>%
