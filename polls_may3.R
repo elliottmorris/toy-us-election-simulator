@@ -100,7 +100,7 @@ training <- state %>%
                 wwc_pct,
                 college_pct,
                 median_age,
-                region,
+                #region,
                 average_log_pop_within_5_miles
                 ) %>%
   na.omit()
@@ -110,7 +110,7 @@ model <- train(mean_biden_margin ~ .,
                 method = "glmnet",
                 metric = "RMSE",
                 trControl = trainControl(method="LOOCV"),
-                #preProcess = c("center","scale"),
+                preProcess = c("center","scale"),
                tuneLength = 20)
 
 # look @ model
@@ -128,7 +128,7 @@ state <- state %>%
   mutate(mean_biden_margin = ifelse(mean_biden_margin==999,NA,mean_biden_margin))
 
 # plot them vs the polls
-ggplot(state, aes(mean_biden_margin, mean_biden_margin_hat,label=state)) +
+ggplot(state, aes(mean_biden_margin, mean_biden_margin_hat, label=state)) +
   geom_text(aes(size=num_polls)) + 
   geom_abline() + 
   geom_smooth(method='lm')
@@ -193,15 +193,27 @@ final %>%
   theme(panel.grid.minor = element_blank(),
         legend.position = 'none') +
   labs(subtitle='Swing towards Biden in presidential vote margin',
-       x='Average population within 5 miles of each resident (log scale)',
+       x='Number of people within 5 miles of each resident (log values)',
        y='')
   
 # tipping point state?
 final %>%
   arrange(desc(mean_biden_margin)) %>%
   mutate(cumulative_ev = cumsum(ev)) %>%
-  filter(cumulative_ev >= 270) # %>% filter(row_number() == 1) 
+  filter(cumulative_ev >= 270) %>% filter(row_number() == 1) 
 
+# plot
+urbnmapr::states %>%
+  left_join(final %>% select(state_abbv = state,mean_biden_margin) %>%
+              mutate(mean_biden_margin = case_when(mean_biden_margin > 0.2 ~ 0.2,
+                                                   mean_biden_margin < -0.2 ~ -0.2,
+                                                   TRUE ~ mean_biden_margin))) %>%
+  ggplot(aes(x=long,y=lat,group=group,fill=mean_biden_margin*100)) +
+  geom_polygon(col='gray40')  + 
+  coord_map("albers",lat0=39, lat1=45) +
+  scale_fill_gradient2(name='Democratic vote margin',high='#3498DB',low='#E74C3C',mid='gray98',midpoint=0) +
+  theme_void() + 
+  theme(legend.position = 'top')
 
 # toy simulations ---------------------------------------------------------
 # errors
@@ -325,7 +337,6 @@ tipping_point %>%
   mutate(diff = dem_nat_pop_margin - sim_biden_margin) %>%
   pull(diff) %>% mean # hist(breaks=100)
 
-
 # graph mean estimate
 urbnmapr::states %>%
   left_join(tipping_point %>%
@@ -346,6 +357,7 @@ urbnmapr::states %>%
                        limits = c(-20,20)) +
   theme_void() + 
   theme(legend.position = 'top')
+
 
 # graph win probabilities
 urbnmapr::states %>%
