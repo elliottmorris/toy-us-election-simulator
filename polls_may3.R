@@ -8,7 +8,7 @@ library(caret)
 
 # wrangle data ------------------------------------------------------------
 # weights
-states2016 <- read_csv('2016.csv') %>%
+states2016 <- read_csv('data/2016.csv') %>%
   mutate(score = clinton_count / (clinton_count + trump_count),
          national_score = sum(clinton_count)/sum(clinton_count + trump_count),
          delta = score - national_score,
@@ -20,7 +20,7 @@ state_weights <- c(states2016$share_national_vote / sum(states2016$share_nationa
 names(state_weights) <- states2016$state
 
 # read in the polls
-all_polls <- read_csv('polls.csv')
+all_polls <- read_csv('data/polls.csv')
 
 head(all_polls)
 
@@ -58,10 +58,7 @@ results <- politicaldata::pres_results %>%
   select(state,clinton_margin)
 
 # coefs for a simple model
-coefs <- read_csv('coefs.csv')
-region <- read_csv('state_region_crosswalk.csv') %>%
-  select(state=state_abb,region)
-urbanicity <- read_csv('urbanicity_index.csv')
+coefs <- read_csv('data/state_coefs.csv')
 
 # bind everything together
 # make log pop density
@@ -69,93 +66,111 @@ state <- results %>%
   left_join(state_averages) %>%
   mutate(dem_lean_2016 = clinton_margin - 0.021,
          dem_lean_2020_polls = mean_biden_margin - national_biden_margin) %>%
-  left_join(coefs) %>%
-  left_join(region) %>%
-  left_join(urbanicity) %>%
-  mutate(log_pop_density = log(pop_density))
-
+  left_join(coefs)
 
 
 # model to fill in polling gaps -------------------------------------------
 # simple lm
-model <- lm(mean_biden_margin ~ 
-              clinton_margin + 
-              black_pct +
-              hisp_other_pct +
-              wwc_pct +
-              college_pct +
-              median_age +
-              average_log_pop_within_5_miles,
-            data = state,
-            weight = sum_weights)
+model <- step(lm(mean_biden_margin ~ clinton_margin + black_pct + college_pct + 
+                   hisp_other_pct + median_age + pct_white_evangel + pop_density + 
+                   white_pct + wwc_pct,
+                 data = state %>%
+                   select(mean_biden_margin,clinton_margin,black_pct,college_pct,
+                          hisp_other_pct,median_age,pct_white_evangel,
+                          pop_density,white_pct,wwc_pct,sum_weights) %>%
+                   mutate_at(c('clinton_margin','black_pct','college_pct',
+                                 'hisp_other_pct','median_age','pct_white_evangel',
+                                 'pop_density','white_pct','wwc_pct'),
+                             function(x){
+                               (x - mean(x)) / sd(x)
+                             }) %>%
+                   na.omit(),
+                 weight = sum_weights))
 
 summary(model)
 
 # glmnet model fit using caret
 training <- state %>% 
-  dplyr::select(mean_biden_margin,
-                clinton_margin,
-                black_pct,
-                hisp_other_pct,
-                wwc_pct,
-                college_pct,
-                median_age,
-                #region,
-                average_log_pop_within_5_miles
-                ) %>%
-  na.omit()
+  dplyr::select(state,mean_biden_margin,clinton_margin,black_pct,college_pct,
+         hisp_other_pct,median_age,pct_white_evangel,
+         pop_density,white_pct,wwc_pct,sum_weights) %>%
+  mutate_at(c('clinton_margin','black_pct','college_pct',
+              'hisp_other_pct','median_age','pct_white_evangel',
+              'pop_density','white_pct','wwc_pct'),
+            function(x){
+              (x - mean(x)) / sd(x)
+            }) 
 
-model <- train(mean_biden_margin ~ ., 
-                data = training,
-                method = "glmnet",
-                metric = "RMSE",
-                trControl = trainControl(method="LOOCV"),
-                preProcess = c("center","scale"),
+testing <- training
+training <- training %>% na.omit()
+
+model <- train(mean_biden_margin ~ clinton_margin + black_pct + college_pct + 
+                 hisp_other_pct + median_age + pct_white_evangel + pop_density + 
+                 white_pct + wwc_pct,
+               data = training,
+               weights = sum_weights,
+               method = "glmnet",
+               metric = "RMSE",
+               trControl = trainControl(method="LOOCV"),
                tuneLength = 20)
 
 # look @ model
 model
 
 # make the projections
+testing$proj_mean_biden_margin <- predict(object=model,newdata=testing)
+
+# check predictions
+ggplot(na.omit(testing), aes(x=mean_biden_margin,y=proj_mean_biden_margin,label=state)) +
+  geom_text() + 
+  geom_abline() + 
+  geom_smooth(method='lm')
+
+# add to state data frame
 state <- state %>%
+  # append the predictions
+  left_join(testing %>% dplyr::select(state,proj_mean_biden_margin)) %>%
+  # make some mutations
   mutate(sum_weights = ifelse(is.na(sum_weights),0,sum_weights),
-         mean_biden_margin = ifelse(is.na(mean_biden_margin),999,mean_biden_margin),
-         proj_mean_biden_margin = predict(model,.)) %>%
+         mean_biden_margin = ifelse(is.na(mean_biden_margin),999,mean_biden_margin))  %>%
   mutate(mean_biden_margin_hat = #proj_mean_biden_margin
            (mean_biden_margin * (sum_weights/(sum_weights+regression_weight)) ) +
            (proj_mean_biden_margin * (regression_weight/(sum_weights+regression_weight)) )
-) %>%
+         ) %>%
   mutate(mean_biden_margin = ifelse(mean_biden_margin==999,NA,mean_biden_margin))
 
-# plot them vs the polls
-ggplot(state, aes(mean_biden_margin, mean_biden_margin_hat, label=state)) +
+# plot final prediction against data
+ggplot(na.omit(state), aes(mean_biden_margin, mean_biden_margin_hat, label=state)) +
   geom_text(aes(size=num_polls)) + 
   geom_abline() + 
   geom_smooth(method='lm')
 
-# adjust biden national margin?
-adj_national_biden_margin <- national_biden_margin # weighted.mean(state$mean_biden_margin_hat,state_weights)
+# adjust state-level polls and predictions to polled national margin?
+# for now, no....
+adj_national_biden_margin <-  national_biden_margin # weighted.mean(state$mean_biden_margin_hat,state_weights)
 
-# generate new state leans
-state$dem_lean_2020 <-  state$mean_biden_margin_hat - adj_national_biden_margin 
+state$mean_biden_margin_hat <-  state$mean_biden_margin_hat - (adj_national_biden_margin- national_biden_margin)
 
 # save new biden national margin
-national_biden_margin <- adj_national_biden_margin
+national_biden_margin <- weighted.mean(state$mean_biden_margin_hat,state_weights)
+
+national_biden_margin
+
+# generate new state lean variable based on adjusted biden national margin
+state$dem_lean_2020 <-  state$mean_biden_margin_hat - national_biden_margin 
 
 # clean up estimates
 final <- state %>%
-  select(state,clinton_margin,dem_lean_2016,
+  select(state,region,clinton_margin,dem_lean_2016,
          mean_biden_margin = mean_biden_margin_hat,
          dem_lean_2020_polls,
          dem_lean_2020, 
          num_polls,
-         average_log_pop_within_5_miles) %>%
+         pop_density) %>%
   mutate(shift = dem_lean_2020 - dem_lean_2016)
 
 final <- final %>%
-  left_join(read_csv('state_evs.csv')) %>%
-  left_join(read_csv('state_region_crosswalk.csv') %>% 
-              dplyr::select(state=state_abb,region))
+  left_join(read_csv('data/state_evs.csv')) 
 
 
 # shift from 2016 to 2020 -------------------------------------------------
@@ -183,7 +198,7 @@ final %>%
 # any realtionship with urbanicity?
 final %>%
   filter(state != 'DC') %>%
-  ggplot(.,aes(x=average_log_pop_within_5_miles,y=mean_biden_margin-clinton_margin,label=state,
+  ggplot(.,aes(x=pop_density,y=mean_biden_margin-clinton_margin,label=state,
                col = clinton_margin > 0,group=NA)) + 
   geom_text_repel() + 
   geom_smooth(method='lm',col='black',linetype=2) + 
@@ -200,7 +215,13 @@ final %>%
 final %>%
   arrange(desc(mean_biden_margin)) %>%
   mutate(cumulative_ev = cumsum(ev)) %>%
-  filter(cumulative_ev >= 270) %>% filter(row_number() == 1) 
+  filter(cumulative_ev >= 270) %>% filter(row_number() == 1)  
+
+final %>%
+  arrange(desc(mean_biden_margin)) %>%
+  mutate(cumulative_ev = cumsum(ev)) %>%
+  filter(cumulative_ev >= 270) %>% filter(row_number() == 1)  %>%
+  pull(mean_biden_margin) -  national_biden_margin
 
 # plot
 urbnmapr::states %>%
@@ -298,7 +319,7 @@ tipping_point %>%
   group_by(state) %>%
   summarise(prop = n()) %>%
   mutate(prop = round(prop / sum(prop)*100,1)) %>%
-  arrange(desc(prop)) 
+  arrange(desc(prop)) %>% filter(prop>1) %>% as.data.frame()
 
 left_join(tipping_point %>%
       group_by(draw) %>%
@@ -337,37 +358,36 @@ tipping_point %>%
   mutate(diff = dem_nat_pop_margin - sim_biden_margin) %>%
   pull(diff) %>% mean # hist(breaks=100)
 
-# graph mean estimate
+# extract state-level data
+state_probs <- tipping_point %>%
+  group_by(state_abbv = state) %>%
+  summarise(mean_biden_margin = mean(sim_biden_margin,na.rm=T),
+            ev = unique(ev),
+            prob = mean(sim_biden_margin > 0,na.rm=T)) %>%
+  ungroup() %>%
+  arrange(desc(mean_biden_margin)) %>% 
+  mutate(cumulative_ev = cumsum(ev)) 
+
+# graph mean estimates by state
 urbnmapr::states %>%
-  left_join(tipping_point %>%
-              group_by(state_abbv = state) %>%
-              summarise(mean_biden_margin = mean(sim_biden_margin,na.rm=T),
-                        ev = unique(ev),
-                        prob = mean(sim_biden_margin > 0,na.rm=T)) %>%
-              ungroup() %>%
+  left_join(state_probs%>%
               mutate(mean_biden_margin = case_when(mean_biden_margin > 0.2 ~ 0.2,
                                                    mean_biden_margin < -0.2 ~ -0.2,
-                                                   TRUE ~ mean_biden_margin)) %>%
-              arrange(desc(mean_biden_margin)) %>% 
-              mutate(cumulative_ev = cumsum(ev)) ) %>%
+                                                   TRUE ~ mean_biden_margin))) %>%
   ggplot(aes(x=long,y=lat,group=group,fill=mean_biden_margin*100)) +
   geom_polygon(col='gray40')  + 
   coord_map("albers",lat0=39, lat1=45) +
   scale_fill_gradient2(name='Democratic vote margin',high='#3498DB',low='#E74C3C',mid='gray98',midpoint=0,
-                       limits = c(-20,20)) +
+                       limits = c(-20,20),guide = 'legend') +
   theme_void() + 
   theme(legend.position = 'top')
 
-
 # graph win probabilities
 urbnmapr::states %>%
-  left_join(tipping_point %>%
-              group_by(state_abbv = state) %>%
-              summarise(mean_biden_margin = mean(sim_biden_margin,na.rm=T),
-                        ev = unique(ev),
-                        prob = mean(sim_biden_margin > 0,na.rm=T)) %>%
-              arrange(desc(mean_biden_margin)) %>% 
-              mutate(cumulative_ev = cumsum(ev)) ) %>%
+  left_join(state_probs %>% 
+              mutate(mean_biden_margin = case_when(mean_biden_margin > 0.2 ~ 0.2,
+                                                   mean_biden_margin < -0.2 ~ -0.2,
+                                                   TRUE ~ mean_biden_margin)) ) %>%
   ggplot(aes(x=long,y=lat,group=group,fill=prob*100)) +
   geom_polygon(col='gray40')  + 
   coord_map("albers",lat0=39, lat1=45) +
@@ -375,7 +395,6 @@ urbnmapr::states %>%
                        limits = c(0,100)) +
   theme_void() + 
   theme(legend.position = 'top')
-
 
 # electoral vote histogram
 tipping_point %>%
@@ -387,15 +406,14 @@ tipping_point %>%
   scale_y_continuous(labels = function(x){paste0(round(x / max(tipping_point$draw)*100,2),'%')}) +
   labs(x='Democratic electoral votes',y='Probability') +
   theme_minimal() + 
-  theme(legend.position = 'none')  +
-  coord_cartesian(ylim=c(0,150))
-
-# prob?
-tipping_point %>%
-  group_by(draw) %>%
-  summarise(dem_ev = sum(ev * (sim_biden_margin > 0))) %>%
-  ungroup() %>%
-  summarise(dem_ev_majority = mean(dem_ev >=270))
+  theme(legend.position = 'none') +
+  labs(subtitle = sprintf('p(Democratic win) = %s',
+                          tipping_point %>%
+                            group_by(draw) %>%
+                            summarise(dem_ev = sum(ev * (sim_biden_margin > 0))) %>%
+                            ungroup() %>%
+                            summarise(dem_ev_majority = round(mean(dem_ev >=270),2)) %>%
+                            pull(dem_ev_majority)))
 
 # scenarios
 tipping_point %>%
@@ -411,5 +429,92 @@ tipping_point %>%
   group_by(scenario) %>%
   summarise(prop = n()) %>%
   mutate(prop = prop / sum(prop))
+
+
+# ec - popular vote gap ---------------------------------------------------
+results <- read_csv('data/potus_historical_results.csv')
+
+# apply the infaltor from multi- to two-party vote
+margin_inflator <- all_polls %>%
+  filter(state != '--') %>%
+  mutate(two_party_margin = (biden / (biden + trump)) - (trump / (biden + trump)),
+         biden_margin = (biden - trump)/100) %>%
+  summarise(margin_inflator = mean(two_party_margin / biden_margin,na.rm=T)) %>% 
+  pull(margin_inflator)
+
+# bind with averages
+results <- results %>%
+  bind_rows(state_probs %>%
+              select(state = state_abbv,
+                     dem_two_party_share = mean_biden_margin) %>%
+              mutate(year = 2020,
+                     dem_two_party_share = dem_two_party_share * margin_inflator,
+                     dem_two_party_share = 0.5 + dem_two_party_share/2)) 
+
+
+# data frame with electoral votes
+historical_evs <- read_csv('data/state_evs_historical.csv')
+
+
+results <- results %>%
+  left_join(historical_evs) %>%
+  na.omit() %>%
+  mutate(# how many evs total?
+    total_evs = case_when(year < 1960 ~ 531,
+                          year == 1960 ~ 537,
+                          year > 1960 ~ 538),
+    # how many evs to win?
+    evs_to_win = case_when(year < 1960 ~ 266,
+                           year == 1960 ~ 269,
+                           year > 1960 ~ 270)
+    
+  )
+
+# add usa
+usa <- read_csv('data/nationwide_potus_results.csv') %>% filter(State == 'Nationwide')
+usa <- usa %>%
+  gather(year,vote,2:ncol(.)) %>% 
+  mutate(party = gsub("[^a-zA-Z]","",year),
+         year = gsub("[a-zA-Z]","",year)) %>%
+  group_by(State,year) %>%
+  spread(party,vote) %>%
+  mutate(dem_two_party_share_national = Dem / (Dem + Rep)) %>%
+  as.data.frame() %>%
+  ungroup() %>%
+  dplyr::select(state=State,year,dem_two_party_share_national) %>%
+  mutate(year = as.numeric(year)) %>%
+  dplyr::select(-state)
+
+results <- results %>%
+  left_join(usa)
+
+results <- results %>%
+  group_by(year) %>%
+  arrange(year,desc(dem_two_party_share)) %>%
+  mutate(cumulative_ev = cumsum(ev)) %>%
+  filter(cumulative_ev >= evs_to_win) %>%
+  filter(row_number()  == 1) %>%
+  mutate(dem_two_party_share_national = ifelse(year == 2020, 
+                                               0.5 + (national_biden_margin * margin_inflator)/2,
+                                               dem_two_party_share_national)) %>%
+  na.omit()  %>%
+  ungroup()
+
+results %>%
+  filter(year >= 1972) %>%
+  mutate(lean = dem_two_party_share - dem_two_party_share_national,
+         year = fct_reorder(as.character(year),-year)) %>%
+  ggplot(.,aes(x=year,y=lean)) +
+  geom_col() + 
+  theme_minimal() + 
+  coord_flip()
+
+
+
+
+
+
+
+
 
 

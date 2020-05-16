@@ -1,4 +1,46 @@
 state,pollster,sponsor,start.date,end.date,entry.date.time..et.,number.of.observations,population,mode,biden,trump,biden_margin,other,undecided,url,include
+GA,BK Strategies,NA,5/11/2020,5/13/2020,5/16/2020 12:36:00,700,lv,Live Phone,46,48,-2,NA,NA,https://assets.documentcloud.org/documents/6890619/RSLC-Georgia-Memo-May-2020.pdf,TRUE
+NC,East Carolina University,NA,5/7/2020,5/9/2020,5/16/2020 12:35:00,1111,rv,Online,43,46,-3,NA,NA,https://surveyresearch-ecu.reportablenews.com/pr/presidential-and-senate-races-remain-close-in-north-carolina-cooper-leads-forest-and-earns-high-approval-for-state-s-coronavirus-response,TRUE
+--,Data for Progress,NA,5/5/2020,5/5/2020,5/16/2020 12:31:00,795,rv,Online,50,44,6,NA,NA,https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/XJLZIN,TRUE
+--,Data for Progress,NA,4/28/2020,4/28/2020,5/16/2020 12:31:00,895,rv,Online,52,43,9,NA,NA,https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/XJLZIN,TRUE
+--,Data for Progress,NA,4/21/2020,4/21/2020,5/16/2020 12:31:00,860,rv,Online,49,44,5,NA,NA,https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/XJLZIN,TRUE
+--,Data for Progress,NA,4/14/2020,4/14/2020,5/16/2020 12:31:00,802,rv,Online,49,45,4,NA,NA,https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/XJLZIN,TRUE
+FL,Florida Atlantic University,NA,5/8/2020,5/12/2020,5/15/2020 11:13:00,928,rv,IVR/Online,53,47,6,NA,NA,https://business.fau.edu/departments/economics/business-economics-polling/bepi-polls/bepi-polls-2020/biden-leads-trump-in-florida.php,TRUE
+--,Optimus,NA,5/5/2020,5/12/2020,5/15/2020 11:10:00,728,lv,Online,52,43,9,NA,NA,https://github.com/optimus-forecasting-and-polling/Firehouse-0ptimus-Coronavirus-Tracking/tree/master/May-14-2020,TRUE
+NJ,Rutgers University,NA,4/22/2020,5/2/2020,5/15/2020 11:08:00,1364,rv,Live Phone,56,33,23,6,7,https://eagletonpoll.rutgers.edu/wp-content/uploads/2020/05/Vote-By-Mail-NJ-Primaries-2020.pdf,TRUE
+--,YouGov,NA,5/10/2020,5/12/2020,5/13/2020 14:08:00,1175,rv,Online,47,43,4,4,5,https://docs.cdn.yougov.com/sww5v5iven/econTabReport.pdf,TRUE
+--,SSRS,CNN,5/7/2020,5/10/2020,5/13/2020 14:06:00,1001,rv,Live Phone,51,46,5,1,1,http://cdn.cnn.com/cnn/2020/images/05/13/rel5c.-.2020.pdf,TRUE
+GA,Public Opinion Strategies,NA,5/4/2020,5/7/2020,5/13/2020 14:04:00,500,lv,Live Phone,47,46,1,NA,5,https://assets.documentcloud.org/documents/6889420/Georgia-Statewide-Key-Findings-Memo.pdf,TRUE
+--,Ipsos,NA,5/11/2020,5/12/2020,5/132020 14:03:00,973,rv,Online,46,38,8,NA,NA,https://www.reuters.com/article/us-usa-election-poll/trump-approval-dips-amid-mounting-coronavirus-death-toll-trails-biden-by-8-points-reuters-ipsos-poll-idUSKBN22O3FG,TRUE
+WI,Marquette University Law School,NA,5/3/2020,5/7/2020,5/12/2020 17:25:00,811,rv,Live Phone,46,43,3,4,4,https://law.marquette.edu/poll/wp-content/uploads/2020/05/MLSP60Toplines.pdf,TRUE
+OH,Emerson College,NA,5/8/2020,5/10/2020,5/11/2020 18:27:00,726,rv,IVR/Online,49,51,-2,NA,NA,https://emersonpolling.reportablenews.com/pr/ohio-texas-and-california-2020-trump-with-narrow-leads-in-ohio-and-texas-but-has-widespread-expectation-of-being-re-elected,TRUE
+TX,Emerson College,NA,5/8/2020,5/10/2020,5/11/2020 18:27:00,800,rv,IVR/Online,48,52,-4,NA,NA,https://emersonpolling.reportablenews.com/pr/ohio-texas-and-california-2020-trump-with-narrow-leads-in-ohio-and-texas-but-has-widespread-expectation-of-being-re-elected,TRUE
+--,Morning Consult,NA,5/4/2020,5/10/2020,5/11/2020 18:30:00,27754,rv,Online,52,45,7,NA,NA,https://morningconsult.com/2020/05/11/biden-popularity-reade-allegations-polling/,TRUE
+CA,Emerson College,NA,5/8/2020,5/9/2020,5/11/2020 18:27:00,800,rv,IVR/Online,65,35,30,NA,NA,https://emersonpolling.reportablenews.com/pr/ohio-texas-and-california-2020-trump-with-narrow-leads-in-ohio-and-texas-but-has-widespread-expectation-of-being-re-elected,TRUE
+--,Redfield & Wilton Strategies,NA,5/8/2020,5/9/2020,5/11/2020 18:25:00,1500,lv,Online,52,44,8,2,NA,https://redfieldandwiltonstrategies.com/latest-usa-voting-intention-8-and-9-may/,TRUE
+--,RMG Research,ScottRasmussen.com,5/7/2020,5/9/2020,5/11/2020 18:24:00,1200,rv,Online,44,38,6,NA,NA,https://scottrasmussen.com/biden-44-trump-38/,TRUE
+--,Optimus,NA,5/2/2020,5/9/2020,5/11/2020 18:17:00,726,lv,Online,50,45,5,NA,NA,https://github.com/optimus-forecasting-and-polling/Firehouse-0ptimus-Coronavirus-Tracking/tree/master/May-11-2020,TRUE
+MA,Emerson College,NA,5/5/2020,5/6/2020,5/11/2020 18:16:00,740,rv,IVR/Online,67,33,34,NA,NA,http://emersonpolling.com/2020/05/07/massachusetts-2020-kennedy-leading-markey-by-16-points-in-us-senate-race/,TRUE
+--,YouGov,Yahoo,5/4/2020,5/5/2020,5/7/2020 17:54:00,1224,rv,Online,45,42,3,5,6,https://docs.cdn.yougov.com/wllghb6lp9/20200506_yahoo_coronavirus_crosstabs.pdf,TRUE
+--,Optimus,NA,4/28/2020,5/5/2020,5/7/2020 17:54:00,758,lv,Online,51,45,6,NA,NA,https://github.com/optimus-forecasting-and-polling/Firehouse-0ptimus-Coronavirus-Tracking/tree/master/May-07-2020,TRUE
+MA,University of Massachusetts Lowell,NA,4/27/2020,5/1/2020,5/7/2020 17:53:00,1000,rv,Live Phone,58,30,28,7,4,https://www.uml.edu/docs/2020-COVID-Topline_tcm18-325770.pdf,TRUE
+CT,Quinnipiac University,NA,4/30/2020,5/4/2020,5/7/2020 17:50:00,945,rv,Live Phone,56,33,23,2,1,https://poll.qu.edu/connecticut/release-detail?ReleaseID=3660,TRUE
+NJ,Quinnipiac University,NA,4/30/2020,5/4/2020,5/7/2020 17:50:00,941,rv,Live Phone,54,35,19,2,1,https://poll.qu.edu/connecticut/release-detail?ReleaseID=3660,TRUE
+NY,Quinnipiac University,NA,4/30/2020,5/4/2020,5/7/2020 17:50:00,915,rv,Live Phone,55,32,23,3,2,https://poll.qu.edu/connecticut/release-detail?ReleaseID=3660,TRUE
+NV,ALG Research,NA,4/27/2020,4/30/2020,5/7/2020 17:48:00,763,lv,Online,49,45,4,NA,NA,https://thenevadaindependent.com/article/poll-sisolak-looks-strong-despite-shutdown-biden-has-small-lead-over-trump,TRUE
+--,YouGov,Economist,5/3/2020,5/5/2020,5/6/2020 11:39:00,1209,rv,Online,46,42,4,5,3,https://docs.cdn.yougov.com/5yope37lqh/econTabReport.pdf,TRUE
+CO,Keating Research,NA,5/1/2020,5/3/2020,5/6/2020 11:37:00,600,lv,Online,55,35,20,NA,NA,https://www.coloradopolitics.com/quick-hits/new-colorado-poll-shows-hickenlooper-widening-double-digit-lead-over-gardner/article_a3ce89ec-8f9b-11ea-8374-cb87df3f5a13.html,TRUE
+--,Monmouth,NA,4/30/2020,5/4/2020,5/6/2020 11:36:00,739,rv,Live Phone,47,40,7,6,6,https://www.monmouth.edu/polling-institute/documents/monmouthpoll_us_050620.pdf/,TRUE
+--,Civiqs,NA,5/2/2020,5/5/2020,5/6/2020 11:32:00,1546,a,Online,47,44,3,NA,NA,https://civiqs.com/documents/Civiqs_DailyKos_monthly_banner_book_2020_05_r8c32an.pdf,TRUE
+--,Change Research,NA,5/1/2020,5/3/2020,5/6/2020 11:33:00,1489,rv,Online,47,44,3,NA,NA,https://www.changeresearch.com/post/states-of-play-battleground-wave-4,TRUE
+--,Ipsos,NA,5/4/2020,5/5/2020,5/6/2020 11:32:00,1015,rv,Online,43,41,2,NA,NA,https://www.reuters.com/article/us-usa-election-poll/bidens-edge-evaporates-as-trump-seen-as-better-suited-for-economy-coronavirus-response-poll-shows-idUSKBN22I005,TRUE
+NC,Civiqs,NA,5/2/2020,5/4/2020,5/6/2020 11:32:00,1362,rv,Online,49,48,1,NA,NA,https://civiqs.com/documents/Civiqs_DailyKos_NC_banner_book_2020_05_kld8fh.pdf,TRUE
+--,RMG Research,ScottRasmussen.com,4/30/2020,5/2/2020,5/6/2020 11:31:00,1200,rv,Online,46,39,7,NA,NA,https://scottrasmussen.com/biden-46-trump-39/,TRUE
+MT,Montana State University Bozeman,NA,4/10/2020,4/27/2020,5/6/2020 11:30:00,549,lv,Online,40,45,-5,NA,NA,http://helpslab.montana.edu/documents/western_states_2020_coronavirus_survey/PoliticsPolicy_Montana_Frequencies_01May2020_RELEASE.pdf,TRUE
+CO,Montana State University Bozeman,NA,4/10/2020,4/27/2020,5/6/2020 11:28:00,380,lv,Online,53,35,18,NA,NA,http://helpslab.montana.edu/documents/western_states_2020_coronavirus_survey/PoliticsPolicy_Colorado_Frequencies_01May2020_RELEASE.pdf,TRUE
+--,Morning Consult,NA,4/27/2020,5/3/2020,5/6/2020 11:27:00,31117,rv,Online,46,42,4,NA,NA,https://morningconsult.com/2020/05/04/after-watching-biden-deny-reades-claims-1-in-4-democrats-want-a-different-nominee/,TRUE
+--,Optimus,NA,4/25/2020,5/2/2020,5/6/2020 11:26:00,765,lv,Online,50,45,5,NA,NA,https://github.com/optimus-forecasting-and-polling/Firehouse-0ptimus-Coronavirus-Tracking/tree/master/May-04-2020,TRUE
+IA,Public Policy Polling,NA,4/30/2020,5/1/2020,5/4/2020 15:03:00,1222,rv,IVR/Text,46,48,-2,NA,NA,https://www.publicpolicypolling.com/wp-content/uploads/2020/05/IowaResultsMay2020.pdf,TRUE
 --,YouGov,CBS News,4/28/2020,5/1/2020,5/3/2020 11:38:00,1671,lv,Online,49,43,6,NA,NA,https://drive.google.com/file/d/1rPmATVVPfzsgn-1g7m9zX-PfFVgPXCGY/view,TRUE
 TX,University of Texas at Tyler,Dallas Morning News,4/18/2020,4/27/2020,5/3/2020 11:36:00,1183,rv,Live Phone/Online,43,43,0,NA,NA,https://projects.fivethirtyeight.com/polls/20200502_TX.pdf,TRUE
 PA,Harper Polling,NA,4/21/2020,4/26/2020,5/3/2020 11:33:00,644,lv,Online,49,43,6,NA,9,http://harperpolling.com/docs/default-source/default-document-library/20-04-harper-polling_pa-statewide-key-findings.pdf?sfvrsn=0,TRUE
