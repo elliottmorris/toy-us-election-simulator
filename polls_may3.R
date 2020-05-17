@@ -145,11 +145,35 @@ ggplot(na.omit(state), aes(mean_biden_margin, mean_biden_margin_hat, label=state
   geom_abline() + 
   geom_smooth(method='lm')
 
-# adjust state-level polls and predictions to polled national margin?
-# for now, no....
+
+# adjust predictions for poll selection bias ------------------------------
+clinton_margin_in_polled_states <- state %>% 
+  filter(!is.na(mean_biden_margin)) %>% 
+  select(state,clinton_margin,mean_biden_margin) %>%
+  left_join(enframe(state_weights,'state','state_weight')) %>%
+  mutate(state_weight = state_weight / sum(state_weight)) %>%
+  summarise(average_clinton_margin = 
+              weighted.mean(clinton_margin,state_weight)) %>%
+  pull(average_clinton_margin)
+
+clinton_margin_overall <- state %>% 
+  select(state,clinton_margin,mean_biden_margin) %>%
+  left_join(enframe(state_weights,'state','state_weight')) %>%
+  summarise(average_clinton_margin = 
+              weighted.mean(clinton_margin,state_weight)) %>%
+  pull(average_clinton_margin)
+
+# what's next???
+# this might be mostly taken care of since we use clinton margin in the model, 
+# so skipping for now
+
+# adjust state-level polls and predictions to polled national margin ------
+# for now, no.... aggregates of state polls out-performed national 
+# polls in 2008 and 2012 -- don't want to overreact to 2016
+
 adj_national_biden_margin <-  national_biden_margin # weighted.mean(state$mean_biden_margin_hat,state_weights)
 
-state$mean_biden_margin_hat <-  state$mean_biden_margin_hat - (adj_national_biden_margin- national_biden_margin)
+state$mean_biden_margin_hat <-  state$mean_biden_margin_hat - (adj_national_biden_margin - national_biden_margin)
 
 # save new biden national margin
 national_biden_margin <- weighted.mean(state$mean_biden_margin_hat,state_weights)
@@ -173,7 +197,7 @@ final <- final %>%
   left_join(read_csv('data/state_evs.csv')) 
 
 
-# shift from 2016 to 2020 -------------------------------------------------
+# calc shift from 2016 to 2020 --------------------------------------------
 # plot
 final %>% 
   filter(abs(clinton_margin) < 0.1) %>% # num_polls > 0
