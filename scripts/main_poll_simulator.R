@@ -8,6 +8,7 @@ library(caret)
 library(kknn)
 
 # wrangle data ------------------------------------------------------------
+message("Wrangling data...")
 # weights
 states2016 <- read_csv('data/2016.csv') %>%
   mutate(score = clinton_count / (clinton_count + trump_count),
@@ -66,13 +67,14 @@ coefs <- read_csv('data/state_coefs.csv')
 # bind everything together
 # make log pop density
 state <- results %>%
-  left_join(state_averages) %>%
+  left_join(state_averages, by = "state") %>%
   mutate(dem_lean_2016 = clinton_margin - 0.021,
          dem_lean_2020_polls = mean_biden_margin - national_biden_margin) %>%
-  left_join(coefs)
+  left_join(coefs, by = "state")
 
 
 # model to fill in polling gaps -------------------------------------------
+message("Training demographic regression model...")
 # simple stepwise linear model with AIC selection
 model <- step(lm(mean_biden_margin ~ clinton_margin + black_pct + college_pct + 
                    hisp_other_pct + median_age + pct_white_evangel + pop_density + 
@@ -147,7 +149,7 @@ mean(abs(testing$proj_mean_biden_margin - testing$mean_biden_margin),na.rm=T)
 # add to state data frame
 state <- state %>%
   # append the predictions
-  left_join(testing %>% dplyr::select(state,proj_mean_biden_margin)) %>%
+  left_join(testing %>% dplyr::select(state,proj_mean_biden_margin), by = "state") %>%
   # make some mutations
   mutate(sum_weights = ifelse(is.na(sum_weights),0,sum_weights),
          mean_biden_margin = ifelse(is.na(mean_biden_margin),999,mean_biden_margin))  %>%
@@ -168,7 +170,7 @@ ggplot(na.omit(state), aes(mean_biden_margin, mean_biden_margin_hat, label=state
 clinton_margin_in_polled_states <- state %>% 
   filter(!is.na(mean_biden_margin)) %>% 
   select(state,clinton_margin,mean_biden_margin) %>%
-  left_join(enframe(state_weights,'state','state_weight')) %>%
+  left_join(enframe(state_weights,'state','state_weight'), by = "state") %>%
   mutate(state_weight = state_weight / sum(state_weight)) %>%
   summarise(average_clinton_margin = 
               weighted.mean(clinton_margin,state_weight)) %>%
@@ -176,7 +178,7 @@ clinton_margin_in_polled_states <- state %>%
 
 clinton_margin_overall <- state %>% 
   select(state,clinton_margin,mean_biden_margin) %>%
-  left_join(enframe(state_weights,'state','state_weight')) %>%
+  left_join(enframe(state_weights,'state','state_weight'), by = "state") %>%
   summarise(average_clinton_margin = 
               weighted.mean(clinton_margin,state_weight)) %>%
   pull(average_clinton_margin)
@@ -188,6 +190,7 @@ clinton_margin_overall <- state %>%
 # adjust state-level polls and predictions to polled national margin ------
 # for now, no.... aggregates of state polls out-performed national 
 # polls in 2008 and 2012 -- don't want to overreact to 2016
+og_national_biden_margin <- national_biden_margin
 
 adj_national_biden_margin <-  national_biden_margin # weighted.mean(state$mean_biden_margin_hat,state_weights)
 
@@ -203,7 +206,7 @@ state$dem_lean_2020 <-  state$mean_biden_margin_hat - national_biden_margin
 
 # clean up estimates
 final <- state %>%
-  select(state,region,clinton_margin,dem_lean_2016,
+  dplyr::select(state,region,clinton_margin,dem_lean_2016,
          mean_biden_margin = mean_biden_margin_hat,
          dem_lean_2020_polls,
          dem_lean_2020, 
@@ -213,7 +216,6 @@ final <- state %>%
 
 final <- final %>%
   left_join(read_csv('data/state_evs.csv')) 
-
 
 # calc shift from 2016 to 2020 --------------------------------------------
 # plot
@@ -279,15 +281,17 @@ urbnmapr::states %>%
   theme(legend.position = 'top')
 
 # toy simulations ---------------------------------------------------------
+message("Simulating the election...")
 # errors
 national_error <- (0.0167*2)*1.5
 regional_error <- (0.0167*2)*1.5
 state_error <- (0.0152*2)*1.5
 
 # sims
-national_errors <- rnorm(1e04, 0, national_error)
-regional_errors <- replicate(1e04,rnorm(length(unique(final$region)), 0, regional_error))
-state_errors <- replicate(1e04,rnorm(51, 0, state_error))
+num_sims <- 1000
+national_errors <- rnorm(num_sims, 0, national_error)
+regional_errors <- replicate(num_sims,rnorm(length(unique(final$region)), 0, regional_error))
+state_errors <- replicate(num_sims,rnorm(51, 0, state_error))
 
 # actual sims
 state_and_national_errors <- pblapply(1:length(national_errors),
@@ -295,20 +299,26 @@ state_and_national_errors <- pblapply(1:length(national_errors),
                                       function(x){
                                         state_region <- final %>%
                                           mutate(proj_biden_margin = dem_lean_2020 + national_biden_margin) %>%
-                                          select(state, proj_biden_margin) %>%
+                                          dplyr::select(state, proj_biden_margin) %>%
                                           left_join(final %>% 
                                                       ungroup() %>%
-                                                      dplyr::select(state,region) %>% distinct) %>%
+                                                      dplyr::select(state,region) %>% distinct,
+                                                    by = "state") %>%
                                           left_join(tibble(region = unique(final$region),
-                                                           regional_error = regional_errors[,x])) %>%
+                                                           regional_error = regional_errors[,x]), 
+                                                    by = "region") %>%
                                           left_join(tibble(state = unique(final$state),
-                                                           state_error = state_errors[,x]))
+                                                           state_error = state_errors[,x]),
+                                                    by = "state")
                                         
                                         state_region %>%
                                           mutate(error = state_error + regional_error + national_errors[x]) %>% 
                                           mutate(sim_biden_margin = proj_biden_margin + error) %>%
                                           dplyr::select(state,sim_biden_margin)
                                       })
+
+message("The rest of the script is charts, etc...")
+
 # check the standard deviation (now in margin)
 state_and_national_errors %>%
   do.call('bind_rows',.) %>%
@@ -316,14 +326,15 @@ state_and_national_errors %>%
   summarise(sd = sd(sim_biden_margin)) %>% 
   pull(sd) %>% mean
 
-# calc the new tipping point
+# tipping point state, maps -----------------------------------------------
+# calc the avg tipping point
 tipping_point <- state_and_national_errors %>%
   do.call('bind_rows',.) %>%
   group_by(state) %>%
   mutate(draw = row_number()) %>%
   ungroup() %>%
-  left_join(states2016 %>% dplyr::select(state,ev),by='state') %>%
-  left_join(enframe(state_weights,'state','weight')) %>%
+  left_join(states2016 %>% dplyr::select(state,ev), by='state') %>%
+  left_join(enframe(state_weights,'state','weight'), by = "state") %>%
   group_by(draw) %>%
   mutate(dem_nat_pop_margin = weighted.mean(sim_biden_margin,weight))
 
@@ -363,7 +374,7 @@ tipping_point %>%
   mutate(prop = round(prop / sum(prop)*100,1)) %>%
   arrange(desc(prop)) %>% filter(prop>1) %>% as.data.frame()
 
-left_join(tipping_point %>%
+tipping_point.kable <- left_join(tipping_point %>%
             group_by(draw) %>%
             mutate(cumulative_ev = cumsum(ev)) %>%
             filter(cumulative_ev >= 270) %>%
@@ -372,7 +383,7 @@ left_join(tipping_point %>%
             summarise(prop = n()) %>%
             mutate(prop = round(prop / sum(prop)*100,1)) %>%
             arrange(desc(prop))  %>% 
-            head(20) %>%
+            head(nrow(.)/2) %>%
             mutate(row_number = row_number()),
           tipping_point %>%
             group_by(draw) %>%
@@ -383,7 +394,7 @@ left_join(tipping_point %>%
             summarise(prop = n()) %>%
             mutate(prop = round(prop / sum(prop)*100,1)) %>%
             arrange(desc(prop))  %>% 
-            tail(nrow(.)-20)%>%
+            tail(nrow(.)-(nrow(.)/2))%>%
             mutate(row_number = row_number()),
           by='row_number'
 ) %>% 
@@ -392,12 +403,12 @@ left_join(tipping_point %>%
   knitr::kable(.)
 
 # ev-popvote divide?
-tipping_point %>%
+ev.popvote.divide <- tipping_point %>%
   group_by(draw) %>%
   mutate(cumulative_ev = cumsum(ev)) %>%
   filter(cumulative_ev >= 270) %>%
   filter(row_number() == 1)  %>%
-  mutate(diff = dem_nat_pop_margin - sim_biden_margin) %>%
+  mutate(diff =  sim_biden_margin - dem_nat_pop_margin) %>%
   pull(diff) %>% mean # hist(breaks=100)
 
 # extract state-level data
@@ -411,7 +422,7 @@ state_probs <- tipping_point %>%
   mutate(cumulative_ev = cumsum(ev)) 
 
 # graph mean estimates by state
-urbnmapr::states %>%
+margin_map.gg <- urbnmapr::states %>%
   left_join(state_probs%>%
               mutate(mean_biden_margin = case_when(mean_biden_margin > 0.2 ~ 0.2,
                                                    mean_biden_margin < -0.2 ~ -0.2,
@@ -423,6 +434,7 @@ urbnmapr::states %>%
                        limits = c(-20,20)) +
   theme_void() + 
   theme(legend.position = 'top')
+
 
 # graph win probabilities
 urbnmapr::states %>%
@@ -550,6 +562,8 @@ results %>%
 
 
 
+
+message("All done!")
 
 
 
