@@ -303,6 +303,13 @@
       "Repository": "CRAN",
       "Hash": "c013a50b19695daf04853679e1bc105a"
     },
+    "glmnet": {
+      "Package": "glmnet",
+      "Version": "4.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "0514f706d9d098d092720b4b8ea91b80"
+    },
     "glue": {
       "Package": "glue",
       "Version": "1.4.1",
@@ -750,6 +757,13 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "473de5599639f9d3e46a1c5399efdc9b"
+    },
+    "shape": {
+      "Package": "shape",
+      "Version": "1.4.4",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "ef692f72a633981cad0d4950a5775702"
     },
     "stringi": {
       "Package": "stringi",

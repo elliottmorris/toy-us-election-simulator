@@ -19,7 +19,7 @@ The simulated error in this model is specified to capture the empirical (IE hist
 
 The following maps and stats are updated periodically throughought the day using [GitHub Actions](https://github.com/features/actions).
 
-Last updated on `r format(Sys.time(),'%B %d, %Y at %H:%M %p')`.
+Last updated on **`r format(Sys.time(),'%B %d, %Y at %H:%M %p')`.**
 
 
 ```{r echo=FALSE,message=FALSE,include=FALSE}
@@ -27,7 +27,7 @@ source('scripts/main_poll_simulator.R')
 ```
 
 ### National polling average:
-Joe Biden's margin in national polls is <span style="color: #3498DB;">`r round(og_national_biden_margin*100,1)`</span> percentage points. That is different than his margin implied by the state-level polls and the demographic regression, which is <span style="color: #3498DB;">`r round(national_biden_margin*100,1)`</span> percentage points.
+Joe Biden's margin in national polls is **<span style="color: #3498DB;">`r round(og_national_biden_margin*100,1)`</span>** percentage points. That is different than his margin implied by the state-level polls and the demographic regression, which is **<span style="color: #3498DB;">`r round(national_biden_margin*100,1)`</span>** percentage points.
 
 ### State polling averages:
 ```{r echo=FALSE}
@@ -42,5 +42,5 @@ tipping_point.kable
 
 ### Electoral college-popular vote divide
 
-On average, the tipping point state is <span style="color: #3498DB;">`r abs(round(ev.popvote.divide*100,1))`</span> percentage points to the <span style="color: #3498DB;">`r ifelse(ev.popvote.divide < 0,'right','left')`</span> of the nation as a whole.
+On average, the tipping point state is **<span style="color: #3498DB;">`r abs(round(ev.popvote.divide*100,1))`</span>** percentage points to the **<span style="color: #3498DB;">`r ifelse(ev.popvote.divide < 0,'right','left')`</span>** of the nation as a whole.
 

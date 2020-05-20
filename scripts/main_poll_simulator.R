@@ -5,6 +5,7 @@ library(pbapply)
 library(parallel)
 library(ggrepel)
 library(caret)
+library(glmnet)
 library(kknn)
 
 # wrangle data ------------------------------------------------------------
