@@ -34,9 +34,10 @@ all_polls <- all_polls %>% filter(!is.na(biden),!is.na(trump))#, include == "TRU
 
 all_polls <- all_polls %>%
   filter(mdy(end.date) >= (Sys.Date()-60) ) %>%
-  mutate(weight = sqrt(number.of.observations / mean(number.of.observations)))
+  mutate(weight = sqrt(number.of.observations / mean(number.of.observations,na.rm=T)))
 
-# ow much should we weight regression by compared to polls?
+# how much should we weight regression by compared to polls?
+# 1 = the weight of an average-sized poll
 regression_weight <-  1
 #sqrt((all_polls %>% filter(state != '--') %>% pull(number.of.observations) %>% mean * 0.5) / 
 #       (all_polls %>% filter(state != '--') %>% pull(number.of.observations) %>% mean))
