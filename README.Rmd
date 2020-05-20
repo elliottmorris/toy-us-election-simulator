@@ -15,11 +15,11 @@ The simulated error in this model is specified to capture the empirical (IE hist
 
 ## Automated report:
 
+![.github/workflows/refresh_readme.yml](https://github.com/elliottmorris/toy-us-election-simulator/workflows/.github/workflows/refresh_readme.yml/badge.svg)
+
 The following maps and stats are updated periodically throughought the day using [GitHub Actions](https://github.com/features/actions).
 
 Last updated on `r format(Sys.time(),'%B %d, %Y at %H:%M %p')`.
-
-
 
 
 ```{r echo=FALSE,message=FALSE,include=FALSE}
