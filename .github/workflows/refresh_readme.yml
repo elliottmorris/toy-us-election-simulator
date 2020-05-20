@@ -47,4 +47,14 @@ jobs:
       run: |
         echo Compiling the new readme.
         R -e "rmarkdown::render('README.Rmd')"
-        echo Pushing it to github??
+        
+    - name: Commit files
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git commit -m "Add changes" -a
+
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
