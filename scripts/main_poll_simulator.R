@@ -20,7 +20,9 @@ state_weights <- c(states2016$share_national_vote / sum(states2016$share_nationa
 names(state_weights) <- states2016$state
 
 # read in the polls
-all_polls <- read_csv('data/polls.csv')
+url<- 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ56fySJKLL18Lipu1_i3ID9JE06voJEz2EXm6JW4Vh11zmndyTwejMavuNntzIWLY0RyhA1UsVEen0/pub?gid=0&single=true&output=csv'
+
+all_polls <- read_csv(url)
 
 head(all_polls)
 
