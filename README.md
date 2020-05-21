@@ -31,7 +31,7 @@ most robust model we could think of.
 The following maps and stats are updated periodically throughought the
 day using [GitHub Actions](https://github.com/features/actions).
 
-Last updated on **May 21, 2020 at 03:11 AM EDT.**
+Last updated on **May 21, 2020 at 04:12 AM EDT.**
 
 ### National polling average:
 
@@ -49,27 +49,26 @@ demographic regression, which is
 
 | State | Tipping point chance (%) | State | Tipping point chance (%) |
 | :---- | -----------------------: | :---- | -----------------------: |
-| FL    |                     15.9 | CT    |                      0.7 |
-| TX    |                      9.7 | SC    |                      0.7 |
-| PA    |                      9.5 | DE    |                      0.6 |
-| MI    |                      7.7 | AK    |                      0.4 |
-| NC    |                      6.7 | MO    |                      0.4 |
-| GA    |                      6.0 | RI    |                      0.3 |
-| AZ    |                      5.4 | IN    |                      0.2 |
-| OH    |                      5.4 | KS    |                      0.2 |
-| WI    |                      4.9 | LA    |                      0.2 |
-| MN    |                      4.4 | MS    |                      0.2 |
-| VA    |                      4.3 | MT    |                      0.2 |
-| NV    |                      2.9 | UT    |                      0.2 |
-| ME    |                      1.8 | NE    |                      0.1 |
-| NH    |                      1.8 | AL    |                      0.0 |
-| CO    |                      1.7 | AR    |                      0.0 |
-| IA    |                      1.5 | CA    |                      0.0 |
-| NM    |                      1.5 | KY    |                      0.0 |
-| OR    |                      1.3 | MA    |                      0.0 |
-| WA    |                      1.3 | MD    |                      0.0 |
-| IL    |                      0.9 | NY    |                      0.0 |
-| NJ    |                      0.9 | TN    |                      0.0 |
+| FL    |                     16.3 | NJ    |                      0.7 |
+| PA    |                     10.1 | CT    |                      0.6 |
+| TX    |                      9.9 | DE    |                      0.4 |
+| MI    |                      8.2 | MO    |                      0.4 |
+| NC    |                      6.2 | RI    |                      0.4 |
+| GA    |                      5.9 | SC    |                      0.4 |
+| AZ    |                      5.6 | AK    |                      0.3 |
+| OH    |                      5.5 | MS    |                      0.3 |
+| VA    |                      4.5 | IN    |                      0.1 |
+| WI    |                      4.5 | KS    |                      0.1 |
+| MN    |                      4.4 | LA    |                      0.1 |
+| NV    |                      2.7 | MT    |                      0.1 |
+| NH    |                      1.9 | NY    |                      0.1 |
+| CO    |                      1.6 | UT    |                      0.1 |
+| IA    |                      1.6 | AL    |                      0.0 |
+| ME    |                      1.6 | CA    |                      0.0 |
+| WA    |                      1.5 | KY    |                      0.0 |
+| NM    |                      1.4 | MA    |                      0.0 |
+| OR    |                      1.3 | NE    |                      0.0 |
+| IL    |                      0.8 | TN    |                      0.0 |
 
 ### Electoral college-popular vote divide
 
