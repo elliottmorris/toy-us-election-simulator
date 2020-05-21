@@ -425,18 +425,19 @@ state_probs <- tipping_point %>%
 
 # graph mean estimates by state
 margin_map.gg <- urbnmapr::states %>%
-  left_join(state_probs%>%
-              mutate(mean_biden_margin = case_when(mean_biden_margin > 0.2 ~ 0.2,
-                                                   mean_biden_margin < -0.2 ~ -0.2,
-                                                   TRUE ~ mean_biden_margin))) %>%
-  ggplot(aes(x=long,y=lat,group=group,fill=mean_biden_margin*100)) +
+  left_join(state_probs) %>%
+  filter(state_abbv != 'DC') %>%
+  ggplot(aes(x=long,y=lat,group=group,
+             fill = mean_biden_margin*100)) +
   geom_polygon(col='gray40')  + 
   coord_map("albers",lat0=39, lat1=45) +
-  scale_fill_gradient2(name='Democratic vote margin',high='#3498DB',low='#E74C3C',mid='gray98',midpoint=0,
-                       limits = c(-20,20)) +
+  scale_fill_gradient2(name='Biden vote margin',high='#3498DB',low='#E74C3C',mid='gray98',midpoint=0,
+                       guide = 'legend') +
+  guides('fill'=guide_legend(nrow=1,title.position = 'top',title.hjust = 0.5)) +
   theme_void() + 
   theme(legend.position = 'top')
 
+margin_map.gg
 
 # graph win probabilities
 urbnmapr::states %>%

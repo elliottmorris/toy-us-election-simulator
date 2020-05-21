@@ -9,9 +9,11 @@ I hope this code well help shed some light on basic methods for aggregating nati
 
 **None of this should be considered an official election forecast**, this is just a fun exercise in coding and political statistics.
 
+
 ## Technical notes
 
-The simulated error in this model is specified to capture the empirical (IE historical) uncertainty in state-level polls fielded 200 days before the election. It may not be well-calibrated to handle any additional error from the regression model used to "fill in" averages in states without any or many polls, so take it (and the rest of this exercise) with a grain of salt.
+The simulated error in this model is specified to capture the empirical (IE historical) uncertainty in state-level polls fielded 200 days before the election. It may not be well-calibrated to handle any additional error from the regression model used to "fill in" averages in states without any or many polls, so take it (and the rest of this exercise) as an imperfect guide to the electoral environment, rather than the best or most robust model we could think of.
+
 
 ## Automated report:
 
