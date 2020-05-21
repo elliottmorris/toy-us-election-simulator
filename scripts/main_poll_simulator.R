@@ -290,7 +290,7 @@ regional_error <- (0.0167*2)*1.5
 state_error <- (0.0152*2)*1.5
 
 # sims
-num_sims <- 1000
+num_sims <- 10000
 national_errors <- rnorm(num_sims, 0, national_error)
 regional_errors <- replicate(num_sims,rnorm(length(unique(final$region)), 0, regional_error))
 state_errors <- replicate(num_sims,rnorm(51, 0, state_error))

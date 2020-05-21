@@ -21,16 +21,17 @@ The simulated error in this model is specified to capture the empirical
 the election. It may not be well-calibrated to handle any additional
 error from the regression model used to “fill in” averages in states
 without any or many polls, so take it (and the rest of this exercise)
-with a grain of salt.
+with a grain of
+salt.
 
 ## Automated report:
 
-![.github/workflows/refresh\_readme.yml](https://github.com/elliottmorris/toy-us-election-simulator/workflows/.github/workflows/refresh_readme.yml/badge.svg)
+![refresh\_readme](https://github.com/elliottmorris/toy-us-election-simulator/workflows/refresh_readme/badge.svg)
 
 The following maps and stats are updated periodically throughought the
 day using [GitHub Actions](https://github.com/features/actions).
 
-Last updated on **May 21, 2020 at 00:42 AM.**
+Last updated on **May 20, 2020 at 08:49 PM EDT.**
 
 ### National polling average:
 
@@ -48,22 +49,17 @@ demographic regression, which is
 
 | State | Tipping point chance (%) | State | Tipping point chance (%) |
 | :---- | -----------------------: | :---- | -----------------------: |
-| FL    |                     15.3 | ME    |                      1.6 |
-| TX    |                      9.5 | WA    |                      1.4 |
-| PA    |                      9.3 | IA    |                      1.1 |
-| MI    |                      7.9 | IL    |                      0.8 |
-| GA    |                      7.3 | NJ    |                      0.8 |
-| OH    |                      6.7 | SC    |                      0.6 |
-| NC    |                      5.7 | MS    |                      0.5 |
-| MN    |                      5.4 | AK    |                      0.4 |
-| VA    |                      4.5 | KS    |                      0.4 |
-| AZ    |                      4.3 | MO    |                      0.4 |
-| WI    |                      4.3 | CT    |                      0.3 |
-| NV    |                      3.1 | IN    |                      0.3 |
-| NM    |                      2.1 | TN    |                      0.2 |
-| CO    |                      1.8 | UT    |                      0.2 |
-| NH    |                      1.8 | DE    |                      0.1 |
-| OR    |                      1.7 | MT    |                      0.1 |
+| FL    |                       16 | MN    |                        3 |
+| PA    |                       12 | WI    |                        3 |
+| MI    |                       10 | NH    |                        2 |
+| OH    |                        8 | NV    |                        2 |
+| TX    |                        7 | CO    |                        1 |
+| NC    |                        6 | CT    |                        1 |
+| VA    |                        6 | DE    |                        1 |
+| AZ    |                        5 | IA    |                        1 |
+| GA    |                        5 | IL    |                        1 |
+| NJ    |                        4 | OR    |                        1 |
+| ME    |                        3 | RI    |                        1 |
 
 ### Electoral college-popular vote divide
 
