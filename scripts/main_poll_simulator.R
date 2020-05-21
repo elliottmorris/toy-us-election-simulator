@@ -8,6 +8,8 @@ library(caret)
 library(glmnet)
 library(kknn)
 
+num_sims <- 10000
+
 # wrangle data ------------------------------------------------------------
 message("Wrangling data...")
 # weights
@@ -33,7 +35,7 @@ head(all_polls)
 all_polls <- all_polls %>% filter(!is.na(biden),!is.na(trump))#, include == "TRUE")
 
 all_polls <- all_polls %>%
-  filter(mdy(end.date) >= (Sys.Date()-60) ) %>% 
+  filter(mdy(end.date) >= (Sys.Date()-60) ) %>%  # all polls over last 2 months
   mutate(weight = sqrt(number.of.observations / mean(number.of.observations,na.rm=T)))
 
 # how much should we weight regression by compared to polls?
@@ -287,7 +289,6 @@ regional_error <- (0.0167*2)*1.5
 state_error <- (0.0152*2)*1.5
 
 # sims
-num_sims <- 10000
 national_errors <- rnorm(num_sims, 0, national_error)
 regional_errors <- replicate(num_sims,rnorm(length(unique(final$region)), 0, regional_error))
 state_errors <- replicate(num_sims,rnorm(51, 0, state_error))
