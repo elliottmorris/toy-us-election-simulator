@@ -33,7 +33,7 @@ head(all_polls)
 all_polls <- all_polls %>% filter(!is.na(biden),!is.na(trump))#, include == "TRUE")
 
 all_polls <- all_polls %>%
-  filter(mdy(end.date) >= (Sys.Date()-60) ) %>%
+  filter(mdy(end.date) >= (Sys.Date()-60) ) %>% 
   mutate(weight = sqrt(number.of.observations / mean(number.of.observations,na.rm=T)))
 
 # how much should we weight regression by compared to polls?
@@ -136,7 +136,6 @@ model
 #   scale = TRUE
 # )
 
-
 # make the projections
 testing$proj_mean_biden_margin <- predict(object=model,newdata=testing)
 
@@ -213,7 +212,8 @@ final <- state %>%
          dem_lean_2020_polls,
          dem_lean_2020, 
          num_polls,
-         pop_density) %>%
+         pop_density,
+         wwc_pct) %>%
   mutate(shift = dem_lean_2020 - dem_lean_2016)
 
 final <- final %>%
@@ -240,6 +240,15 @@ final %>%
         axis.ticks.y=element_blank()) +
   labs(subtitle='Swing toward Democrats in relative presidential vote margin\nSized by electoral votes',
        x='Biden state margin relative to national margin\nminus Clinton state margin relative to national margin')
+
+
+# plot relationswhip between shift in lean with wwc
+final %>% 
+  filter(state != 'DC') %>%
+  ggplot(., aes(x=wwc_pct,y=shift,
+                col = clinton_margin > 0,group=NA)) + 
+  geom_label(aes(label = state,size=ev)) +
+  geom_smooth(method='lm')
 
 # any realtionship with urbanicity?
 final %>%
@@ -269,18 +278,6 @@ final %>%
   filter(cumulative_ev >= 270) %>% filter(row_number() == 1)  %>%
   pull(mean_biden_margin) -  national_biden_margin
 
-# plot
-urbnmapr::states %>%
-  left_join(final %>% select(state_abbv = state,mean_biden_margin) %>%
-              mutate(mean_biden_margin = case_when(mean_biden_margin > 0.2 ~ 0.2,
-                                                   mean_biden_margin < -0.2 ~ -0.2,
-                                                   TRUE ~ mean_biden_margin))) %>%
-  ggplot(aes(x=long,y=lat,group=group,fill=mean_biden_margin*100)) +
-  geom_polygon(col='gray40')  + 
-  coord_map("albers",lat0=39, lat1=45) +
-  scale_fill_gradient2(name='Democratic vote margin',high='#3498DB',low='#E74C3C',mid='gray98',midpoint=0) +
-  theme_void() + 
-  theme(legend.position = 'top')
 
 # toy simulations ---------------------------------------------------------
 message("Simulating the election...")
@@ -398,8 +395,7 @@ tipping_point.kable <- left_join(tipping_point %>%
             arrange(desc(prop))  %>% 
             tail(nrow(.)-(nrow(.)/2))%>%
             mutate(row_number = row_number()),
-          by='row_number'
-) %>% 
+          by='row_number') %>% 
   select(-row_number) %>%
   setNames(.,c('State','Tipping point chance (%)','State','Tipping point chance (%)')) %>%
   knitr::kable(.)
@@ -562,9 +558,6 @@ results %>%
   geom_col() + 
   theme_minimal() + 
   coord_flip()
-
-
-
 
 message("All done!")
 
