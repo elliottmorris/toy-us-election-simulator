@@ -22,8 +22,7 @@ the election. It may not be well-calibrated to handle any additional
 error from the regression model used to “fill in” averages in states
 without any or many polls, so take it (and the rest of this exercise) as
 an imperfect guide to the electoral environment, rather than the best or
-most robust model we could think
-of.
+most robust model we could think of.
 
 ## Automated report:
 
@@ -32,12 +31,12 @@ of.
 The following maps and stats are updated periodically throughought the
 day using [GitHub Actions](https://github.com/features/actions).
 
-Last updated on **May 21, 2020 at 08:38 PM EDT.**
+Last updated on **May 21, 2020 at 08:52 PM EDT.**
 
 ### National polling average:
 
 Joe Biden’s margin in national polls is
-**<span style="color: #3498DB;">6.2</span>** percentage points. That is
+**<span style="color: #3498DB;">6.3</span>** percentage points. That is
 different than his margin implied by the state-level polls and the
 demographic regression, which is
 **<span style="color: #3498DB;">7.8</span>** percentage points.
@@ -50,26 +49,24 @@ demographic regression, which is
 
 | State | Tipping point chance (%) | State | Tipping point chance (%) |
 | :---- | -----------------------: | :---- | -----------------------: |
-| FL    |                     16.5 | WA    |                      0.7 |
-| PA    |                      9.7 | SC    |                      0.6 |
-| TX    |                      9.5 | AK    |                      0.5 |
-| MI    |                      8.8 | CT    |                      0.5 |
-| NC    |                      6.3 | DE    |                      0.5 |
-| AZ    |                      5.6 | MO    |                      0.5 |
-| GA    |                      5.6 | RI    |                      0.3 |
-| OH    |                      5.2 | KS    |                      0.2 |
-| WI    |                      5.2 | MS    |                      0.2 |
-| VA    |                      4.9 | MT    |                      0.2 |
-| MN    |                      4.0 | UT    |                      0.2 |
-| NV    |                      3.1 | IN    |                      0.1 |
-| CO    |                      1.8 | LA    |                      0.1 |
-| ME    |                      1.7 | NY    |                      0.1 |
-| IA    |                      1.6 | AL    |                      0.0 |
-| NH    |                      1.5 | KY    |                      0.0 |
-| NM    |                      1.5 | MA    |                      0.0 |
-| OR    |                      1.1 | MD    |                      0.0 |
-| IL    |                      0.8 | NE    |                      0.0 |
-| NJ    |                      0.7 | SD    |                      0.0 |
+| FL    |                     16.3 | IL    |                      0.9 |
+| TX    |                     10.2 | NJ    |                      0.7 |
+| PA    |                      9.9 | WA    |                      0.7 |
+| MI    |                      8.4 | CT    |                      0.6 |
+| NC    |                      6.5 | DE    |                      0.6 |
+| AZ    |                      5.7 | SC    |                      0.5 |
+| GA    |                      5.4 | AK    |                      0.3 |
+| OH    |                      5.3 | MO    |                      0.3 |
+| WI    |                      4.9 | RI    |                      0.3 |
+| VA    |                      4.8 | IN    |                      0.2 |
+| MN    |                      4.5 | KS    |                      0.2 |
+| NV    |                      2.8 | LA    |                      0.2 |
+| NH    |                      1.7 | MS    |                      0.2 |
+| NM    |                      1.7 | UT    |                      0.2 |
+| ME    |                      1.6 | MT    |                      0.1 |
+| CO    |                      1.5 | NY    |                      0.1 |
+| IA    |                      1.5 | AL    |                      0.0 |
+| OR    |                      1.1 | NE    |                      0.0 |
 
 ### Electoral college-popular vote divide
 
