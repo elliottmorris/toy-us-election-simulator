@@ -400,51 +400,6 @@ sims <- simulated_polling_errors %>%
   mutate(dem_nat_pop_margin = weighted.mean(sim_biden_margin, weight)) %>%
   select(state, sim_biden_margin, draw, ev, weight, dem_nat_pop_margin)
 
-# prior implementation
-state_and_national_errors <- pblapply(1:length(national_errors),
-                                      cl = parallel::detectCores() - 1,
-                                      function(x){
-                                        state_region <- final %>%
-                                          mutate(proj_biden_margin = dem_lean_2020 + national_biden_margin) %>%
-                                          dplyr::select(state, proj_biden_margin) %>%
-                                          left_join(final %>% 
-                                                      ungroup() %>%
-                                                      dplyr::select(state,region) %>% distinct,
-                                                    by = "state") %>%
-                                          left_join(tibble(region = unique(final$region),
-                                                           regional_error = regional_errors[,x]), 
-                                                    by = "region") %>%
-                                          left_join(tibble(state = unique(final$state),
-                                                           state_error = state_errors[,x]),
-                                                    by = "state")
-                                        
-                                        state_region %>%
-                                          mutate(error = state_error + regional_error + national_errors[x]) %>% 
-                                          mutate(sim_biden_margin = proj_biden_margin + error) %>%
-                                          dplyr::select(state,sim_biden_margin)
-                                      })
-
-# check the standard deviation (now in margin)
-state_and_national_errors %>%
-  do.call('bind_rows',.) %>%
-  group_by(state) %>%
-  summarise(sd = sd(sim_biden_margin)) %>% 
-  pull(sd) %>% mean
-
-# add electoral votes and pop vote to the simulations
-sims_old <- state_and_national_errors %>%
-  do.call('bind_rows',.) %>%
-  group_by(state) %>%
-  mutate(draw = row_number()) %>%
-  ungroup() %>%
-  left_join(states2016 %>% dplyr::select(state,ev), by='state') %>%
-  left_join(enframe(state_weights,'state','weight'), by = "state") %>%
-  group_by(draw) %>%
-  mutate(dem_nat_pop_margin = weighted.mean(sim_biden_margin,weight))
-
-# Verify new implementation produces the same results
-all_equal(sims_old, sims)
-
 message("The rest of the script is charts, etc...")
 
 # what is the pop vote range?
