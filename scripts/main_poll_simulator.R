@@ -231,6 +231,8 @@ national_biden_margin
 # generate new state lean variable based on adjusted biden national margin
 state$dem_lean_2020 <-  state$mean_biden_margin_hat - national_biden_margin 
 
+state_evs <- read_csv('data/state_evs.csv')
+
 # clean up estimates
 final <- state %>%
   dplyr::select(state,region,clinton_margin,dem_lean_2016,
@@ -243,7 +245,7 @@ final <- state %>%
   mutate(shift = dem_lean_2020 - dem_lean_2016)
 
 final <- final %>%
-  left_join(read_csv('data/state_evs.csv')) 
+  left_join(state_evs)
 
 # calc shift from 2016 to 2020 --------------------------------------------
 # plot
@@ -338,48 +340,67 @@ regional_errors <- replicate(num_sims,rnorm(length(unique(final$region)), 0, reg
 state_errors <- replicate(num_sims,rnorm(51, 0, state_error))
 
 # actual sims
-state_and_national_errors <- pblapply(1:length(national_errors),
-                                      cl = parallel::detectCores() - 1,
-                                      function(x){
-                                        state_region <- final %>%
-                                          mutate(proj_biden_margin = dem_lean_2020 + national_biden_margin) %>%
-                                          dplyr::select(state, proj_biden_margin) %>%
-                                          left_join(final %>% 
-                                                      ungroup() %>%
-                                                      dplyr::select(state,region) %>% distinct,
-                                                    by = "state") %>%
-                                          left_join(tibble(region = unique(final$region),
-                                                           regional_error = regional_errors[,x]), 
-                                                    by = "region") %>%
-                                          left_join(tibble(state = unique(final$state),
-                                                           state_error = state_errors[,x]),
-                                                    by = "state")
-                                        
-                                        state_region %>%
-                                          mutate(error = state_error + regional_error + national_errors[x]) %>% 
-                                          mutate(sim_biden_margin = proj_biden_margin + error) %>%
-                                          dplyr::select(state,sim_biden_margin)
-                                      })
 
-message("The rest of the script is charts, etc...")
+#' Simulate polling errors.
+#'
+#' @param state_errors Matrix of simulated state polling errors. (num_states x num_sims)
+#' @param regional_errors Matrix of simulated regional polling errors. (num_regions x num_sims)
+#' @param national_errors Numeric vector of simulated national polling errors. Length is num_sims.
+#' @param state_region Data frame of states and their regions.
+#'
+#' @return A data frame of simulated polling errors with the following columns: sim, state, region, state_error,
+#' regional_error, national_error. One row per simulation.
+#'
+simulate_polling_errors <- function(state_errors, regional_errors, national_errors, state_region) {
+  states <- unique(state_region$state)
 
-# check the standard deviation (now in margin)
-state_and_national_errors %>%
-  do.call('bind_rows',.) %>%
-  group_by(state) %>%
-  summarise(sd = sd(sim_biden_margin)) %>% 
-  pull(sd) %>% mean
+  regions <- unique(state_region$region)
 
-# add electoral votes and pop vote to the simulations
-sims <- state_and_national_errors %>%
-  do.call('bind_rows',.) %>%
+  state_errors <- state_errors %>%
+    t() %>%
+    as_tibble(.name_repair = "minimal") %>%
+    set_names(~ states) %>%
+    mutate(sim = row_number()) %>%
+    pivot_longer(-sim, names_to = "state", values_to = "state_error")
+
+  regional_errors <- regional_errors %>%
+    t() %>%
+    as_tibble(.name_repair = "minimal") %>%
+    set_names(~ regions) %>%
+    mutate(sim = row_number()) %>%
+    pivot_longer(-sim, names_to = "region", values_to = "regional_error")
+
+  national_errors <-
+    tibble(sim = 1:length(national_errors), national_error = national_errors)
+
+  state_region %>%
+    left_join(state_errors, by = "state") %>%
+    left_join(regional_errors, by = c("region", "sim")) %>%
+    left_join(national_errors, by = "sim") %>%
+    select(sim, state, region, state_error, regional_error, national_error)
+}
+
+state_region <- final %>%
+  ungroup() %>%
+  select(state, region) %>%
+  distinct()
+
+simulated_polling_errors <- simulate_polling_errors(state_errors, regional_errors, national_errors, state_region)
+
+sims <- simulated_polling_errors %>%
+  left_join(final %>% select(state, dem_lean_2020), by = "state") %>%
+  mutate(proj_biden_margin = dem_lean_2020 + national_biden_margin,
+         error = state_error + regional_error + national_error,
+         sim_biden_margin = proj_biden_margin + error) %>%
   group_by(state) %>%
   mutate(draw = row_number()) %>%
-  ungroup() %>%
-  left_join(states2016 %>% dplyr::select(state,ev), by='state') %>%
-  left_join(enframe(state_weights,'state','weight'), by = "state") %>%
+  left_join(state_evs, by='state') %>%
+  left_join(enframe(state_weights, 'state', 'weight'), by = "state") %>%
   group_by(draw) %>%
-  mutate(dem_nat_pop_margin = weighted.mean(sim_biden_margin,weight))
+  mutate(dem_nat_pop_margin = weighted.mean(sim_biden_margin, weight)) %>%
+  select(state, sim_biden_margin, draw, ev, weight, dem_nat_pop_margin)
+
+message("The rest of the script is charts, etc...")
 
 # what is the pop vote range?
 dem_nat_pop_margin <- sims %>%
