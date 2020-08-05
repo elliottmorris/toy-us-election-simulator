@@ -117,7 +117,7 @@ Automated report:
 
 These graphs are updated hourly with new polls.
 
-Last updated on **August 05, 2020 at 01:13 PM EDT.**
+Last updated on **August 05, 2020 at 02:14 PM EDT.**
 
 ### National polling average
 
@@ -148,7 +148,7 @@ In table form…
 | PA    | 7 \[-6, 21\]                           | SC    | -6 \[-19, 8\]       |
 | FL    | 6 \[-7, 20\]                           | MO    | -6 \[-19, 8\]       |
 | AZ    | 5 \[-9, 18\]                           | MT    | -8 \[-22, 6\]       |
-| NC    | 3 \[-11, 16\]                          | IN    | -8 \[-21, 5\]       |
+| NC    | 3 \[-11, 16\]                          | IN    | -8 \[-22, 5\]       |
 | TX    | 1 \[-13, 14\]                          | KS    | -9 \[-22, 5\]       |
 
 **The rest of the states:**
@@ -158,19 +158,19 @@ In table form…
 | DC    | 82 \[68, 95\]                          | VA    | 12 \[-2, 25\]       |
 | CA    | 37 \[24, 51\]                          | NH    | 12 \[-2, 25\]       |
 | MA    | 33 \[19, 46\]                          | MS    | -12 \[-25, 2\]      |
-| VT    | 32 \[18, 46\]                          | LA    | -12 \[-25, 2\]      |
+| VT    | 32 \[18, 45\]                          | LA    | -12 \[-25, 2\]      |
 | HI    | 31 \[18, 45\]                          | NE    | -12 \[-26, 1\]      |
-| MD    | 29 \[16, 43\]                          | TN    | -15 \[-29, -2\]     |
-| NY    | 27 \[13, 40\]                          | SD    | -17 \[-30, -3\]     |
-| WA    | 27 \[13, 40\]                          | AR    | -17 \[-30, -3\]     |
+| MD    | 30 \[16, 43\]                          | TN    | -15 \[-29, -2\]     |
+| NY    | 27 \[13, 40\]                          | AR    | -17 \[-30, -3\]     |
+| WA    | 27 \[13, 41\]                          | SD    | -17 \[-30, -3\]     |
 | RI    | 23 \[9, 37\]                           | ID    | -18 \[-31, -4\]     |
 | IL    | 23 \[10, 37\]                          | KY    | -18 \[-32, -5\]     |
 | CT    | 21 \[7, 34\]                           | AL    | -20 \[-33, -6\]     |
 | NJ    | 21 \[7, 34\]                           | ND    | -21 \[-35, -8\]     |
 | OR    | 19 \[6, 33\]                           | OK    | -24 \[-37, -10\]    |
 | DE    | 17 \[3, 30\]                           | WV    | -28 \[-42, -15\]    |
-| CO    | 14 \[1, 28\]                           | WY    | -31 \[-44, -17\]    |
-| NM    | 14 \[1, 28\]                           |       |                     |
+| NM    | 14 \[1, 28\]                           | WY    | -31 \[-44, -17\]    |
+| CO    | 14 \[1, 28\]                           |       |                     |
 
 ### Changes in state averages relative to the national margin
 
@@ -195,24 +195,25 @@ how often that happens:
 
 | State | Tipping point chance (%) | State | Tipping point chance (%) |
 |:------|-------------------------:|:------|-------------------------:|
-| FL    |                     19.4 | OR    |                      0.5 |
-| PA    |                     10.8 | MO    |                      0.4 |
-| TX    |                      9.3 | UT    |                      0.4 |
-| MI    |                      8.7 | AK    |                      0.3 |
-| VA    |                      6.2 | CT    |                      0.3 |
-| NC    |                      6.1 | DE    |                      0.3 |
-| AZ    |                      5.7 | IL    |                      0.2 |
-| WI    |                      5.5 | IN    |                      0.1 |
-| OH    |                      5.1 | KS    |                      0.1 |
-| MN    |                      5.0 | RI    |                      0.1 |
-| GA    |                      3.7 | SC    |                      0.1 |
-| NV    |                      2.8 | HI    |                      0.0 |
-| CO    |                      2.3 | LA    |                      0.0 |
-| IA    |                      1.5 | MD    |                      0.0 |
-| ME    |                      1.5 | MS    |                      0.0 |
-| NH    |                      1.5 | MT    |                      0.0 |
-| NM    |                      1.4 | NE    |                      0.0 |
-| NJ    |                      0.5 | NY    |                      0.0 |
+| FL    |                     19.2 | DE    |                      0.4 |
+| PA    |                     10.7 | MO    |                      0.4 |
+| TX    |                      8.9 | AK    |                      0.3 |
+| MI    |                      8.7 | CT    |                      0.3 |
+| VA    |                      6.0 | UT    |                      0.3 |
+| NC    |                      5.9 | IL    |                      0.2 |
+| WI    |                      5.9 | IN    |                      0.1 |
+| AZ    |                      5.8 | KS    |                      0.1 |
+| MN    |                      5.2 | MT    |                      0.1 |
+| OH    |                      5.1 | RI    |                      0.1 |
+| GA    |                      3.8 | SC    |                      0.1 |
+| NV    |                      2.8 | LA    |                      0.0 |
+| CO    |                      2.4 | MD    |                      0.0 |
+| NH    |                      1.7 | MS    |                      0.0 |
+| ME    |                      1.5 | NE    |                      0.0 |
+| IA    |                      1.4 | NY    |                      0.0 |
+| NM    |                      1.3 | TN    |                      0.0 |
+| OR    |                      0.6 | VT    |                      0.0 |
+| NJ    |                      0.5 | WA    |                      0.0 |
 
 ### Electoral college outcomes
 
@@ -232,7 +233,7 @@ electoral college majority:
 | Republicans win the popular vote and electoral college                    |          1 |
 | Republicans win the popular vote, but Democrats win the electoral college |          0 |
 
-The probability the Democrats win the national popular vote is 99.1%.
+The probability the Democrats win the national popular vote is 99.02%.
 
 #### The divide between the electoral college and popular vote
 
