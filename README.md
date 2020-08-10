@@ -117,7 +117,7 @@ Automated report:
 
 These graphs are updated hourly with new polls.
 
-Last updated on **August 10, 2020 at 11:20 AM EDT.**
+Last updated on **August 10, 2020 at 12:12 PM EDT.**
 
 ### National polling average
 
@@ -141,10 +141,10 @@ In table form…
 | State | Biden margin, uncertainty interval (%) | State | Biden margin, … (%) |
 |:------|:---------------------------------------|:------|:--------------------|
 | ME    | 11 \[-2, 25\]                          | GA    | 1 \[-13, 14\]       |
-| MN    | 10 \[-4, 24\]                          | TX    | 0 \[-14, 14\]       |
-| MI    | 9 \[-5, 22\]                           | IA    | 0 \[-14, 14\]       |
+| MN    | 10 \[-4, 24\]                          | TX    | 0 \[-13, 14\]       |
+| MI    | 9 \[-5, 22\]                           | IA    | 0 \[-14, 13\]       |
 | NV    | 9 \[-4, 23\]                           | AK    | -4 \[-17, 10\]      |
-| WI    | 8 \[-6, 21\]                           | SC    | -5 \[-19, 8\]       |
+| WI    | 8 \[-6, 21\]                           | SC    | -5 \[-19, 9\]       |
 | PA    | 7 \[-6, 21\]                           | MO    | -6 \[-19, 8\]       |
 | FL    | 6 \[-7, 20\]                           | MT    | -8 \[-21, 6\]       |
 | AZ    | 4 \[-9, 18\]                           | KS    | -8 \[-22, 5\]       |
@@ -156,14 +156,14 @@ In table form…
 | State | Biden margin, uncertainty interval (%) | State | Biden margin, … (%) |
 |:------|:---------------------------------------|:------|:--------------------|
 | DC    | 80 \[66, 94\]                          | VA    | 12 \[-2, 25\]       |
-| CA    | 37 \[23, 51\]                          | NH    | 12 \[-2, 25\]       |
-| HI    | 32 \[18, 45\]                          | UT    | -12 \[-26, 2\]      |
-| VT    | 32 \[18, 45\]                          | IN    | -12 \[-25, 1\]      |
+| CA    | 37 \[24, 51\]                          | NH    | 12 \[-2, 25\]       |
+| HI    | 32 \[18, 45\]                          | UT    | -12 \[-25, 2\]      |
+| VT    | 32 \[18, 45\]                          | IN    | -12 \[-25, 2\]      |
 | MA    | 32 \[19, 46\]                          | NE    | -13 \[-26, 1\]      |
 | MD    | 29 \[16, 43\]                          | TN    | -15 \[-28, -1\]     |
-| NY    | 26 \[12, 40\]                          | AR    | -16 \[-29, -2\]     |
+| NY    | 26 \[13, 40\]                          | AR    | -16 \[-29, -2\]     |
 | WA    | 26 \[13, 40\]                          | KY    | -16 \[-30, -3\]     |
-| RI    | 22 \[8, 35\]                           | SD    | -17 \[-30, -3\]     |
+| RI    | 22 \[8, 36\]                           | SD    | -17 \[-30, -3\]     |
 | IL    | 22 \[9, 36\]                           | ID    | -18 \[-32, -5\]     |
 | NJ    | 20 \[7, 34\]                           | AL    | -19 \[-33, -6\]     |
 | CT    | 20 \[7, 34\]                           | ND    | -22 \[-35, -8\]     |
@@ -195,24 +195,24 @@ how often that happens:
 
 | State | Tipping point chance (%) | State | Tipping point chance (%) |
 |:------|-------------------------:|:------|-------------------------:|
-| FL    |                     19.6 | OR    |                      0.6 |
-| PA    |                     10.6 | AK    |                      0.4 |
-| MI    |                      8.6 | MO    |                      0.4 |
-| TX    |                      8.5 | CT    |                      0.3 |
-| NC    |                      6.1 | DE    |                      0.3 |
-| WI    |                      5.9 | IL    |                      0.3 |
-| AZ    |                      5.8 | SC    |                      0.3 |
-| VA    |                      5.8 | KS    |                      0.1 |
-| MN    |                      5.1 | MS    |                      0.1 |
-| OH    |                      4.7 | MT    |                      0.1 |
-| GA    |                      4.0 | NY    |                      0.1 |
-| NV    |                      2.9 | RI    |                      0.1 |
-| CO    |                      2.7 | WA    |                      0.1 |
-| NH    |                      1.6 | IN    |                      0.0 |
-| IA    |                      1.5 | LA    |                      0.0 |
-| ME    |                      1.5 | MD    |                      0.0 |
-| NM    |                      1.3 | NE    |                      0.0 |
-| NJ    |                      0.7 | TN    |                      0.0 |
+| FL    |                     18.9 | MO    |                      0.5 |
+| PA    |                     10.4 | NJ    |                      0.5 |
+| MI    |                      9.0 | CT    |                      0.4 |
+| TX    |                      8.4 | AK    |                      0.3 |
+| NC    |                      6.2 | DE    |                      0.3 |
+| VA    |                      6.1 | IL    |                      0.3 |
+| WI    |                      5.8 | SC    |                      0.2 |
+| AZ    |                      5.7 | KS    |                      0.1 |
+| OH    |                      5.2 | MS    |                      0.1 |
+| MN    |                      5.1 | NY    |                      0.1 |
+| GA    |                      4.0 | RI    |                      0.1 |
+| NV    |                      3.2 | IN    |                      0.0 |
+| CO    |                      2.4 | LA    |                      0.0 |
+| ME    |                      1.7 | MA    |                      0.0 |
+| NH    |                      1.5 | MD    |                      0.0 |
+| NM    |                      1.4 | MT    |                      0.0 |
+| IA    |                      1.3 | UT    |                      0.0 |
+| OR    |                      0.6 | WA    |                      0.0 |
 
 ### Electoral college outcomes
 
@@ -232,7 +232,7 @@ electoral college majority:
 | Republicans win the popular vote and electoral college                    |          1 |
 | Republicans win the popular vote, but Democrats win the electoral college |          0 |
 
-The probability the Democrats win the national popular vote is 99%.
+The probability the Democrats win the national popular vote is 98.86%.
 
 #### The divide between the electoral college and popular vote
 
