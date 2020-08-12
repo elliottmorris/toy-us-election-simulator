@@ -117,7 +117,7 @@ Automated report:
 
 These graphs are updated hourly with new polls.
 
-Last updated on **August 12, 2020 at 05:11 AM EDT.**
+Last updated on **August 12, 2020 at 06:13 AM EDT.**
 
 ### National polling average
 
@@ -141,11 +141,11 @@ In table form…
 | State | Biden margin, uncertainty interval (%) | State | Biden margin, … (%) |
 |:------|:---------------------------------------|:------|:--------------------|
 | ME    | 11 \[-3, 24\]                          | GA    | 1 \[-13, 15\]       |
-| MN    | 10 \[-4, 24\]                          | TX    | 0 \[-14, 14\]       |
+| MN    | 10 \[-4, 23\]                          | TX    | 0 \[-14, 14\]       |
 | NV    | 9 \[-5, 22\]                           | IA    | 0 \[-14, 13\]       |
 | WI    | 8 \[-6, 21\]                           | AK    | -4 \[-17, 10\]      |
-| MI    | 8 \[-5, 22\]                           | MO    | -5 \[-19, 9\]       |
-| PA    | 7 \[-7, 20\]                           | SC    | -5 \[-19, 8\]       |
+| MI    | 8 \[-6, 22\]                           | MO    | -5 \[-19, 9\]       |
+| PA    | 7 \[-7, 21\]                           | SC    | -5 \[-19, 9\]       |
 | FL    | 6 \[-8, 19\]                           | MT    | -8 \[-21, 6\]       |
 | AZ    | 4 \[-10, 17\]                          | KS    | -8 \[-22, 6\]       |
 | NC    | 3 \[-11, 16\]                          | MS    | -11 \[-24, 3\]      |
@@ -156,18 +156,18 @@ In table form…
 | State | Biden margin, uncertainty interval (%) | State | Biden margin, … (%) |
 |:------|:---------------------------------------|:------|:--------------------|
 | DC    | 80 \[66, 93\]                          | VA    | 12 \[-2, 25\]       |
-| CA    | 37 \[23, 50\]                          | NH    | 12 \[-2, 25\]       |
+| CA    | 37 \[23, 51\]                          | NH    | 12 \[-2, 25\]       |
 | MA    | 32 \[18, 45\]                          | UT    | -12 \[-26, 2\]      |
-| VT    | 31 \[17, 45\]                          | IN    | -12 \[-26, 1\]      |
+| VT    | 31 \[17, 45\]                          | IN    | -12 \[-26, 2\]      |
 | HI    | 31 \[18, 45\]                          | NE    | -13 \[-26, 1\]      |
-| MD    | 29 \[16, 43\]                          | TN    | -15 \[-28, -1\]     |
+| MD    | 29 \[15, 43\]                          | TN    | -15 \[-28, -1\]     |
 | NY    | 26 \[12, 39\]                          | AR    | -16 \[-30, -2\]     |
-| WA    | 26 \[13, 40\]                          | KY    | -16 \[-30, -3\]     |
-| IL    | 22 \[8, 35\]                           | SD    | -17 \[-30, -3\]     |
+| WA    | 26 \[12, 40\]                          | KY    | -16 \[-30, -3\]     |
+| IL    | 22 \[8, 35\]                           | SD    | -16 \[-30, -3\]     |
 | RI    | 21 \[8, 35\]                           | ID    | -18 \[-32, -5\]     |
-| CT    | 20 \[6, 34\]                           | AL    | -19 \[-32, -5\]     |
-| NJ    | 20 \[7, 34\]                           | ND    | -21 \[-35, -8\]     |
-| OR    | 18 \[4, 31\]                           | OK    | -22 \[-35, -8\]     |
+| NJ    | 20 \[7, 34\]                           | AL    | -19 \[-33, -5\]     |
+| CT    | 20 \[7, 34\]                           | ND    | -21 \[-35, -8\]     |
+| OR    | 18 \[4, 31\]                           | OK    | -22 \[-36, -8\]     |
 | DE    | 16 \[3, 30\]                           | WV    | -28 \[-41, -14\]    |
 | CO    | 14 \[0, 28\]                           | WY    | -30 \[-43, -16\]    |
 | NM    | 14 \[1, 28\]                           |       |                     |
@@ -195,24 +195,24 @@ how often that happens:
 
 | State | Tipping point chance (%) | State | Tipping point chance (%) |
 |:------|-------------------------:|:------|-------------------------:|
-| FL    |                     18.6 | MO    |                      0.6 |
+| FL    |                     19.2 | OR    |                      0.7 |
 | PA    |                     10.4 | NJ    |                      0.5 |
-| MI    |                      9.1 | AK    |                      0.4 |
-| TX    |                      8.8 | IL    |                      0.4 |
+| MI    |                      8.9 | DE    |                      0.4 |
+| TX    |                      8.9 | AK    |                      0.3 |
 | NC    |                      6.1 | CT    |                      0.3 |
-| WI    |                      6.0 | DE    |                      0.3 |
-| AZ    |                      5.9 | SC    |                      0.2 |
-| VA    |                      5.4 | KS    |                      0.1 |
-| OH    |                      5.2 | LA    |                      0.1 |
-| MN    |                      4.8 | RI    |                      0.1 |
-| GA    |                      4.6 | WA    |                      0.1 |
-| NV    |                      2.8 | IN    |                      0.0 |
-| CO    |                      2.2 | MA    |                      0.0 |
-| ME    |                      1.8 | MS    |                      0.0 |
-| IA    |                      1.5 | MT    |                      0.0 |
-| NH    |                      1.5 | NE    |                      0.0 |
-| NM    |                      1.3 | NY    |                      0.0 |
-| OR    |                      0.8 | TN    |                      0.0 |
+| AZ    |                      5.6 | IL    |                      0.3 |
+| VA    |                      5.6 | SC    |                      0.3 |
+| WI    |                      5.6 | KS    |                      0.1 |
+| OH    |                      5.5 | LA    |                      0.1 |
+| MN    |                      4.8 | MT    |                      0.1 |
+| GA    |                      4.1 | NY    |                      0.1 |
+| NV    |                      3.0 | RI    |                      0.1 |
+| CO    |                      2.2 | IN    |                      0.0 |
+| ME    |                      1.6 | MD    |                      0.0 |
+| NH    |                      1.5 | MS    |                      0.0 |
+| IA    |                      1.4 | TN    |                      0.0 |
+| NM    |                      1.3 | UT    |                      0.0 |
+| MO    |                      0.7 | WA    |                      0.0 |
 
 ### Electoral college outcomes
 
@@ -228,11 +228,11 @@ electoral college majority:
 |                                                                           | Chance (%) |
 |:--------------------------------------------------------------------------|-----------:|
 | Democrats win the popular vote and electoral college                      |         93 |
-| Democrats win the popular vote, but Republicans win the electoral college |          5 |
+| Democrats win the popular vote, but Republicans win the electoral college |          6 |
 | Republicans win the popular vote and electoral college                    |          1 |
 | Republicans win the popular vote, but Democrats win the electoral college |          0 |
 
-The probability the Democrats win the national popular vote is 98.8%.
+The probability the Democrats win the national popular vote is 98.7%.
 
 #### The divide between the electoral college and popular vote
 
