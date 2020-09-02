@@ -117,12 +117,12 @@ Automated report:
 
 These graphs are updated hourly with new polls.
 
-Last updated on **September 02, 2020 at 08:15 AM EDT.**
+Last updated on **September 02, 2020 at 09:14 AM EDT.**
 
 ### National polling average
 
 Joe Biden’s margin in national polls is **<span
-style="color: #3498DB;">9.9</span>** percentage points. His margin
+style="color: #3498DB;">9.7</span>** percentage points. His margin
 implied by state-level polls and the demographic regression is **<span
 style="color: #3498DB;">9.2</span>** percentage points.
 
@@ -141,34 +141,34 @@ In table form…
 | State | Biden margin, uncertainty interval (%) | State | Biden margin, … (%) |
 |:------|:---------------------------------------|:------|:--------------------|
 | ME    | 11 \[-3, 24\]                          | TX    | 0 \[-14, 13\]       |
-| NH    | 10 \[-3, 24\]                          | GA    | 0 \[-13, 14\]       |
-| PA    | 7 \[-7, 20\]                           | IA    | 0 \[-14, 13\]       |
-| WI    | 7 \[-7, 20\]                           | OH    | -1 \[-14, 13\]      |
-| MI    | 7 \[-6, 21\]                           | AK    | -4 \[-17, 10\]      |
-| NV    | 7 \[-6, 21\]                           | SC    | -5 \[-19, 8\]       |
+| NH    | 10 \[-3, 24\]                          | GA    | 0 \[-14, 13\]       |
+| NV    | 8 \[-6, 21\]                           | IA    | 0 \[-14, 13\]       |
+| PA    | 7 \[-7, 20\]                           | OH    | -1 \[-15, 13\]      |
+| WI    | 7 \[-7, 20\]                           | AK    | -4 \[-17, 10\]      |
+| MI    | 7 \[-6, 21\]                           | SC    | -5 \[-19, 8\]       |
 | MN    | 7 \[-6, 21\]                           | MT    | -7 \[-20, 7\]       |
-| FL    | 6 \[-8, 19\]                           | KS    | -8 \[-22, 6\]       |
-| AZ    | 4 \[-10, 17\]                          | MO    | -10 \[-23, 4\]      |
-| NC    | 2 \[-12, 15\]                          | MS    | -11 \[-24, 3\]      |
+| FL    | 6 \[-8, 19\]                           | KS    | -8 \[-22, 5\]       |
+| AZ    | 4 \[-10, 18\]                          | MO    | -10 \[-23, 4\]      |
+| NC    | 1 \[-12, 15\]                          | MS    | -11 \[-25, 2\]      |
 
 **The rest of the states:**
 
 | State | Biden margin, uncertainty interval (%) | State | Biden margin, … (%) |
 |:------|:---------------------------------------|:------|:--------------------|
-| DC    | 78 \[65, 92\]                          | CO    | 12 \[-2, 25\]       |
-| CA    | 36 \[22, 49\]                          | LA    | -12 \[-25, 2\]      |
+| DC    | 78 \[64, 91\]                          | CO    | 12 \[-2, 25\]       |
+| CA    | 36 \[22, 49\]                          | LA    | -12 \[-26, 2\]      |
 | MA    | 33 \[19, 46\]                          | UT    | -13 \[-26, 1\]      |
-| HI    | 32 \[18, 45\]                          | IN    | -13 \[-26, 1\]      |
-| VT    | 31 \[17, 44\]                          | NE    | -14 \[-27, 0\]      |
-| MD    | 28 \[15, 42\]                          | KY    | -16 \[-29, -2\]     |
+| VT    | 31 \[17, 44\]                          | IN    | -13 \[-26, 1\]      |
+| HI    | 31 \[18, 45\]                          | NE    | -13 \[-27, 0\]      |
+| MD    | 28 \[14, 41\]                          | KY    | -16 \[-29, -2\]     |
 | NY    | 28 \[15, 42\]                          | TN    | -16 \[-29, -2\]     |
 | WA    | 26 \[13, 40\]                          | AR    | -17 \[-30, -3\]     |
 | RI    | 21 \[8, 34\]                           | SD    | -17 \[-31, -4\]     |
-| IL    | 21 \[8, 35\]                           | ID    | -19 \[-33, -6\]     |
-| NJ    | 19 \[6, 33\]                           | AL    | -20 \[-33, -6\]     |
+| IL    | 21 \[8, 35\]                           | ID    | -19 \[-33, -5\]     |
+| NJ    | 19 \[5, 32\]                           | AL    | -20 \[-33, -6\]     |
 | CT    | 19 \[6, 33\]                           | OK    | -22 \[-36, -9\]     |
 | OR    | 18 \[4, 31\]                           | ND    | -22 \[-36, -9\]     |
-| DE    | 18 \[4, 32\]                           | WV    | -28 \[-42, -15\]    |
+| DE    | 18 \[4, 31\]                           | WV    | -28 \[-42, -15\]    |
 | NM    | 15 \[1, 28\]                           | WY    | -31 \[-44, -17\]    |
 | VA    | 12 \[-2, 25\]                          |       |                     |
 
@@ -195,24 +195,24 @@ how often that happens:
 
 | State | Tipping point chance (%) | State | Tipping point chance (%) |
 |:------|-------------------------:|:------|-------------------------:|
-| FL    |                     18.6 | OR    |                      0.6 |
-| PA    |                     10.8 | AK    |                      0.4 |
-| TX    |                      9.7 | CT    |                      0.4 |
-| MI    |                      8.5 | IL    |                      0.3 |
-| AZ    |                      6.3 | SC    |                      0.3 |
-| NC    |                      5.6 | DE    |                      0.2 |
-| WI    |                      5.6 | KS    |                      0.1 |
-| MN    |                      5.4 | LA    |                      0.1 |
-| VA    |                      5.2 | MO    |                      0.1 |
-| GA    |                      4.2 | MS    |                      0.1 |
-| OH    |                      4.2 | MT    |                      0.1 |
-| CO    |                      3.4 | RI    |                      0.1 |
-| NV    |                      3.0 | IN    |                      0.0 |
-| NH    |                      1.7 | KY    |                      0.0 |
-| IA    |                      1.6 | MD    |                      0.0 |
+| FL    |                     18.8 | OR    |                      0.5 |
+| PA    |                     10.6 | AK    |                      0.4 |
+| TX    |                     10.1 | CT    |                      0.4 |
+| MI    |                      8.9 | IL    |                      0.3 |
+| AZ    |                      6.0 | SC    |                      0.3 |
+| WI    |                      5.8 | DE    |                      0.2 |
+| NC    |                      5.6 | KS    |                      0.2 |
+| MN    |                      5.3 | LA    |                      0.1 |
+| VA    |                      5.0 | MO    |                      0.1 |
+| OH    |                      4.3 | MT    |                      0.1 |
+| GA    |                      3.9 | RI    |                      0.1 |
+| CO    |                      3.1 | IN    |                      0.0 |
+| NV    |                      3.0 | KY    |                      0.0 |
+| NH    |                      1.7 | MD    |                      0.0 |
+| IA    |                      1.6 | MS    |                      0.0 |
 | ME    |                      1.6 | NE    |                      0.0 |
-| NM    |                      0.9 | NY    |                      0.0 |
-| NJ    |                      0.6 | UT    |                      0.0 |
+| NM    |                      1.0 | NY    |                      0.0 |
+| NJ    |                      0.7 | UT    |                      0.0 |
 
 ### Electoral college outcomes
 
@@ -227,7 +227,7 @@ electoral college majority:
 
 |                                                                           | Chance (%) |
 |:--------------------------------------------------------------------------|-----------:|
-| Democrats win the popular vote and electoral college                      |         91 |
+| Democrats win the popular vote and electoral college                      |         92 |
 | Democrats win the popular vote, but Republicans win the electoral college |          7 |
 | Republicans win the popular vote and electoral college                    |          2 |
 | Republicans win the popular vote, but Democrats win the electoral college |          0 |
@@ -240,7 +240,7 @@ We can quantify either party’s edge as the average across simulations of
 Joe Biden’s margin in the tipping-point state and his margin nationally:
 
 On average, the tipping point state is **<span
-style="color: #3498DB;">2.7</span>** percentage points to the **<span
+style="color: #3498DB;">2.6</span>** percentage points to the **<span
 style="color: #3498DB;">right</span>** of the nation as a whole.
 
 Endmatter
