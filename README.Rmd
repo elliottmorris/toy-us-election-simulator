@@ -92,7 +92,7 @@ margin.kable.not_close
 _(Just for key states.)_
 
 
-```{r echo=FALSE,message=FALSE,warning=FALSE,fig.width=8,fig.height=6}
+```{r echo=FALSE,message=FALSE,warning=FALSE,fig.width=8,fig.height=7}
 biden_state_margins_overtime.gg
 ```
 
@@ -103,7 +103,7 @@ The odds that either candidate wins a state they're favored in, given the pollin
 
 In map form...
 
-```{r echo=FALSE,message=FALSE,warning=FALSE,fig.width=8,fig.height=6}
+```{r echo=FALSE,message=FALSE,warning=FALSE}
 win_probs_map
 ```
 
@@ -113,7 +113,7 @@ win_probs_map
 _(Just for key states.)_
 
 
-```{r echo=FALSE,message=FALSE,warning=FALSE}
+```{r echo=FALSE,message=FALSE,warning=FALSE,fig.width=8,fig.height=7}
 biden_state_chance_of_winning_overtime.gg
 ```
 

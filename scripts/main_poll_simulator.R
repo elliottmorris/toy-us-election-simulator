@@ -17,13 +17,14 @@ library(data.table)
 RUN_DATE <- as_date(Sys.Date()) 
 
 # this much daily sd in election polls
-DAILY_SD <- 0.004041452
+DAILY_SD <- 0.005773503
+DAILY_SD * sqrt(300)
 
 # number of simulations to run
 NUM_SIMS <- 50000
 
 # number of cores to use
-NUM_CORES <- parallel::detectCores() 
+NUM_CORES <- min(6, parallel::detectCores())
 
 # whether to burn all the models up and start over
 REDO_ALL_MODELS <- FALSE
@@ -38,6 +39,8 @@ all_polls <- read_csv(url)
 all_polls <- all_polls %>%
   filter(grepl('phone|online',tolower(mode)))
 
+todays_polls <- all_polls
+
 # read in state voter weights
 states2016 <- read_csv('data/2016.csv') %>%
   mutate(score = clinton_count / (clinton_count + trump_count),
@@ -49,7 +52,6 @@ states2016 <- read_csv('data/2016.csv') %>%
 
 state_weights <- c(states2016$share_national_vote / sum(states2016$share_national_vote))
 names(state_weights) <- states2016$state
-
 
 
 # simulate the election as of today ---------------------------------------
@@ -64,6 +66,7 @@ simulation_election_day_x <- function(RUN_DATE, todays_polls, DAILY_SD){
   
   # days til the election?
   days_til_election <- as.numeric(ymd('2020-11-03') - RUN_DATE)
+  
   
   # wrangle polls -----------------------------------------------------------
   todays_polls <- todays_polls %>% 
@@ -289,9 +292,9 @@ simulation_election_day_x <- function(RUN_DATE, todays_polls, DAILY_SD){
   
   # toy simulations ---------------------------------------------------------
   # errors
-  national_error <- (0.0175) + (DAILY_SD * sqrt(days_til_election)) # national error + drift
-  regional_error <- (0.0175) 
-  state_error <- (0.0175) 
+  national_error <- (0.02) + (DAILY_SD * sqrt(days_til_election)) # national error + drift
+  regional_error <- (0.02) 
+  state_error <- (0.02) 
   
   sqrt(national_error^2 + regional_error^2 + state_error^2) # this is the total standard deviation on vote margin
   
@@ -1029,7 +1032,8 @@ biden_state_chance_of_winning_overtime.gg <-
     geom_line(data = . %>% filter(!is.na(biden_margin_mean)),
               aes(x=date,y=biden_win_prob)) +
     scale_y_continuous(breaks = seq(0,1,0.1),
-                       labels = function(x){round(x*100)}) +
+                       labels = function(x){round(x*100)},
+                       limits = c(0,1)) +
     facet_wrap(~state) +
     coord_cartesian(xlim=c(ymd('2020-03-01'),Sys.Date())) +
     scale_x_date(date_breaks='month',date_labels='%b') +
