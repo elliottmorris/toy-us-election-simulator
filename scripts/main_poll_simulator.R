@@ -23,7 +23,7 @@ DAILY_SD <- 0.004041452
 NUM_SIMS <- 50000
 
 # number of cores to use
-NUM_CORES <- min(4, parallel::detectCores() - 1)
+NUM_CORES <- parallel::detectCores() 
 
 # whether to burn all the models up and start over
 REDO_ALL_MODELS <- FALSE
@@ -266,41 +266,7 @@ simulation_election_day_x <- function(RUN_DATE, todays_polls, DAILY_SD){
     geom_smooth(method='lm')
   
   
-  # adjust predictions for poll selection bias ------------------------------
-  clinton_margin_in_polled_states <- state %>% 
-    filter(!is.na(mean_biden_margin)) %>% 
-    select(state,clinton_margin,mean_biden_margin) %>%
-    left_join(enframe(state_weights,'state','state_weight'), by = "state") %>%
-    mutate(state_weight = state_weight / sum(state_weight)) %>%
-    summarise(average_clinton_margin = 
-                weighted.mean(clinton_margin,state_weight)) %>%
-    pull(average_clinton_margin)
-  
-  clinton_margin_overall <- state %>% 
-    select(state,clinton_margin,mean_biden_margin) %>%
-    left_join(enframe(state_weights,'state','state_weight'), by = "state") %>%
-    summarise(average_clinton_margin = 
-                weighted.mean(clinton_margin,state_weight)) %>%
-    pull(average_clinton_margin)
-  
-  # the differences here are interesting
-  # but we don't actually need to perform a correction
-  # because clinton margin is a variable in the regression
-  
-  # adjust state-level polls and predictions to polled national margin ------
-  # for now, no.... aggregates of state polls out-performed national 
-  # polls in 2008 and 2012 -- don't want to overreact to 2016
-  og_national_biden_margin <- national_biden_margin
-  
-  adj_national_biden_margin <-  national_biden_margin # weighted.mean(state$mean_biden_margin_hat,state_weights)
-  
-  state$mean_biden_margin_hat <-  state$mean_biden_margin_hat - (adj_national_biden_margin - national_biden_margin)
-  
-  # save new biden national margin
-  national_biden_margin <- weighted.mean(state$mean_biden_margin_hat,state_weights)
-  
-  national_biden_margin
-  
+
   # generate new state lean variable based on adjusted biden national margin
   state$dem_lean_2020 <-  state$mean_biden_margin_hat - national_biden_margin 
   
@@ -431,12 +397,19 @@ simulation_election_day_x <- function(RUN_DATE, todays_polls, DAILY_SD){
     ungroup()
   
   # return list of this ------
+  # get the raw national margin from polls and the implied one
+  og_national_biden_margin <- last(national_poll_average$national_biden_margin)
+  national_biden_margin <- national_summary$biden_nat_margin_mean
   
+  
+  # return
   list(RUN_DATE = RUN_DATE,
        national_summary = national_summary,
        state_summary = state_summary,
        sims_summary = sims_summary,
-       raw_sims = sims)
+       raw_sims = sims,
+       og_national_biden_margin = og_national_biden_margin,
+       national_biden_margin = national_biden_margin)
   
   
 }
@@ -453,7 +426,11 @@ write_rds(output,sprintf('output/model_runs/model_run_%s.rds',todays_simulations
 
 
 # calc shift from 2016 to 2020 --------------------------------------------
-# get data
+# first, get the national margins from the model
+og_national_biden_margin <- todays_simulations$og_national_biden_margin
+national_biden_margin <- todays_simulations$national_biden_margin
+
+# import results data
 results <- politicaldata::pres_results %>% 
   filter(year == 2016) %>%
   mutate(clinton_margin = dem-rep) %>%
@@ -463,7 +440,7 @@ coefs <- read_csv('data/state_coefs.csv')
 
 state <- results %>%
   left_join(todays_simulations$state_summary,by='state') %>%
-  mutate(national_biden_margin = todays_simulations$national_summary$biden_nat_margin_mean,
+  mutate(national_biden_margin = national_biden_margin,
          dem_lean_2016 = clinton_margin - 0.021,
          dem_lean_2020 = biden_margin_mean - national_biden_margin) %>%
   left_join(coefs, by = "state")
@@ -557,7 +534,7 @@ final %>%
   arrange(desc(biden_margin_mean)) %>%
   mutate(cumulative_ev = cumsum(ev)) %>%
   filter(cumulative_ev >= 270) %>% filter(row_number() == 1)  %>%
-  pull(biden_margin_mean) -  todays_simulations$national_summary$biden_nat_margin_mean
+  pull(biden_margin_mean) -  national_biden_margin
 
 
 
@@ -771,23 +748,10 @@ scenarios.kable <- sims %>%
 
 # tipping point state, maps -----------------------------------------------
 # calc the avg tipping point
-tipping_point <- pblapply(1:max(sims$draw),
-                          cl = NUM_CORES,
-                          function(x){
-                            temp <- sims[sims$draw==x,]
-                            
-                            if(temp$dem_nat_pop_margin > 0){
-                              temp <- temp %>% arrange(desc(sim_biden_margin))
-                            }else{
-                              temp <- temp %>% arrange(sim_biden_margin)
-                            }
-                            
-                            return(temp)
-                          }) 
-
-tipping_point <- tipping_point %>%
-  rbindlist() %>%
-  ungroup()
+tipping_point <- sims  %>%
+  group_by(draw) %>%
+  mutate(dem_ev = sum(ev * (sim_biden_margin >= 0))) %>%
+  arrange(draw,ifelse(dem_ev >= 270, desc(sim_biden_margin),sim_biden_margin))
 
 
 # state-level correlations?
@@ -910,7 +874,7 @@ results <- results %>%
   filter(cumulative_ev >= evs_to_win) %>%
   filter(row_number()  == 1) %>%
   mutate(dem_two_party_share_national = ifelse(year == 2020, 
-                                               0.5 + (todays_simulations$national_summary$biden_nat_margin_mean * margin_inflator)/2,
+                                               0.5 + (national_biden_margin * margin_inflator)/2,
                                                dem_two_party_share_national)) %>%
   na.omit()  %>%
   ungroup()
@@ -965,35 +929,48 @@ key_states <- c('AZ','TX','FL','GA','NC','PA','MI','OH','IA','WI','NV','MN')
 campaign_simulations[[1]]$state_summary %>% filter(state %in% key_states)
 
 # look at overall dem margin over time
-map_df(campaign_simulations,
-       function(x){
-         x[['national_summary']] %>%
-           mutate(date = x[['RUN_DATE']])
-       })  %>%
-  ggplot(.,aes(x=date,y=biden_nat_margin_mean)) +
-  geom_line() +
-  geom_point(data = all_polls %>%
-               filter(state == '--') %>%
-               mutate(biden_margin = (biden-trump)/100,
-                      date = mdy(end.date)) ,
-             aes(x=date,y=biden_margin),alpha=0.2) +
-  coord_cartesian(xlim=c(ymd('2020-03-01'),Sys.Date())) +
-  scale_x_date(date_breaks='month',date_labels='%b') +
-  theme_minimal() +
-  theme(panel.grid.minor = element_blank()) 
+biden_national_margin_overtime.gg <- 
+  map_df(campaign_simulations,
+         function(x){
+           x[['national_summary']] %>%
+             mutate(date = x[['RUN_DATE']])
+         })  %>%
+    ggplot(.,aes(x=date,y=biden_nat_margin_mean)) +
+    geom_hline(yintercept=0,col='#E74C3C',alpha=0.8) +
+    geom_line() +
+    geom_point(data = all_polls %>%
+                 filter(state == '--') %>%
+                 mutate(biden_margin = (biden-trump)/100,
+                        date = mdy(end.date)) ,
+               aes(x=date,y=biden_margin),alpha=0.2) +
+    coord_cartesian(xlim=c(ymd('2020-03-01'),Sys.Date())) +
+    scale_x_date(date_breaks='month',date_labels='%b') +
+    scale_y_continuous(breaks=seq(-1,1,0.05),labels = function(x){x*100}) +
+    theme_minimal() +
+    theme(panel.grid.minor = element_blank())  +
+    labs(x='',
+         y='',
+         subtitle="Projected Biden margin, alongside national polls")
 
 # overall odds over time
-map_df(campaign_simulations,
-       function(x){
-         x[['national_summary']] %>%
-           mutate(date = x[['RUN_DATE']])
-       })  %>%
-  ggplot(.,aes(x=date,y=biden_ec_vote__win_prob)) +
-  geom_line() +
-  coord_cartesian(xlim=c(ymd('2020-03-01'),Sys.Date())) +
-  scale_x_date(date_breaks='month',date_labels='%b') +
-  theme_minimal() +
-  theme(panel.grid.minor = element_blank()) 
+biden_chance_of_winning_overtime.gg <- 
+  map_df(campaign_simulations,
+         function(x){
+           x[['national_summary']] %>%
+             mutate(date = x[['RUN_DATE']])
+         })  %>%
+    ggplot(.,aes(x=date,y=biden_ec_vote__win_prob)) +
+    geom_hline(yintercept=0.5,col='#E74C3C',alpha=0.8) +
+    geom_line() +
+    coord_cartesian(xlim=c(ymd('2020-03-01'),Sys.Date())) +
+    scale_x_date(date_breaks='month',date_labels='%b') +
+    scale_y_continuous(breaks=seq(0,1,0.1),labels = function(x){x*100},
+                       limits=c(0,1)) +
+    theme_minimal() +
+    theme(panel.grid.minor = element_blank()) +
+    labs(x='',
+         y='',
+         subtitle="Biden chance of winning the electoral college")
 
 
 # dem margins in key states over time
@@ -1022,39 +999,43 @@ polls_and_trends <-
   )
 
 
-polls_and_trends %>%
-  filter(state %in% key_states) %>%
-  ggplot(.) +
-  geom_hline(yintercept=0,col='#E74C3C',alpha=0.8) +
-  geom_line(data = . %>% filter(!is.na(biden_margin_mean)),
-            aes(x=date,y=biden_margin_mean)) +
-  geom_ribbon(data = . %>% filter(!is.na(biden_margin_mean)),
-            aes(x=date,ymin=biden_margin_low,ymax=biden_margin_high),
-            col=NA,alpha=0.2) +
-  geom_point(aes(x=date,y=biden_margin),alpha=0.2) +
-  scale_y_continuous(breaks = seq(-1,1,0.05),
-                     labels = function(x){round(x*100)}) +
-  facet_wrap(~state) +
-  coord_cartesian(xlim=c(ymd('2020-03-01'),Sys.Date())) +
-  scale_x_date(date_breaks='month',date_labels='%b') +
-  theme_minimal() +
-  theme(panel.grid.minor = element_blank()) 
+biden_state_margins_overtime.gg <- 
+  polls_and_trends %>%
+    filter(state %in% key_states) %>%
+    ggplot(.) +
+    geom_hline(yintercept=0,col='#E74C3C',alpha=0.8) +
+    geom_line(data = . %>% filter(!is.na(biden_margin_mean)),
+              aes(x=date,y=biden_margin_mean)) +
+    geom_ribbon(data = . %>% filter(!is.na(biden_margin_mean)),
+              aes(x=date,ymin=biden_margin_low,ymax=biden_margin_high),
+              col=NA,alpha=0.2) +
+    geom_point(aes(x=date,y=biden_margin),alpha=0.2) +
+    scale_y_continuous(breaks = seq(-1,1,0.05),
+                       labels = function(x){round(x*100)}) +
+    facet_wrap(~state) +
+    coord_cartesian(xlim=c(ymd('2020-03-01'),Sys.Date())) +
+    scale_x_date(date_breaks='month',date_labels='%b') +
+    theme_minimal() +
+    theme(panel.grid.minor = element_blank()) +
+    labs(x='Date',y='',subtitle='Biden margin and 95% prediction interval in key states')
 
   
 # probability in key states over time
-polls_and_trends %>%
-  filter(state %in% key_states) %>%
-  ggplot(.) +
-  geom_hline(yintercept=0.5,col='#E74C3C',alpha=0.8) +
-  geom_line(data = . %>% filter(!is.na(biden_margin_mean)),
-            aes(x=date,y=biden_win_prob)) +
-  scale_y_continuous(breaks = seq(0,1,0.1),
-                     labels = function(x){round(x*100)}) +
-  facet_wrap(~state) +
-  coord_cartesian(xlim=c(ymd('2020-03-01'),Sys.Date())) +
-  scale_x_date(date_breaks='month',date_labels='%b') +
-  theme_minimal() +
-  theme(panel.grid.minor = element_blank()) 
+biden_state_chance_of_winning_overtime.gg <- 
+  polls_and_trends %>%
+    filter(state %in% key_states) %>%
+    ggplot(.) +
+    geom_hline(yintercept=0.5,col='#E74C3C',alpha=0.8) +
+    geom_line(data = . %>% filter(!is.na(biden_margin_mean)),
+              aes(x=date,y=biden_win_prob)) +
+    scale_y_continuous(breaks = seq(0,1,0.1),
+                       labels = function(x){round(x*100)}) +
+    facet_wrap(~state) +
+    coord_cartesian(xlim=c(ymd('2020-03-01'),Sys.Date())) +
+    scale_x_date(date_breaks='month',date_labels='%b') +
+    theme_minimal() +
+    theme(panel.grid.minor = element_blank())  +
+    labs(x='Date',y='',subtitle='Biden win probability in key states')
 
 
 

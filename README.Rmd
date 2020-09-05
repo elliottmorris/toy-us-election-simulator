@@ -7,7 +7,7 @@ G. Elliott Morris [\@gelliottmorris](https://www.twitter.com/gelliottmorris)
 
 This is just a simple election simulator based on national and state-level polls. The code in this repo will generate the graphs and statistics I shared [here](https://twitter.com/gelliottmorris/status/1257331350618726400?s=20).
 
-My aim for this code is to help shed some light on basic methods for aggregating national and state polls, inferring electoral standings in states without a lot of data and simulating what might happen in the electoral college if polls lead us astray. **None of this should be considered an official election forecast**, or really even a good one. I bet you'd have better-than-replacement rates of success with it, but I only wrote it for a fun coding exercise and to show people how this sort of program works, so act accordingly.
+My aim for this code is to help shed some light on basic methods for aggregating national and state polls, inferring electoral standings in states without a lot of data and simulating what might happen in the electoral college if polls lead us astray. **None of this should be considered an official election forecast**, or really even a good one. I bet you'd have better-than-replacement-level rates of success with it, but I only wrote it for a fun coding exercise and to show people how this sort of program works---so act accordingly.
 
 This caveat being addressed, I will concede that I do think this model will provide us with some interesting material as the election cycle progresses, so I've set up the model to update the maps and tables at the bottom of this document throughout the day using [GitHub Actions](https://github.com/features/actions). You can check back here regularly to see how the race is changing.
 
@@ -48,8 +48,18 @@ source('scripts/main_poll_simulator.R')
 ```
 
 
-### National polling average
-Joe Biden's margin in national polls is **<span style="color: #3498DB;">`r round(og_national_biden_margin*100,1)`</span>** percentage points. His margin implied by state-level polls and the demographic regression is **<span style="color: #3498DB;">`r round(national_biden_margin*100,1)`</span>** percentage points.
+### National polling average and popular vote prediction
+
+Joe Biden's margin in national polls is **<span style="color: #3498DB;">`r round(og_national_biden_margin*100,1)`</span>** percentage points. 
+
+His margin implied by state-level polls and the demographic regression is **<span style="color: #3498DB;">`r round(national_biden_margin*100,1)`</span>** percentage points.
+
+
+This chart draws a trend for Biden's implied national margin and plots individual national polls alongside it. His implied national margin will not always match the raw average of national polls.
+
+```{r echo=FALSE,message=FALSE,warning=FALSE}
+biden_national_margin_overtime.gg
+```
 
 
 ### State polling averages
@@ -58,7 +68,7 @@ The polling average in each state:
 
 In map form....
 
-```{r echo=FALSE}
+```{r echo=FALSE,message=FALSE,warning=FALSE}
 margin_map.gg
 ```
 
@@ -66,23 +76,24 @@ In table form...
 
 **The twenty most competitive states:**
 
-```{r echo=FALSE}
+```{r echo=FALSE,message=FALSE,warning=FALSE}
 margin.kable.close
 ```
 
 **The rest of the states:**
 
-```{r echo=FALSE}
+```{r echo=FALSE,message=FALSE,warning=FALSE}
 margin.kable.not_close
 ```
 
 
-### Changes in state averages relative to the national margin
+### State polling averages, over time:
 
-This map shows where Biden and Trump have gained or lost ground in each state, controlling for gains and losses nationally:
+_(Just for key states.)_
 
-```{r echo=FALSE}
-swing.map.gg
+
+```{r echo=FALSE,message=FALSE,warning=FALSE,fig.width=8,fig.height=6}
+biden_state_margins_overtime.gg
 ```
 
 
@@ -92,8 +103,18 @@ The odds that either candidate wins a state they're favored in, given the pollin
 
 In map form...
 
-```{r echo=FALSE}
+```{r echo=FALSE,message=FALSE,warning=FALSE,fig.width=8,fig.height=6}
 win_probs_map
+```
+
+
+### State win probabilities, over time:
+
+_(Just for key states.)_
+
+
+```{r echo=FALSE,message=FALSE,warning=FALSE}
+biden_state_chance_of_winning_overtime.gg
 ```
 
 
@@ -101,7 +122,7 @@ win_probs_map
 
 The states that give the winner their 270th electoral college vote, and how often that happens:
 
-```{r echo=FALSE}
+```{r echo=FALSE,message=FALSE,warning=FALSE}
 tipping_point.kable
 ```
 
@@ -110,8 +131,15 @@ tipping_point.kable
 
 The range of electoral college outcomes:
 
-```{r echo=FALSE}
+```{r echo=FALSE,message=FALSE,warning=FALSE}
 ev.histogram
+```
+
+
+### Chance of winning the election, over time
+
+```{r echo=FALSE,message=FALSE,warning=FALSE}
+biden_chance_of_winning_overtime.gg
 ```
 
 
@@ -131,6 +159,15 @@ The probability the Democrats win the national popular vote is `r round(dem_pop_
 We can quantify either party's edge as the average across simulations of Joe Biden's margin in the tipping-point state and his margin nationally:
 
 On average, the tipping point state is **<span style="color: #3498DB;">`r abs(round(ev.popvote.divide*100,1))`</span>** percentage points to the **<span style="color: #3498DB;">`r ifelse(ev.popvote.divide < 0,'right','left')`</span>** of the nation as a whole.
+
+
+### Changes in state averages relative to the national margin
+
+This map shows where Biden and Trump have gained or lost ground since 2016, relative to their gains/losses nationally:
+
+```{r echo=FALSE,message=FALSE,warning=FALSE}
+swing.map.gg
+```
 
 
 
