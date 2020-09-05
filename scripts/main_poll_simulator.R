@@ -26,7 +26,7 @@ NUM_SIMS <- 50000
 NUM_CORES <- min(4, parallel::detectCores() - 1)
 
 # whether to burn all the models up and start over
-REDO_ALL_MODELS <- TRUE
+REDO_ALL_MODELS <- FALSE
 
 ## data
 # read in the polls
