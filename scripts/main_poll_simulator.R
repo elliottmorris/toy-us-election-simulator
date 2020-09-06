@@ -642,7 +642,7 @@ ev.popvote.divide <- tipping_point %>%
   filter(cumulative_ev >= 270) %>%
   filter(row_number() == 1)  %>%
   mutate(diff =  sim_biden_margin - dem_nat_pop_margin) %>%
-  pull(diff) %>% hist(breaks=100)
+  pull(diff) %>% mean
 
 ev.popvote.divide
 
@@ -653,6 +653,14 @@ dem_nat_pop_margin <- sims %>%
   pull(dem_nat_pop_margin)
 
 dem_pop_vote_prob <- mean(dem_nat_pop_margin>0)
+
+# the ec range?
+dem_ec_majority_prob <- sims %>%
+  group_by(draw) %>%
+  summarise(dem_ev = sum(ev * (sim_biden_margin >= 0))) %>%
+  pull(dem_ev)
+
+dem_ec_majority_prob <- mean(dem_ec_majority_prob >= 270)
 
 # extract state-level data
 state_probs <- sims %>%
@@ -840,32 +848,54 @@ tipping_point.kable <- left_join(tipping_point %>%
   setNames(.,c('State','Tipping point chance (%)','State','Tipping point chance (%)')) %>%
   knitr::kable(.)
 
+# ec - popular vote gap ---------------------------------------------------
+
 # ev-popvote divide?
-tipping_point %>%
+ev.popvote.hist <- tipping_point %>%
   group_by(draw) %>%
   mutate(cumulative_ev = cumsum(ev)) %>%
   filter(cumulative_ev >= 270) %>%
   filter(row_number() == 1)  %>%
-  mutate(diff =  sim_biden_margin - dem_nat_pop_margin) %>%
-  pull(diff) %>%
-  tibble(diff = .) %>%
-  ggplot(.,aes(x=diff)) +
+  mutate(diff =  sim_biden_margin - dem_nat_pop_margin,
+         winner = ifelse(dem_ev >= 270,'Democratic','Republican')) %>%
+  ggplot(.,aes(x=diff,fill=winner)) +
   geom_vline(xintercept = 0) +
   geom_histogram(binwidth=0.001) +
   scale_x_continuous(breaks=seq(-1,1,0.01),labels=function(x){round(x*100)}) +
+  scale_y_continuous(labels=function(x){paste0(round(x/NUM_SIMS*100),'%')}) +
   theme_minimal() + 
-  labs(x="Difference betwen the popular vote and margin in the tipping-point state") 
+  theme(legend.position = 'top',panel.grid.minor = element_blank()) +
+  scale_fill_manual(name='Electoral college majority',values=c('Democratic'='blue','Republican'='red')) +
+  labs(x="Difference betwen the popular vote and margin in the tipping-point state",
+       y='Probability') 
 
-ev.popvote.divide <- tipping_point %>%
+ev.popvote.hist
+
+
+# look at some interesting differences
+target_draw <- tipping_point %>%
   group_by(draw) %>%
   mutate(cumulative_ev = cumsum(ev)) %>%
   filter(cumulative_ev >= 270) %>%
   filter(row_number() == 1)  %>%
-  mutate(diff =  sim_biden_margin - dem_nat_pop_margin) %>%
-  pull(diff) %>% mean # hist(breaks=100)
+  mutate(diff =  sim_biden_margin - dem_nat_pop_margin)  %>%
+  filter(diff >= 0.01) %>% 
+  ungroup() %>%
+  sample_n(size = 16) %>% 
+  pull(draw)
 
-ev.popvote.divide
-
+tipping_point %>%
+  filter(draw %in% target_draw) %>% 
+  mutate(cumulative_ev = cumsum(ev)) %>% 
+  left_join(politicaldata::pres_results %>% filter(year == 2016)) %>%
+  mutate(state_lean_2016 = (dem - rep) - 0.021,
+         state_lean_2020 = sim_biden_margin - dem_nat_pop_margin) %>%
+  filter(state != "DC") %>%
+  ggplot(.,aes(x=state_lean_2016, y=state_lean_2020)) +
+  geom_abline() +
+  geom_text(aes(label=state)) +
+  geom_smooth(method = 'lm') +
+  facet_wrap(~draw)
 
 # probability of being the tipping point for each state conditional on gap
 bkdown <- tipping_point %>%
@@ -911,7 +941,9 @@ bkdown %>%
   ggplot(.,aes(x=diff,y=tipping_point_chance,col=state)) +
   geom_line()
 
-# ec - popular vote gap over time -----------------------------------------
+
+# EC gap ovter time
+
 results <- read_csv('data/potus_historical_results.csv')
 
 # apply the infaltor from multi- to two-party vote

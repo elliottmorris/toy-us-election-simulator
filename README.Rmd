@@ -143,7 +143,7 @@ biden_chance_of_winning_overtime.gg
 ```
 
 
-#### Chance of the popular vote winner losing the electoral college majority
+#### The divide between the electoral college and popular vote
 
 The chance that one party wins the national popular vote, but loses the electoral college majority:
 
@@ -151,14 +151,20 @@ The chance that one party wins the national popular vote, but loses the electora
 scenarios.kable
 ```
 
-The probability the Democrats win the national popular vote is `r round(dem_pop_vote_prob*100,2)`%.
+The overall probability that Joe Biden win the national popular vote is `r round(dem_pop_vote_prob*100,2)`%.
+The overall probability that Joe Biden win the electoral college majority is `r round(dem_ec_majority_prob*100,2)`%.
 
-
-#### The divide between the electoral college and popular vote
+**The gap between the popular vote and tipping-point state**
 
 We can quantify either party's edge as the average across simulations of Joe Biden's margin in the tipping-point state and his margin nationally:
 
 On average, the tipping point state is **<span style="color: #3498DB;">`r abs(round(ev.popvote.divide*100,1))`</span>** percentage points to the **<span style="color: #3498DB;">`r ifelse(ev.popvote.divide < 0,'right','left')`</span>** of the nation as a whole.
+
+But the actual divide could take on a host of other values:
+
+```{r echo = FALSE}
+ev.popvote.hist
+```
 
 
 ### Changes in state averages relative to the national margin
