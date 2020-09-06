@@ -21,7 +21,7 @@ DAILY_SD <- 0.005773503
 DAILY_SD * sqrt(300)
 
 # number of simulations to run
-NUM_SIMS <- 10000
+NUM_SIMS <- 100000
 
 # number of cores to use
 NUM_CORES <- min(6, parallel::detectCores())
@@ -866,7 +866,52 @@ ev.popvote.divide <- tipping_point %>%
 
 ev.popvote.divide
 
-# ec - popular vote gap ---------------------------------------------------
+
+# probability of being the tipping point for each state conditional on gap
+bkdown <- tipping_point %>%
+  group_by(draw) %>%
+  mutate(cumulative_ev = cumsum(ev)) %>%
+  filter(cumulative_ev >= 270) %>%
+  filter(row_number() == 1)  %>%
+  mutate(diff =  sim_biden_margin - dem_nat_pop_margin)  %>%
+  select(diff,state) %>%
+  group_by(diff = round(diff,2),state) %>%
+  summarise(n=n()) %>%
+  group_by(diff) %>%
+  mutate(tipping_point_chance = n /sum(n))
+
+bkdown <- lapply(unique(bkdown$state),
+       function(target_state){
+         state_bkdown <- bkdown %>% filter(state == target_state)
+         
+         tibble(state = target_state,
+                diff = seq(-0.08,0.03,0.01)) %>%
+           mutate(tipping_point_chance = 
+                    predict(glm(tipping_point_chance ~ diff, 
+                                data = state_bkdown,
+                                family = binomial(link='logit'),
+                                weights = n),newdata = .,type = 'response')
+                  )
+       }) %>% bind_rows
+
+# chart of top states
+top_tipping_points <- tipping_point %>%
+  group_by(draw) %>%
+  mutate(cumulative_ev = cumsum(ev)) %>%
+  filter(cumulative_ev >= 270) %>%
+  filter(row_number() == 1) %>% 
+  group_by(state) %>%
+  summarise(prop = n()) %>%
+  mutate(prop = round(prop / sum(prop)*100,1)) %>%
+  arrange(desc(prop)) %>% filter(prop>1) %>% as.data.frame() %>%
+  head(6) %>% pull(state)
+
+bkdown %>%
+  filter(state %in% top_tipping_points)  %>%
+  ggplot(.,aes(x=diff,y=tipping_point_chance,col=state)) +
+  geom_line()
+
+# ec - popular vote gap over time -----------------------------------------
 results <- read_csv('data/potus_historical_results.csv')
 
 # apply the infaltor from multi- to two-party vote
