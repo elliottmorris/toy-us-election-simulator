@@ -23,8 +23,6 @@ Because polls are not perfect predictions of voting behavior, the final step is 
 
 ## Odds and ends
 
-**A note on timing:** The simulated error in this model is specified to capture the empirical (IE historical) uncertainty in state-level polls fielded **200 days** before the election. It may not be well-calibrated to handle any additional error from the regression model used to "fill in" averages in states without any or many polls. So take it (and the rest of this exercise) as an imperfect guide to the electoral environment, rather than the best or most robust model we could think of.
-
 **A note on forecasting:** The reason this is a "toy" model is because it does not attempt to project movement in the polls between whatever day it runs and election day. Instead, it just treats the polls as uncertain readings of the future, assuming no change in means. But this is an empirically flawed assumption. We know from history that polls during and after conventions tend to over-state the party that most recently nominated a candidate. A true _forecasting_ model will adjust for these historical patterns and project that the favored candidate's election-day polling margin will be smaller than it is on the model run date. This is yet another reason you should treat this analysis with a hefty dose of skepticism---at least until election day...
 
 **A note on polls:** The purpose of this analysis is to determine what we know _now_ from the polls. But polls often err in predicting elections. It is probably better to combine general election polls with other indicators of election outcomes, such as the state of the economy or presidential approval ratings. Fancier election models will do so. This is yet another reason not to squint at the estimates here. 
