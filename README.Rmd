@@ -52,7 +52,7 @@ source('scripts/main_poll_simulator.R')
 
 Joe Biden's margin in national polls is **<span style="color: #3498DB;">`r round(og_national_biden_margin*100,1)`</span>** percentage points. 
 
-His margin implied by state-level polls and the demographic regression is **<span style="color: #3498DB;">`r round(national_biden_margin*100,1)`</span>** percentage points.
+His margin implied by state-level polls and the demographic regression is **<span style="color: #3498DB;">`r round(implied_national_biden_margin*100,1)`</span>** percentage points.
 
 
 This chart draws a trend for Biden's implied national margin and plots individual national polls alongside it. His implied national margin will not always match the raw average of national polls.
@@ -62,7 +62,7 @@ biden_national_margin_overtime.gg
 ```
 
 
-### State polling averages
+### State polling averages and vote prediction
 
 The polling average in each state:
 
@@ -87,9 +87,9 @@ margin.kable.not_close
 ```
 
 
-### State polling averages, over time:
+### State polling averages and vote prediction, over time:
 
-_(Just for key states.)_
+In our simple polling model, Joe Biden's projected election-day vote margin in any state is equal to a combination of his polling average and a projection based on the relationship between demographics and the polls in other states. Accordingly, the chart below shows our estimate of his support according to the polls and our demographic regression on any given day---and it _also_ represents our projection for his final election-day vote. _(In other words, we don't forecast any movement in the race between now and election day. Although it is naive  to assume the race will remain static, it suits our educaitonal purposes with this model.)_
 
 
 ```{r echo=FALSE,message=FALSE,warning=FALSE,fig.width=8,fig.height=7}

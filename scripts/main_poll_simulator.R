@@ -21,7 +21,7 @@ DAILY_SD <- 0.005773503
 DAILY_SD * sqrt(300)
 
 # number of simulations to run
-NUM_SIMS <- 50000
+NUM_SIMS <- 10000
 
 # number of cores to use
 NUM_CORES <- min(6, parallel::detectCores())
@@ -66,16 +66,17 @@ simulation_election_day_x <- function(RUN_DATE, todays_polls, DAILY_SD){
   
   # days til the election?
   days_til_election <- as.numeric(ymd('2020-11-03') - RUN_DATE)
+  start_date <- ymd("2020-01-01") # min(todays_polls$date)
   
   
   # wrangle polls -----------------------------------------------------------
   todays_polls <- todays_polls %>% 
-    filter(as_date(as_datetime(todays_polls$entry.date.time..et.,format = '%m/%d/%Y %H:%M:%S')) <= RUN_DATE) %>%
+    filter(as_date(as_datetime(todays_polls$entry.date.time..et., format='%m/%d/%Y %H:%M:%S')) <= RUN_DATE) %>%
     mutate(date = mdy(end.date))
   
   head(todays_polls)
   
-  # remove any polls if biden or trump blank
+  # remove any polls if clinton or trump blank
   todays_polls <- todays_polls %>% filter(!is.na(biden),!is.na(trump))#, include == "TRUE")
   
   todays_polls <- todays_polls %>%
@@ -83,7 +84,7 @@ simulation_election_day_x <- function(RUN_DATE, todays_polls, DAILY_SD){
   
   # how much should we weight regression by compared to polls?
   # 1 = the weight of an average-sized poll
-  regression_weight <-  1 # so 5 is the weight of five polls
+  regression_weight <-  3 # so 5 is the weight of five polls
   # sqrt((all_polls %>% filter(state != '--') %>% pull(number.of.observations) %>% mean * 0.5) /
   #      (all_polls %>% filter(state != '--') %>% pull(number.of.observations) %>% mean))
   
@@ -94,18 +95,16 @@ simulation_election_day_x <- function(RUN_DATE, todays_polls, DAILY_SD){
   # should weight according to sample size and recency
   # we could be more complicated about this, but that's not necessary... yet...
   
-  start_date <- min(todays_polls$date)
-  
   # avg overy day
   national_poll_average <- lapply(as_date(start_date:RUN_DATE),
                                   function(RUN_DATE_MOD){
                                     
                                     national_biden_margin_MOD <- todays_polls %>%
-                                      mutate(date_entered = as_date(as_datetime(todays_polls$entry.date.time..et.,format = '%m/%d/%Y %H:%M:%S')) ) %>%
+                                      mutate(date_entered = as_date(as_datetime(todays_polls$entry.date.time..et., format='%m/%d/%Y %H:%M:%S')) ) %>%
                                       filter(date_entered <= RUN_DATE_MOD) %>%
                                       filter(state == '--') %>%
                                       mutate(decayed_weight = exp( as.numeric(RUN_DATE_MOD - mdy(end.date))*-0.05)) %>%
-                                      summarise(mean_biden_margin = weighted.mean(biden-trump,weight*decayed_weight)) %>%
+                                      summarise(mean_biden_margin = weighted.mean(biden-trump,weight*decayed_weight,na.rm=T)) %>%
                                       pull(mean_biden_margin)/100
                                     
                                     tibble(date = RUN_DATE_MOD,
@@ -116,11 +115,13 @@ simulation_election_day_x <- function(RUN_DATE, todays_polls, DAILY_SD){
   ggplot(national_poll_average, aes(x=date,y=national_biden_margin)) +
     geom_line()  +
     geom_point(data =  todays_polls %>%
-                 filter(as_date(as_datetime(todays_polls$entry.date.time..et.,format = '%m/%d/%Y %H:%M:%S')) <= RUN_DATE) %>%
+                 filter(as_date(as_datetime(todays_polls$entry.date.time..et., format='%m/%d/%Y %H:%M:%S')) <= RUN_DATE) %>%
                  filter(state == '--') %>%
                  mutate(biden_margin = (biden-trump)/100),
-               aes(x=date,y=biden_margin))
+               aes(x=date,y=biden_margin),alpha=0.2)
   
+  # now filter dates
+  todays_polls <- todays_polls %>% filter(mdy(end.date) >= start_date)
   
   # get the last one for later on
   national_biden_margin <- last(national_poll_average$national_biden_margin)
@@ -137,7 +138,7 @@ simulation_election_day_x <- function(RUN_DATE, todays_polls, DAILY_SD){
     # average
     group_by(state) %>%
     mutate(decayed_weight = exp( as.numeric(RUN_DATE - mdy(end.date))*-0.05)) %>%
-    summarise(mean_biden_margin = weighted.mean(biden_margin,weight*decayed_weight)/100,
+    summarise(mean_biden_margin = weighted.mean(biden_margin,weight*decayed_weight,na.rm=T)/100,
               num_polls = n(),
               sum_weights = sum(weight,na.rm=T))
   
@@ -155,7 +156,7 @@ simulation_election_day_x <- function(RUN_DATE, todays_polls, DAILY_SD){
   state <- results %>%
     left_join(state_averages, by = "state") %>%
     mutate(dem_lean_2016 = clinton_margin - 0.021,
-           dem_lean_2020_polls = mean_biden_margin - national_biden_margin) %>%
+           dem_lean_2016_polls = mean_biden_margin - national_biden_margin) %>%
     left_join(coefs, by = "state")
   
   
@@ -166,21 +167,21 @@ simulation_election_day_x <- function(RUN_DATE, todays_polls, DAILY_SD){
     mutate(mean_biden_margin = biden_margin/100,
            sum_weights = weight,
            dem_lean_2016 = clinton_margin - 0.021,
-           dem_lean_2020_polls = mean_biden_margin - national_biden_margin) %>%
+           dem_lean_2016_polls = mean_biden_margin - national_biden_margin) %>%
     left_join(coefs, by = "state")
   
   
   # model to fill in polling gaps -------------------------------------------
   
   # simple stepwise linear model with AIC selection
-  stepwise_model <- step(lm(mean_biden_margin ~ clinton_margin + black_pct + college_pct + 
-                              hisp_other_pct + median_age + pct_white_evangel + pop_density + 
+  stepwise_model <- step(lm(mean_biden_margin ~  black_pct  + college_pct + 
+                              hisp_other_pct + pct_white_evangel + pop_density + 
                               white_pct + wwc_pct,
                             data = state %>%
-                              select(mean_biden_margin,clinton_margin,black_pct,college_pct,
+                              select(mean_biden_margin,black_pct,college_pct,
                                      hisp_other_pct,median_age,pct_white_evangel,
                                      pop_density,white_pct,wwc_pct,sum_weights) %>%
-                              mutate_at(c('clinton_margin','black_pct','college_pct',
+                              mutate_at(c('black_pct','college_pct',
                                           'hisp_other_pct','median_age','pct_white_evangel',
                                           'pop_density','white_pct','wwc_pct'),
                                         function(x){
@@ -194,10 +195,10 @@ simulation_election_day_x <- function(RUN_DATE, todays_polls, DAILY_SD){
   # glmnet model fit using caret
   # training is the poll data
   training <- state %>% 
-    dplyr::select(state,mean_biden_margin,clinton_margin,black_pct,college_pct,
+    dplyr::select(state,mean_biden_margin,black_pct,college_pct,
                   hisp_other_pct,median_age,pct_white_evangel,
                   pop_density,white_pct,wwc_pct,sum_weights) %>%
-    mutate_at(c('clinton_margin','black_pct','college_pct',
+    mutate_at(c('black_pct','college_pct',
                 'hisp_other_pct','median_age','pct_white_evangel',
                 'pop_density','white_pct','wwc_pct'),
               function(x){
@@ -207,18 +208,18 @@ simulation_election_day_x <- function(RUN_DATE, todays_polls, DAILY_SD){
   
   # testing is the averaged data
   testing <- state  %>% 
-    dplyr::select(state,mean_biden_margin,clinton_margin,black_pct,college_pct,
+    dplyr::select(state,mean_biden_margin,black_pct,college_pct,
                   hisp_other_pct,median_age,pct_white_evangel,
                   pop_density,white_pct,wwc_pct,sum_weights) %>%
-    mutate_at(c('clinton_margin','black_pct','college_pct',
+    mutate_at(c('black_pct','college_pct',
                 'hisp_other_pct','median_age','pct_white_evangel',
                 'pop_density','white_pct','wwc_pct'),
               function(x){
                 (x - mean(x)) / sd(x)
               }) 
   
-  glmnet_model <- train(mean_biden_margin ~ clinton_margin + black_pct + college_pct + 
-                          hisp_other_pct + median_age + pct_white_evangel + pop_density + 
+  glmnet_model <- train(mean_biden_margin ~  black_pct + college_pct + 
+                          hisp_other_pct + pct_white_evangel + pop_density + 
                           white_pct + wwc_pct,
                         data = training,
                         weights = sum_weights,
@@ -231,12 +232,20 @@ simulation_election_day_x <- function(RUN_DATE, todays_polls, DAILY_SD){
   glmnet_model
   
   
-  # combine predictions from all 3!
-  preds <- predict(object=stepwise_model,newdata=testing) + 
-    predict(object=glmnet_model,newdata=testing) 
+  # combine predictions from the two models
+  preds <- testing %>%
+    mutate(aic_pred = predict(object=stepwise_model,newdata=.),
+           glmnet_pred = predict(object=glmnet_model,newdata=testing)) %>%
+    mutate(pred = (aic_pred + glmnet_pred)/2) %>%
+    pull(pred)
   
+  # and average the demographic predictions with the implied margin from partisan lean
+  # giving more weight to the partisan lean until we have a ton of polls to shore up the regression
+  demo_weight <- min( sum(state$sum_weights,na.rm=T) / (sum(state$sum_weights,na.rm=T) + 100), 0.5)
+  partisan_weight <- 1 - demo_weight
   
-  preds <- preds / 2
+  preds <- (preds * (demo_weight)) + 
+    ( (state$dem_lean_2016 + national_biden_margin) * (partisan_weight) )
   
   # make the projections
   testing$proj_mean_biden_margin <- preds
@@ -249,7 +258,7 @@ simulation_election_day_x <- function(RUN_DATE, todays_polls, DAILY_SD){
   
   mean(abs(testing$proj_mean_biden_margin - testing$mean_biden_margin),na.rm=T)
   
-  # add to state data frame
+  # average predictions with the polls ------------------------------------
   state <- state %>%
     # append the predictions
     left_join(testing %>% dplyr::select(state,proj_mean_biden_margin), by = "state") %>%
@@ -260,7 +269,41 @@ simulation_election_day_x <- function(RUN_DATE, todays_polls, DAILY_SD){
              (mean_biden_margin * (sum_weights/(sum_weights+regression_weight)) ) +
              (proj_mean_biden_margin * (regression_weight/(sum_weights+regression_weight)) )
     ) %>%
-    mutate(mean_biden_margin = ifelse(mean_biden_margin==999,NA,mean_biden_margin))
+    mutate(mean_biden_margin = ifelse(mean_biden_margin == 999,NA,mean_biden_margin))
+  
+  
+  # adjust state projections to match average of national vote 
+  og_national_biden_margin <- last(national_poll_average$national_biden_margin)
+  
+  implied_national_biden_margin <- weighted.mean(state$mean_biden_margin_hat,state_weights) 
+  
+  # regress the state predictions back toward the national average
+  natl_diff <- function(par, 
+                        dat = state, 
+                        weights = state_weights,
+                        target_natl = og_national_biden_margin,
+                        current_natl = implied_national_biden_margin){
+
+    dat$mean_biden_margin_hat_shift <- dat$mean_biden_margin_hat + (target_natl - current_natl)*par
+    
+    #print(weighted.mean(dat$mean_biden_margin_hat, weights) )
+    #print(weighted.mean(dat$mean_biden_margin_hat_shift, weights) )
+    
+    return( abs( weighted.mean(dat$mean_biden_margin_hat_shift, weights) - target_natl) )
+    # return( dat$mean_biden_margin_hat )
+
+  }
+  
+  natl_diff(par = 1)
+  
+  multiplier <- optim(par = 1,fn = natl_diff,method = "Brent",upper = 5, lower = -5)$par
+  
+  state$mean_biden_margin_hat <- state$mean_biden_margin_hat + 
+    (og_national_biden_margin - implied_national_biden_margin)*multiplier
+  
+  
+  # save margin for later
+  national_biden_margin <- weighted.mean(state$mean_biden_margin_hat,state_weights) 
   
   # plot final prediction against data
   ggplot(na.omit(state), aes(mean_biden_margin, mean_biden_margin_hat, label=state)) +
@@ -268,10 +311,8 @@ simulation_election_day_x <- function(RUN_DATE, todays_polls, DAILY_SD){
     geom_abline() + 
     geom_smooth(method='lm')
   
-  
-
   # generate new state lean variable based on adjusted biden national margin
-  state$dem_lean_2020 <-  state$mean_biden_margin_hat - national_biden_margin 
+  state$dem_lean_2016 <-  state$mean_biden_margin_hat - national_biden_margin 
   
   state_evs <- read_csv('data/state_evs.csv')
   
@@ -279,12 +320,12 @@ simulation_election_day_x <- function(RUN_DATE, todays_polls, DAILY_SD){
   final <- state %>%
     dplyr::select(state,region,clinton_margin,dem_lean_2016,
                   mean_biden_margin = mean_biden_margin_hat,
-                  dem_lean_2020_polls,
-                  dem_lean_2020, 
+                  dem_lean_2016_polls,
+                  dem_lean_2016, 
                   num_polls,
                   pop_density,
                   wwc_pct) %>%
-    mutate(shift = dem_lean_2020 - dem_lean_2016)
+    mutate(shift = dem_lean_2016 - dem_lean_2016)
   
   final <- final %>%
     left_join(state_evs)
@@ -292,9 +333,9 @@ simulation_election_day_x <- function(RUN_DATE, todays_polls, DAILY_SD){
   
   # toy simulations ---------------------------------------------------------
   # errors
-  national_error <- (0.02) + (DAILY_SD * sqrt(days_til_election)) # national error + drift
-  regional_error <- (0.02) 
-  state_error <- (0.02) 
+  national_error <- (0.025) + (DAILY_SD * sqrt(days_til_election)) # national error + drift
+  regional_error <- (0.025) 
+  state_error <- (0.03) 
   
   sqrt(national_error^2 + regional_error^2 + state_error^2) # this is the total standard deviation on vote margin
   
@@ -352,8 +393,8 @@ simulation_election_day_x <- function(RUN_DATE, todays_polls, DAILY_SD){
   simulated_polling_errors <- simulate_polling_errors(state_errors, regional_errors, national_errors, state_region)
   
   sims <- simulated_polling_errors %>%
-    left_join(final %>% select(state, dem_lean_2020), by = "state") %>%
-    mutate(proj_biden_margin = dem_lean_2020 + national_biden_margin,
+    left_join(final %>% select(state, dem_lean_2016), by = "state") %>%
+    mutate(proj_biden_margin = dem_lean_2016 + national_biden_margin,
            error = state_error + regional_error + national_error,
            sim_biden_margin = proj_biden_margin + error) %>%
     group_by(state) %>%
@@ -400,11 +441,6 @@ simulation_election_day_x <- function(RUN_DATE, todays_polls, DAILY_SD){
     ungroup()
   
   # return list of this ------
-  # get the raw national margin from polls and the implied one
-  og_national_biden_margin <- last(national_poll_average$national_biden_margin)
-  national_biden_margin <- national_summary$biden_nat_margin_mean
-  
-  
   # return
   list(RUN_DATE = RUN_DATE,
        national_summary = national_summary,
@@ -412,6 +448,7 @@ simulation_election_day_x <- function(RUN_DATE, todays_polls, DAILY_SD){
        sims_summary = sims_summary,
        raw_sims = sims,
        og_national_biden_margin = og_national_biden_margin,
+       implied_national_biden_margin = implied_national_biden_margin,
        national_biden_margin = national_biden_margin)
   
   
@@ -431,6 +468,7 @@ write_rds(output,sprintf('output/model_runs/model_run_%s.rds',todays_simulations
 # calc shift from 2016 to 2020 --------------------------------------------
 # first, get the national margins from the model
 og_national_biden_margin <- todays_simulations$og_national_biden_margin
+implied_national_biden_margin <- todays_simulations$implied_national_biden_margin
 national_biden_margin <- todays_simulations$national_biden_margin
 
 # import results data
@@ -604,7 +642,7 @@ ev.popvote.divide <- tipping_point %>%
   filter(cumulative_ev >= 270) %>%
   filter(row_number() == 1)  %>%
   mutate(diff =  sim_biden_margin - dem_nat_pop_margin) %>%
-  pull(diff) %>% mean # hist(breaks=100)
+  pull(diff) %>% hist(breaks=100)
 
 ev.popvote.divide
 
@@ -803,6 +841,21 @@ tipping_point.kable <- left_join(tipping_point %>%
   knitr::kable(.)
 
 # ev-popvote divide?
+tipping_point %>%
+  group_by(draw) %>%
+  mutate(cumulative_ev = cumsum(ev)) %>%
+  filter(cumulative_ev >= 270) %>%
+  filter(row_number() == 1)  %>%
+  mutate(diff =  sim_biden_margin - dem_nat_pop_margin) %>%
+  pull(diff) %>%
+  tibble(diff = .) %>%
+  ggplot(.,aes(x=diff)) +
+  geom_vline(xintercept = 0) +
+  geom_histogram(binwidth=0.001) +
+  scale_x_continuous(breaks=seq(-1,1,0.01),labels=function(x){round(x*100)}) +
+  theme_minimal() + 
+  labs(x="Difference betwen the popular vote and margin in the tipping-point state") 
+
 ev.popvote.divide <- tipping_point %>%
   group_by(draw) %>%
   mutate(cumulative_ev = cumsum(ev)) %>%

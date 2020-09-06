@@ -114,15 +114,15 @@ With all that out of the way, I guess we can proceed…
 
 These graphs are updated hourly with new polls.
 
-Last updated on **September 05, 2020 at 02:31 PM EDT.**
+Last updated on **September 06, 2020 at 02:27 PM EDT.**
 
 ### National polling average and popular vote prediction
 
 Joe Biden’s margin in national polls is
-**<span style="color: #3498DB;">8.9</span>** percentage points.
+**<span style="color: #3498DB;">9</span>** percentage points.
 
 His margin implied by state-level polls and the demographic regression
-is **<span style="color: #3498DB;">9.2</span>** percentage points.
+is **<span style="color: #3498DB;">8.8</span>** percentage points.
 
 This chart draws a trend for Biden’s implied national margin and plots
 individual national polls alongside it. His implied national margin will
@@ -130,7 +130,7 @@ not always match the raw average of national polls.
 
 ![](README_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
 
-### State polling averages
+### State polling averages and vote prediction
 
 The polling average in each state:
 
@@ -144,41 +144,50 @@ In table form…
 
 | State | Biden margin, uncertainty interval (%) | State | Biden margin, … (%) |
 | :---- | :------------------------------------- | :---- | :------------------ |
-| NH    | 9 \[-4, 23\]                           | TX    | 0 \[-14, 14\]       |
-| WI    | 8 \[-6, 22\]                           | GA    | \-1 \[-14, 13\]     |
-| MI    | 8 \[-6, 22\]                           | OH    | \-2 \[-16, 12\]     |
-| NV    | 7 \[-7, 21\]                           | AK    | \-2 \[-16, 12\]     |
-| MN    | 7 \[-7, 21\]                           | MO    | \-5 \[-19, 9\]      |
-| AZ    | 6 \[-8, 20\]                           | MT    | \-5 \[-19, 8\]      |
-| PA    | 6 \[-8, 20\]                           | SC    | \-6 \[-19, 8\]      |
-| FL    | 5 \[-9, 18\]                           | KS    | \-8 \[-22, 6\]      |
-| NC    | 1 \[-12, 15\]                          | LA    | \-10 \[-24, 4\]     |
-| IA    | 0 \[-14, 14\]                          | MS    | \-11 \[-24, 3\]     |
+| NH    | 10 \[-5, 26\]                          | GA    | 0 \[-16, 15\]       |
+| WI    | 8 \[-8, 23\]                           | IA    | \-1 \[-17, 14\]     |
+| MI    | 8 \[-8, 24\]                           | OH    | \-2 \[-17, 14\]     |
+| MN    | 7 \[-8, 23\]                           | AK    | \-3 \[-19, 13\]     |
+| NV    | 7 \[-8, 23\]                           | MT    | \-5 \[-21, 10\]     |
+| AZ    | 6 \[-9, 22\]                           | SC    | \-6 \[-21, 10\]     |
+| PA    | 6 \[-9, 22\]                           | MO    | \-6 \[-22, 10\]     |
+| FL    | 5 \[-11, 21\]                          | KS    | \-8 \[-24, 8\]      |
+| NC    | 2 \[-14, 17\]                          | NE    | \-9 \[-24, 7\]      |
+| TX    | 1 \[-15, 16\]                          | LA    | \-10 \[-25, 6\]     |
 
 **The rest of the states:**
 
 | State | Biden margin, uncertainty interval (%) | State | Biden margin, … (%) |
 | :---- | :------------------------------------- | :---- | :------------------ |
-| DC    | 78 \[64, 92\]                          | CO    | 11 \[-3, 25\]       |
-| CA    | 35 \[21, 49\]                          | ME    | 11 \[-3, 25\]       |
-| MA    | 33 \[19, 47\]                          | TN    | \-12 \[-26, 1\]     |
-| HI    | 32 \[18, 46\]                          | NE    | \-13 \[-27, 1\]     |
-| WA    | 31 \[17, 44\]                          | IN    | \-13 \[-27, 0\]     |
-| VT    | 30 \[16, 44\]                          | AR    | \-15 \[-29, -1\]    |
-| MD    | 26 \[12, 40\]                          | KY    | \-16 \[-29, -2\]    |
-| NY    | 25 \[11, 39\]                          | SD    | \-16 \[-30, -2\]    |
-| RI    | 21 \[7, 35\]                           | UT    | \-17 \[-31, -3\]    |
-| IL    | 21 \[7, 35\]                           | ID    | \-19 \[-33, -5\]    |
-| OR    | 20 \[6, 33\]                           | ND    | \-20 \[-33, -6\]    |
-| CT    | 20 \[6, 33\]                           | AL    | \-20 \[-34, -6\]    |
-| NJ    | 19 \[5, 33\]                           | OK    | \-21 \[-34, -7\]    |
-| DE    | 17 \[3, 31\]                           | WV    | \-25 \[-39, -11\]   |
-| NM    | 14 \[0, 28\]                           | WY    | \-29 \[-43, -15\]   |
-| VA    | 13 \[-1, 26\]                          |       |                     |
+| DC    | 73 \[57, 89\]                          | CO    | 12 \[-4, 27\]       |
+| CA    | 34 \[18, 49\]                          | ME    | 11 \[-5, 26\]       |
+| HI    | 32 \[16, 47\]                          | MS    | \-12 \[-28, 3\]     |
+| MA    | 32 \[17, 48\]                          | IN    | \-13 \[-28, 3\]     |
+| MD    | 27 \[12, 43\]                          | UT    | \-13 \[-28, 3\]     |
+| VT    | 26 \[10, 42\]                          | TN    | \-14 \[-29, 2\]     |
+| WA    | 25 \[10, 41\]                          | SD    | \-14 \[-30, 1\]     |
+| NY    | 25 \[10, 41\]                          | ID    | \-16 \[-31, 0\]     |
+| NJ    | 21 \[5, 37\]                           | ND    | \-17 \[-33, -1\]    |
+| CT    | 21 \[6, 37\]                           | KY    | \-17 \[-33, -1\]    |
+| RI    | 20 \[4, 36\]                           | AL    | \-18 \[-34, -2\]    |
+| IL    | 19 \[3, 35\]                           | AR    | \-19 \[-34, -3\]    |
+| DE    | 16 \[0, 31\]                           | OK    | \-20 \[-36, -5\]    |
+| OR    | 14 \[-2, 29\]                          | WY    | \-23 \[-39, -8\]    |
+| NM    | 14 \[-2, 29\]                          | WV    | \-26 \[-42, -10\]   |
+| VA    | 13 \[-2, 29\]                          |       |                     |
 
-### State polling averages, over time:
+### State polling averages and vote prediction, over time:
 
-*(Just for key states.)*
+In our simple polling model, Joe Biden’s projected election-day vote
+margin in any state is equal to a combination of his polling average and
+a projection based on the relationship between demographics and the
+polls in other states. Accordingly, the chart below shows our estimate
+of his support according to the polls and our demographic regression on
+any given day—and it *also* represents our projection for his final
+election-day vote. *(In other words, we don’t forecast any movement in
+the race between now and election day. Although it is naive to assume
+the race will remain static, it suits our educaitonal purposes with this
+model.)*
 
 ![](README_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
@@ -204,17 +213,19 @@ how often that happens:
 
 | State | Tipping point chance (%) | State | Tipping point chance (%) |
 | :---- | -----------------------: | :---- | -----------------------: |
-| FL    |                     23.4 | ME    |                      1.1 |
-| PA    |                     17.5 | VA    |                      1.0 |
-| MI    |                     11.4 | IA    |                      0.5 |
-| AZ    |                     11.3 | GA    |                      0.4 |
-| MN    |                      9.8 | OH    |                      0.3 |
-| WI    |                      8.0 | NM    |                      0.1 |
-| NV    |                      5.2 | AK    |                      0.0 |
-| TX    |                      2.9 | CT    |                      0.0 |
-| NH    |                      2.6 | DE    |                      0.0 |
-| CO    |                      2.4 | MO    |                      0.0 |
-| NC    |                      2.2 | NJ    |                      0.0 |
+| FL    |                     21.8 | ME    |                      1.7 |
+| PA    |                     14.3 | OH    |                      1.2 |
+| MI    |                     11.2 | OR    |                      1.1 |
+| AZ    |                      8.6 | NM    |                      0.8 |
+| TX    |                      7.5 | IA    |                      0.7 |
+| MN    |                      7.1 | AK    |                      0.2 |
+| WI    |                      6.9 | DE    |                      0.2 |
+| NC    |                      4.1 | IL    |                      0.1 |
+| NV    |                      4.0 | CT    |                      0.0 |
+| CO    |                      2.7 | KS    |                      0.0 |
+| GA    |                      2.1 | MO    |                      0.0 |
+| NH    |                      1.8 | MT    |                      0.0 |
+| VA    |                      1.8 | RI    |                      0.0 |
 
 ### Electoral college outcomes
 
@@ -233,12 +244,12 @@ electoral college majority:
 
 |                                                                           | Chance (%) |
 | :------------------------------------------------------------------------ | ---------: |
-| Democrats win the popular vote and electoral college                      |         82 |
-| Democrats win the popular vote, but Republicans win the electoral college |         10 |
-| Republicans win the popular vote and electoral college                    |          8 |
+| Democrats win the popular vote and electoral college                      |         81 |
+| Democrats win the popular vote, but Republicans win the electoral college |          9 |
+| Republicans win the popular vote and electoral college                    |         10 |
 | Republicans win the popular vote, but Democrats win the electoral college |          0 |
 
-The probability the Democrats win the national popular vote is 92.1%.
+The probability the Democrats win the national popular vote is 89.9%.
 
 #### The divide between the electoral college and popular vote
 
@@ -246,7 +257,7 @@ We can quantify either party’s edge as the average across simulations of
 Joe Biden’s margin in the tipping-point state and his margin nationally:
 
 On average, the tipping point state is
-**<span style="color: #3498DB;">3</span>** percentage points to the
+**<span style="color: #3498DB;">2.5</span>** percentage points to the
 **<span style="color: #3498DB;">right</span>** of the nation as a whole.
 
 ### Changes in state averages relative to the national margin
