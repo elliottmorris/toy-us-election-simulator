@@ -764,6 +764,8 @@ ev.histogram <- sims %>%
   scale_fill_manual(values=c('TRUE'='blue','FALSE'='red')) +
   scale_y_continuous(labels = function(x){paste0(round(x / max(sims$draw)*100,2),'%')},
                      expand = expansion(mult = c(0, 0.2))) +
+  scale_x_continuous(breaks = c(0, 130, 270, 400, 538),
+                     limits = c(0, 538)) +
   labs(x='Democratic electoral votes',y='Probability') +
   theme_minimal() + 
   theme(legend.position = 'none') +
