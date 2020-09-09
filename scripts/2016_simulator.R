@@ -126,7 +126,7 @@ simulation_election_day_x <- function(RUN_DATE, todays_polls, DAILY_SD){
                                       mutate(date_entered = as_date(as_datetime(todays_polls$entry.date.time..et.)) ) %>%
                                       filter(date_entered <= RUN_DATE_MOD) %>%
                                       filter(state == '--') %>%
-                                      mutate(decayed_weight = exp( as.numeric(RUN_DATE_MOD - ymd(end.date))*-0.05)) %>%
+                                      mutate(decayed_weight = exp( as.numeric(RUN_DATE_MOD - ymd(end.date))*-0.1)) %>%
                                       summarise(mean_clinton_margin = weighted.mean(clinton-trump,weight*decayed_weight,na.rm=T)) %>%
                                       pull(mean_clinton_margin)/100
                                     
@@ -160,7 +160,7 @@ simulation_election_day_x <- function(RUN_DATE, todays_polls, DAILY_SD){
     mutate(clinton_margin = (clinton-trump) + national_clinton_margin_delta) %>%
     # average
     group_by(state) %>%
-    mutate(decayed_weight = exp( as.numeric(RUN_DATE - ymd(end.date))*-0.05)) %>%
+    mutate(decayed_weight = exp( as.numeric(RUN_DATE - ymd(end.date))*-0.1)) %>%
     summarise(mean_clinton_margin = weighted.mean(clinton_margin,weight*decayed_weight,na.rm=T)/100,
               num_polls = n(),
               sum_weights = sum(weight,na.rm=T))
@@ -268,7 +268,7 @@ simulation_election_day_x <- function(RUN_DATE, todays_polls, DAILY_SD){
   partisan_weight <- 1 - demo_weight
   
   preds <- (preds * (demo_weight)) + 
-    ( (state$dem_lean_2016 + national_biden_margin) * (partisan_weight) )
+    ( (state$dem_lean_2012 + national_clinton_margin) * (partisan_weight) )
   
   # make the projections
   testing$proj_mean_clinton_margin <- preds
@@ -287,12 +287,12 @@ simulation_election_day_x <- function(RUN_DATE, todays_polls, DAILY_SD){
     left_join(testing %>% dplyr::select(state,proj_mean_clinton_margin), by = "state") %>%
     # make some mutations
     mutate(sum_weights = ifelse(is.na(sum_weights),0,sum_weights),
-           mean_clinton_margin = ifelse(is.na(mean_clinton_margin),999,mean_clinton_margin))  %>%
-    mutate(poll_weight = (sum_weights/(sum_weights+regression_weight)) ,
-           demographic_weight = (regression_weight/(sum_weights+regression_weight))) %>%
+           mean_clinton_margin = ifelse(is.na(mean_clinton_margin),999,mean_clinton_margin),
+           poll_weight = sum_weights / (sum_weights + regression_weight),
+           demo_regression_weight = regression_weight / (sum_weights + regression_weight))  %>%
     mutate(mean_clinton_margin_hat = #proj_mean_clinton_margin
-             (mean_clinton_margin * poll_weight) +
-             (proj_mean_clinton_margin *  demographic_weight)
+             (mean_clinton_margin * poll_weight ) +
+             (proj_mean_clinton_margin * demo_regression_weight )
     ) %>%
     mutate(mean_clinton_margin = ifelse(mean_clinton_margin == 999,NA,mean_clinton_margin))
   
@@ -358,7 +358,7 @@ simulation_election_day_x <- function(RUN_DATE, todays_polls, DAILY_SD){
   
   # toy simulations ---------------------------------------------------------
   # errors
-  national_error <- (0.025) + (DAILY_SD * sqrt(days_til_election)) # national error + drift
+  national_error <- sqrt((0.025^2) + ((DAILY_SD * sqrt(days_til_election))^2)) # national error + drift
   regional_error <- (0.025) 
   state_error <- (0.03) 
   
@@ -645,7 +645,7 @@ sims %>%
 
 # simulate for every day of the cycle so far ------------------------------
 # every day from today going back in time
-days_to_simulate <- na.omit(as_date(na.omit(rev(seq.Date(ymd('2016-03-01'),RUN_DATE,'day'))))[seq(1,300,3)])
+days_to_simulate <- na.omit(as_date(na.omit(rev(seq.Date(ymd('2016-03-01'),RUN_DATE,'day'))))[seq(1,300,1)])
 
 
 # run the simulations for each week in parllale!!

@@ -103,7 +103,7 @@ simulation_election_day_x <- function(RUN_DATE, todays_polls, DAILY_SD){
                                       mutate(date_entered = as_date(as_datetime(todays_polls$entry.date.time..et., format='%m/%d/%Y %H:%M:%S')) ) %>%
                                       filter(date_entered <= RUN_DATE_MOD) %>%
                                       filter(state == '--') %>%
-                                      mutate(decayed_weight = exp( as.numeric(RUN_DATE_MOD - mdy(end.date))*-0.05)) %>%
+                                      mutate(decayed_weight = exp( as.numeric(RUN_DATE_MOD - mdy(end.date))*-0.1)) %>%
                                       summarise(mean_biden_margin = weighted.mean(biden-trump,weight*decayed_weight,na.rm=T)) %>%
                                       pull(mean_biden_margin)/100
                                     
@@ -137,7 +137,7 @@ simulation_election_day_x <- function(RUN_DATE, todays_polls, DAILY_SD){
     mutate(biden_margin = (biden-trump) + national_biden_margin_delta) %>%
     # average
     group_by(state) %>%
-    mutate(decayed_weight = exp( as.numeric(RUN_DATE - mdy(end.date))*-0.05)) %>%
+    mutate(decayed_weight = exp( as.numeric(RUN_DATE - mdy(end.date))*-0.1)) %>%
     summarise(mean_biden_margin = weighted.mean(biden_margin,weight*decayed_weight,na.rm=T)/100,
               num_polls = n(),
               sum_weights = sum(weight,na.rm=T))
@@ -264,10 +264,12 @@ simulation_election_day_x <- function(RUN_DATE, todays_polls, DAILY_SD){
     left_join(testing %>% dplyr::select(state,proj_mean_biden_margin), by = "state") %>%
     # make some mutations
     mutate(sum_weights = ifelse(is.na(sum_weights),0,sum_weights),
-           mean_biden_margin = ifelse(is.na(mean_biden_margin),999,mean_biden_margin))  %>%
+           mean_biden_margin = ifelse(is.na(mean_biden_margin),999,mean_biden_margin),
+           poll_weight = sum_weights / (sum_weights + regression_weight),
+           demo_regression_weight = regression_weight / (sum_weights + regression_weight))  %>%
     mutate(mean_biden_margin_hat = #proj_mean_biden_margin
-             (mean_biden_margin * (sum_weights/(sum_weights+regression_weight)) ) +
-             (proj_mean_biden_margin * (regression_weight/(sum_weights+regression_weight)) )
+             (mean_biden_margin * poll_weight ) +
+             (proj_mean_biden_margin * demo_regression_weight )
     ) %>%
     mutate(mean_biden_margin = ifelse(mean_biden_margin == 999,NA,mean_biden_margin))
   
@@ -333,7 +335,7 @@ simulation_election_day_x <- function(RUN_DATE, todays_polls, DAILY_SD){
   
   # toy simulations ---------------------------------------------------------
   # errors
-  national_error <- (0.025) + (DAILY_SD * sqrt(days_til_election)) # national error + drift
+  national_error <- sqrt((0.025^2) + ((DAILY_SD * sqrt(days_til_election))^2)) # national error + drift
   regional_error <- (0.025) 
   state_error <- (0.03) 
   
