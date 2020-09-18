@@ -99,7 +99,7 @@ purpose of this repo is to help people understand how these forecasts
 work, and to provide some forecasters with code to improve their
 methods.
 
-With all that out of the way, I guess we can proceed…
+With all that out of the way, I guess we can proceed.
 
 Automated report:
 -----------------
