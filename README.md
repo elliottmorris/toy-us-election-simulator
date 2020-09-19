@@ -108,7 +108,7 @@ Automated report:
 
 These graphs are updated hourly with new polls.
 
-Last updated on **September 18, 2020 at 10:20 PM EDT.**
+Last updated on **September 18, 2020 at 11:14 PM EDT.**
 
 ### National polling average and popular vote prediction
 
@@ -162,13 +162,13 @@ In table form…
 | NY    | 26 \[14, 37\]                          | IN    | -16 \[-27, -4\]     |
 | WA    | 25 \[14, 37\]                          | ID    | -16 \[-28, -4\]     |
 | CT    | 22 \[10, 34\]                          | ND    | -17 \[-29, -5\]     |
-| NJ    | 21 \[9, 33\]                           | AL    | -18 \[-30, -6\]     |
+| NJ    | 21 \[10, 33\]                          | AL    | -18 \[-29, -6\]     |
 | RI    | 20 \[8, 32\]                           | AR    | -19 \[-31, -7\]     |
-| IL    | 19 \[7, 31\]                           | KY    | -19 \[-31, -7\]     |
+| IL    | 19 \[7, 31\]                           | KY    | -19 \[-31, -8\]     |
 | ME    | 16 \[4, 28\]                           | OK    | -23 \[-35, -11\]    |
 | DE    | 16 \[4, 28\]                           | WY    | -23 \[-35, -12\]    |
-| VA    | 14 \[2, 26\]                           | WV    | -27 \[-39, -15\]    |
-| OR    | 13 \[1, 24\]                           |       |                     |
+| VA    | 14 \[3, 26\]                           | WV    | -27 \[-39, -15\]    |
+| OR    | 13 \[1, 25\]                           |       |                     |
 
 ### State polling averages and vote prediction, over time:
 
@@ -207,22 +207,21 @@ how often that happens:
 
 | State | Tipping point chance (%) | State | Tipping point chance (%) |
 |:------|-------------------------:|:------|-------------------------:|
-| FL    |                     18.4 | IA    |                      0.6 |
-| PA    |                     15.5 | ME    |                      0.2 |
-| AZ    |                      9.3 | AK    |                      0.1 |
-| TX    |                      9.2 | DE    |                      0.1 |
-| MI    |                      8.2 | IL    |                      0.1 |
-| WI    |                      7.7 | MO    |                      0.1 |
-| MN    |                      5.7 | CT    |                      0.0 |
-| NC    |                      5.5 | KS    |                      0.0 |
-| NV    |                      4.6 | LA    |                      0.0 |
-| NH    |                      3.9 | MS    |                      0.0 |
-| CO    |                      3.5 | MT    |                      0.0 |
-| GA    |                      2.9 | NE    |                      0.0 |
+| FL    |                     18.3 | IA    |                      0.7 |
+| PA    |                     15.4 | NM    |                      0.7 |
+| AZ    |                      9.2 | ME    |                      0.2 |
+| TX    |                      9.2 | AK    |                      0.1 |
+| MI    |                      8.4 | DE    |                      0.1 |
+| WI    |                      7.5 | IL    |                      0.1 |
+| MN    |                      5.7 | MO    |                      0.1 |
+| NC    |                      5.6 | CT    |                      0.0 |
+| NV    |                      4.7 | KS    |                      0.0 |
+| NH    |                      3.9 | LA    |                      0.0 |
+| CO    |                      3.4 | MT    |                      0.0 |
+| GA    |                      2.8 | NE    |                      0.0 |
 | OR    |                      1.5 | NJ    |                      0.0 |
 | VA    |                      1.2 | RI    |                      0.0 |
-| OH    |                      1.0 | SC    |                      0.0 |
-| NM    |                      0.7 | UT    |                      0.0 |
+| OH    |                      1.1 | SC    |                      0.0 |
 
 ### Electoral college outcomes
 
@@ -243,12 +242,12 @@ electoral college majority:
 |:--------------------------------------------------------------------------|-----------:|
 | Democrats win the popular vote and electoral college                      |         90 |
 | Democrats win the popular vote, but Republicans win the electoral college |          7 |
-| Republicans win the popular vote and electoral college                    |          4 |
+| Republicans win the popular vote and electoral college                    |          3 |
 | Republicans win the popular vote, but Democrats win the electoral college |          0 |
 
 The overall probability that Joe Biden win the national popular vote is
-96.42%. The overall probability that Joe Biden win the electoral college
-majority is 89.89%.
+96.44%. The overall probability that Joe Biden win the electoral college
+majority is 89.99%.
 
 **The gap between the popular vote and tipping-point state**
 
