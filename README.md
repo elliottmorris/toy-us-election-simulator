@@ -108,7 +108,7 @@ Automated report:
 
 These graphs are updated hourly with new polls.
 
-Last updated on **September 21, 2020 at 08:27 PM EDT.**
+Last updated on **September 21, 2020 at 09:19 PM EDT.**
 
 ### National polling average and popular vote prediction
 
@@ -147,7 +147,7 @@ In table form…
 | AZ    | 5 \[-6, 17\]                           | MO    | -8 \[-19, 4\]       |
 | FL    | 4 \[-8, 15\]                           | LA    | -8 \[-20, 4\]       |
 | NC    | 2 \[-10, 14\]                          | KS    | -8 \[-20, 3\]       |
-| GA    | 1 \[-11, 12\]                          | NE    | -9 \[-21, 3\]       |
+| GA    | 1 \[-11, 13\]                          | NE    | -9 \[-21, 3\]       |
 
 **The rest of the states:**
 
@@ -158,14 +158,14 @@ In table form…
 | HI    | 30 \[18, 41\]                          | MS    | -11 \[-23, 0\]      |
 | CA    | 29 \[18, 41\]                          | UT    | -12 \[-24, -1\]     |
 | MD    | 28 \[16, 40\]                          | AL    | -13 \[-24, -1\]     |
-| VT    | 27 \[15, 38\]                          | TN    | -14 \[-25, -2\]     |
+| VT    | 27 \[15, 38\]                          | TN    | -14 \[-26, -2\]     |
 | WA    | 25 \[13, 37\]                          | SD    | -15 \[-27, -3\]     |
 | NY    | 25 \[14, 37\]                          | IN    | -16 \[-27, -4\]     |
-| NJ    | 21 \[9, 33\]                           | ID    | -16 \[-28, -5\]     |
+| NJ    | 21 \[9, 33\]                           | ID    | -16 \[-28, -4\]     |
 | CT    | 21 \[10, 33\]                          | ND    | -17 \[-29, -5\]     |
-| IL    | 19 \[7, 31\]                           | AR    | -19 \[-31, -8\]     |
+| IL    | 19 \[7, 31\]                           | AR    | -19 \[-31, -7\]     |
 | RI    | 19 \[8, 31\]                           | KY    | -20 \[-31, -8\]     |
-| DE    | 16 \[4, 27\]                           | OK    | -23 \[-35, -12\]    |
+| DE    | 16 \[4, 28\]                           | OK    | -23 \[-35, -12\]    |
 | VA    | 14 \[2, 26\]                           | WY    | -24 \[-36, -12\]    |
 | ME    | 14 \[3, 26\]                           | WV    | -28 \[-39, -16\]    |
 | NM    | 13 \[1, 24\]                           |       |                     |
@@ -207,22 +207,21 @@ how often that happens:
 
 | State | Tipping point chance (%) | State | Tipping point chance (%) |
 |:------|-------------------------:|:------|-------------------------:|
-| FL    |                     18.3 | IA    |                      0.7 |
-| PA    |                     15.8 | ME    |                      0.3 |
-| AZ    |                      9.3 | AK    |                      0.1 |
-| MI    |                      8.1 | DE    |                      0.1 |
-| WI    |                      7.6 | CT    |                      0.0 |
-| TX    |                      7.0 | IL    |                      0.0 |
-| NC    |                      6.0 | KS    |                      0.0 |
-| MN    |                      5.6 | LA    |                      0.0 |
-| NV    |                      4.7 | MO    |                      0.0 |
-| GA    |                      4.3 | MS    |                      0.0 |
-| NH    |                      3.9 | MT    |                      0.0 |
-| CO    |                      3.2 | NE    |                      0.0 |
-| OR    |                      1.7 | NJ    |                      0.0 |
-| OH    |                      1.2 | NY    |                      0.0 |
+| FL    |                     18.3 | NM    |                      0.9 |
+| PA    |                     15.6 | IA    |                      0.7 |
+| AZ    |                      9.3 | ME    |                      0.3 |
+| MI    |                      8.0 | AK    |                      0.1 |
+| WI    |                      7.6 | DE    |                      0.1 |
+| TX    |                      7.2 | CT    |                      0.0 |
+| NC    |                      6.1 | IL    |                      0.0 |
+| MN    |                      5.5 | KS    |                      0.0 |
+| NV    |                      4.8 | LA    |                      0.0 |
+| GA    |                      4.4 | MO    |                      0.0 |
+| NH    |                      3.9 | MS    |                      0.0 |
+| CO    |                      3.1 | MT    |                      0.0 |
+| OR    |                      1.6 | NE    |                      0.0 |
+| OH    |                      1.2 | NJ    |                      0.0 |
 | VA    |                      1.1 | RI    |                      0.0 |
-| NM    |                      0.9 | SC    |                      0.0 |
 
 ### Electoral college outcomes
 
@@ -247,8 +246,8 @@ electoral college majority:
 | Republicans win the popular vote, but Democrats win the electoral college |          0 |
 
 The overall probability that Joe Biden win the national popular vote is
-96.29%. The overall probability that Joe Biden win the electoral college
-majority is 89.12%.
+96.26%. The overall probability that Joe Biden win the electoral college
+majority is 88.93%.
 
 **The gap between the popular vote and tipping-point state**
 
