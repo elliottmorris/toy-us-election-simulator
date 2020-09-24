@@ -108,7 +108,7 @@ Automated report:
 
 These graphs are updated hourly with new polls.
 
-Last updated on **September 24, 2020 at 06:15 PM EDT.**
+Last updated on **September 24, 2020 at 07:11 PM EDT.**
 
 ### National polling average and popular vote prediction
 
@@ -138,10 +138,10 @@ In table form…
 
 | State | Biden margin, uncertainty interval (%) | State | Biden margin, … (%) |
 |:------|:---------------------------------------|:------|:--------------------|
-| MN    | 9 \[-2, 21\]                           | GA    | 1 \[-11, 13\]       |
+| MN    | 10 \[-2, 21\]                          | GA    | 1 \[-11, 13\]       |
 | MI    | 8 \[-3, 20\]                           | IA    | 0 \[-12, 12\]       |
 | NV    | 7 \[-5, 18\]                           | TX    | -1 \[-13, 10\]      |
-| WI    | 7 \[-5, 18\]                           | AK    | -3 \[-15, 9\]       |
+| WI    | 7 \[-5, 18\]                           | AK    | -3 \[-15, 8\]       |
 | NH    | 7 \[-4, 19\]                           | SC    | -5 \[-17, 6\]       |
 | PA    | 6 \[-6, 17\]                           | MT    | -6 \[-17, 6\]       |
 | AZ    | 5 \[-7, 16\]                           | KS    | -6 \[-18, 5\]       |
@@ -207,21 +207,21 @@ how often that happens:
 
 | State | Tipping point chance (%) | State | Tipping point chance (%) |
 |:------|-------------------------:|:------|-------------------------:|
-| FL    |                     17.0 | NM    |                      0.8 |
-| PA    |                     14.1 | AK    |                      0.2 |
-| MI    |                      8.7 | ME    |                      0.2 |
-| AZ    |                      8.5 | DE    |                      0.1 |
-| WI    |                      7.7 | KS    |                      0.1 |
-| NC    |                      6.3 | MO    |                      0.1 |
-| VA    |                      5.5 | SC    |                      0.1 |
+| FL    |                     16.8 | NM    |                      0.7 |
+| PA    |                     14.0 | AK    |                      0.2 |
+| MI    |                      8.8 | ME    |                      0.2 |
+| AZ    |                      8.6 | DE    |                      0.1 |
+| WI    |                      7.6 | KS    |                      0.1 |
+| NC    |                      6.4 | MO    |                      0.1 |
+| VA    |                      5.6 | SC    |                      0.1 |
 | OH    |                      4.9 | CT    |                      0.0 |
-| MN    |                      4.7 | IL    |                      0.0 |
-| GA    |                      4.4 | LA    |                      0.0 |
-| TX    |                      4.3 | MT    |                      0.0 |
-| NV    |                      4.0 | NE    |                      0.0 |
-| NH    |                      2.9 | NJ    |                      0.0 |
-| CO    |                      2.6 | RI    |                      0.0 |
-| IA    |                      1.5 | TN    |                      0.0 |
+| MN    |                      4.6 | IL    |                      0.0 |
+| TX    |                      4.4 | LA    |                      0.0 |
+| GA    |                      4.2 | MS    |                      0.0 |
+| NV    |                      4.2 | MT    |                      0.0 |
+| NH    |                      2.9 | NE    |                      0.0 |
+| CO    |                      2.6 | NJ    |                      0.0 |
+| IA    |                      1.4 | RI    |                      0.0 |
 | OR    |                      1.2 | WA    |                      0.0 |
 
 ### Electoral college outcomes
@@ -247,8 +247,8 @@ electoral college majority:
 | Republicans win the popular vote, but Democrats win the electoral college |          0 |
 
 The overall probability that Joe Biden win the national popular vote is
-96.65%. The overall probability that Joe Biden win the electoral college
-majority is 89.06%.
+96.69%. The overall probability that Joe Biden win the electoral college
+majority is 89.07%.
 
 **The gap between the popular vote and tipping-point state**
 
