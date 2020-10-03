@@ -108,7 +108,7 @@ Automated report:
 
 These graphs are updated hourly with new polls.
 
-Last updated on **October 02, 2020 at 11:13 PM EDT.**
+Last updated on **October 03, 2020 at 12:16 AM EDT.**
 
 ### National polling average and popular vote prediction
 
@@ -139,11 +139,11 @@ In table form…
 | State | Biden margin, uncertainty interval (%) | State | Biden margin, … (%) |
 |:------|:---------------------------------------|:------|:--------------------|
 | VA    | 10 \[-1, 21\]                          | OH    | 1 \[-10, 12\]       |
-| WI    | 8 \[-4, 19\]                           | IA    | -1 \[-12, 10\]      |
-| NV    | 8 \[-3, 19\]                           | TX    | -1 \[-13, 10\]      |
-| MI    | 8 \[-3, 19\]                           | AK    | -3 \[-14, 8\]       |
-| MN    | 8 \[-3, 19\]                           | SC    | -5 \[-16, 6\]       |
-| PA    | 7 \[-4, 18\]                           | MT    | -6 \[-18, 5\]       |
+| NV    | 8 \[-3, 19\]                           | IA    | -1 \[-12, 10\]      |
+| MI    | 8 \[-3, 19\]                           | TX    | -2 \[-13, 10\]      |
+| MN    | 8 \[-3, 19\]                           | AK    | -3 \[-14, 8\]       |
+| PA    | 7 \[-4, 18\]                           | SC    | -5 \[-16, 6\]       |
+| WI    | 7 \[-4, 19\]                           | MT    | -6 \[-18, 5\]       |
 | FL    | 4 \[-7, 15\]                           | MO    | -8 \[-19, 3\]       |
 | AZ    | 4 \[-7, 15\]                           | LA    | -8 \[-19, 3\]       |
 | GA    | 2 \[-9, 13\]                           | KS    | -9 \[-20, 2\]       |
@@ -157,7 +157,7 @@ In table form…
 | MA    | 33 \[22, 44\]                          | CO    | 10 \[-1, 21\]       |
 | CA    | 32 \[21, 43\]                          | MS    | -11 \[-22, 0\]      |
 | MD    | 31 \[20, 42\]                          | AL    | -13 \[-24, -2\]     |
-| HI    | 30 \[19, 42\]                          | UT    | -13 \[-24, -2\]     |
+| HI    | 30 \[19, 41\]                          | UT    | -13 \[-24, -2\]     |
 | VT    | 27 \[16, 38\]                          | TN    | -14 \[-25, -3\]     |
 | NY    | 24 \[13, 35\]                          | SD    | -15 \[-26, -4\]     |
 | CT    | 22 \[11, 33\]                          | IN    | -16 \[-27, -5\]     |
@@ -167,7 +167,7 @@ In table form…
 | IL    | 19 \[8, 30\]                           | AR    | -19 \[-30, -8\]     |
 | DE    | 17 \[6, 28\]                           | OK    | -23 \[-34, -12\]    |
 | ME    | 14 \[3, 25\]                           | WY    | -24 \[-35, -13\]    |
-| OR    | 14 \[3, 25\]                           | WV    | -27 \[-38, -15\]    |
+| OR    | 14 \[3, 25\]                           | WV    | -27 \[-38, -16\]    |
 | NM    | 13 \[2, 24\]                           |       |                     |
 
 ### State polling averages and vote prediction, over time:
@@ -207,21 +207,22 @@ how often that happens:
 
 | State | Tipping point chance (%) | State | Tipping point chance (%) |
 |:------|-------------------------:|:------|-------------------------:|
-| FL    |                     17.4 | NM    |                      0.7 |
-| PA    |                     13.1 | OR    |                      0.7 |
-| MI    |                      9.6 | ME    |                      0.4 |
-| AZ    |                      8.4 | AK    |                      0.2 |
-| WI    |                      7.2 | SC    |                      0.1 |
-| VA    |                      6.6 | CT    |                      0.0 |
-| MN    |                      6.3 | DE    |                      0.0 |
-| GA    |                      5.8 | IL    |                      0.0 |
-| NC    |                      5.6 | KS    |                      0.0 |
-| OH    |                      5.0 | LA    |                      0.0 |
-| NV    |                      3.4 | MO    |                      0.0 |
-| TX    |                      3.4 | MT    |                      0.0 |
-| CO    |                      3.1 | NE    |                      0.0 |
-| NH    |                      1.9 | NJ    |                      0.0 |
+| FL    |                     17.6 | OR    |                      0.7 |
+| PA    |                     13.0 | ME    |                      0.4 |
+| MI    |                      9.7 | AK    |                      0.2 |
+| AZ    |                      8.4 | SC    |                      0.1 |
+| WI    |                      7.3 | CT    |                      0.0 |
+| VA    |                      6.7 | DE    |                      0.0 |
+| MN    |                      6.3 | IL    |                      0.0 |
+| GA    |                      5.6 | KS    |                      0.0 |
+| NC    |                      5.5 | LA    |                      0.0 |
+| OH    |                      4.9 | MO    |                      0.0 |
+| NV    |                      3.4 | MT    |                      0.0 |
+| TX    |                      3.4 | NE    |                      0.0 |
+| CO    |                      3.1 | NJ    |                      0.0 |
+| NH    |                      1.9 | NY    |                      0.0 |
 | IA    |                      0.9 | RI    |                      0.0 |
+| NM    |                      0.7 | WA    |                      0.0 |
 
 ### Electoral college outcomes
 
@@ -246,8 +247,8 @@ electoral college majority:
 | Republicans win the popular vote, but Democrats win the electoral college |          0 |
 
 The overall probability that Joe Biden win the national popular vote is
-97.77%. The overall probability that Joe Biden win the electoral college
-majority is 91.06%.
+97.83%. The overall probability that Joe Biden win the electoral college
+majority is 90.98%.
 
 **The gap between the popular vote and tipping-point state**
 
@@ -255,7 +256,7 @@ We can quantify either party’s edge as the average across simulations of
 Joe Biden’s margin in the tipping-point state and his margin nationally:
 
 On average, the tipping point state is **<span
-style="color: #3498DB;">2.4</span>** percentage points to the **<span
+style="color: #3498DB;">2.5</span>** percentage points to the **<span
 style="color: #3498DB;">right</span>** of the nation as a whole.
 
 But the actual divide could take on a host of other values:
