@@ -108,7 +108,7 @@ Automated report:
 
 These graphs are updated hourly with new polls.
 
-Last updated on **October 07, 2020 at 06:15 AM EDT.**
+Last updated on **October 07, 2020 at 07:14 AM EDT.**
 
 ### National polling average and popular vote prediction
 
@@ -145,8 +145,8 @@ In table form…
 | PA    | 7 \[-3, 18\]                           | MO    | -6 \[-16, 5\]       |
 | AZ    | 6 \[-5, 17\]                           | MT    | -6 \[-17, 5\]       |
 | FL    | 5 \[-6, 16\]                           | LA    | -7 \[-18, 4\]       |
-| NC    | 3 \[-8, 14\]                           | UT    | -8 \[-19, 3\]       |
-| GA    | 2 \[-8, 13\]                           | KS    | -8 \[-19, 3\]       |
+| NC    | 3 \[-8, 13\]                           | KS    | -8 \[-19, 3\]       |
+| GA    | 2 \[-8, 13\]                           | UT    | -8 \[-19, 3\]       |
 | OH    | 1 \[-10, 12\]                          | NE    | -8 \[-19, 3\]       |
 
 **The rest of the states:**
@@ -154,9 +154,9 @@ In table form…
 | State | Biden margin, uncertainty interval (%) | State | Biden margin, … (%) |
 |:------|:---------------------------------------|:------|:--------------------|
 | DC    | 75 \[65, 86\]                          | CO    | 11 \[0, 22\]        |
-| MA    | 34 \[23, 44\]                          | VA    | 10 \[-1, 21\]       |
-| CA    | 33 \[22, 44\]                          | NH    | 10 \[-1, 21\]       |
-| MD    | 32 \[21, 43\]                          | MS    | -11 \[-21, 0\]      |
+| MA    | 34 \[23, 44\]                          | VA    | 10 \[0, 21\]        |
+| CA    | 33 \[22, 44\]                          | NH    | 10 \[0, 21\]        |
+| MD    | 32 \[21, 42\]                          | MS    | -11 \[-21, 0\]      |
 | HI    | 31 \[20, 42\]                          | AL    | -12 \[-23, -1\]     |
 | VT    | 28 \[17, 38\]                          | TN    | -13 \[-24, -2\]     |
 | NY    | 24 \[14, 35\]                          | SD    | -14 \[-25, -3\]     |
@@ -165,7 +165,7 @@ In table form…
 | RI    | 21 \[10, 32\]                          | ND    | -17 \[-28, -6\]     |
 | WA    | 21 \[10, 32\]                          | KY    | -18 \[-29, -7\]     |
 | IL    | 20 \[9, 31\]                           | AR    | -18 \[-29, -7\]     |
-| DE    | 18 \[8, 29\]                           | OK    | -23 \[-34, -12\]    |
+| DE    | 18 \[8, 29\]                           | OK    | -23 \[-33, -12\]    |
 | OR    | 15 \[4, 25\]                           | WY    | -23 \[-34, -12\]    |
 | ME    | 14 \[3, 24\]                           | WV    | -26 \[-37, -15\]    |
 | NM    | 14 \[3, 25\]                           |       |                     |
@@ -207,23 +207,22 @@ how often that happens:
 
 | State | Tipping point chance (%) | State | Tipping point chance (%) |
 |:------|-------------------------:|:------|-------------------------:|
-| FL    |                     19.7 | ME    |                      0.6 |
-| PA    |                     12.6 | AK    |                      0.1 |
-| MI    |                      9.5 | MO    |                      0.1 |
-| AZ    |                      8.7 | SC    |                      0.1 |
+| FL    |                     19.8 | NM    |                      0.7 |
+| PA    |                     12.4 | OR    |                      0.7 |
+| MI    |                      9.6 | AK    |                      0.1 |
+| AZ    |                      8.7 | MO    |                      0.1 |
 | WI    |                      7.3 | CT    |                      0.0 |
-| VA    |                      6.7 | DE    |                      0.0 |
+| VA    |                      6.9 | DE    |                      0.0 |
 | MN    |                      6.3 | IL    |                      0.0 |
-| GA    |                      5.1 | KS    |                      0.0 |
-| NC    |                      5.1 | LA    |                      0.0 |
-| OH    |                      4.0 | MS    |                      0.0 |
-| NV    |                      3.4 | MT    |                      0.0 |
-| CO    |                      3.3 | NE    |                      0.0 |
-| TX    |                      3.0 | NJ    |                      0.0 |
-| NH    |                      1.9 | NY    |                      0.0 |
-| IA    |                      0.9 | RI    |                      0.0 |
-| NM    |                      0.7 | UT    |                      0.0 |
-| OR    |                      0.7 | WA    |                      0.0 |
+| NC    |                      5.1 | KS    |                      0.0 |
+| GA    |                      5.0 | LA    |                      0.0 |
+| OH    |                      4.2 | MT    |                      0.0 |
+| NV    |                      3.4 | NE    |                      0.0 |
+| CO    |                      3.2 | NJ    |                      0.0 |
+| TX    |                      3.0 | NY    |                      0.0 |
+| NH    |                      2.0 | RI    |                      0.0 |
+| IA    |                      0.9 | SC    |                      0.0 |
+| ME    |                      0.7 | UT    |                      0.0 |
 
 ### Electoral college outcomes
 
@@ -243,13 +242,13 @@ electoral college majority:
 |                                                                           | Chance (%) |
 |:--------------------------------------------------------------------------|-----------:|
 | Democrats win the popular vote and electoral college                      |         94 |
-| Democrats win the popular vote, but Republicans win the electoral college |          5 |
+| Democrats win the popular vote, but Republicans win the electoral college |          4 |
 | Republicans win the popular vote and electoral college                    |          1 |
 | Republicans win the popular vote, but Democrats win the electoral college |          0 |
 
 The overall probability that Joe Biden win the national popular vote is
-98.9%. The overall probability that Joe Biden win the electoral college
-majority is 94.27%.
+98.91%. The overall probability that Joe Biden win the electoral college
+majority is 94.47%.
 
 **The gap between the popular vote and tipping-point state**
 
