@@ -108,7 +108,7 @@ Automated report:
 
 These graphs are updated hourly with new polls.
 
-Last updated on **October 11, 2020 at 06:12 AM EDT.**
+Last updated on **October 11, 2020 at 07:11 AM EDT.**
 
 ### National polling average and popular vote prediction
 
@@ -143,7 +143,7 @@ In table form…
 | WI    | 8 \[-2, 19\]                           | AK    | -2 \[-13, 8\]       |
 | NV    | 8 \[-2, 19\]                           | SC    | -4 \[-15, 7\]       |
 | PA    | 8 \[-2, 19\]                           | MO    | -4 \[-15, 6\]       |
-| AZ    | 6 \[-5, 16\]                           | MT    | -5 \[-16, 5\]       |
+| AZ    | 6 \[-5, 16\]                           | MT    | -5 \[-16, 6\]       |
 | FL    | 6 \[-4, 17\]                           | LA    | -7 \[-17, 4\]       |
 | NC    | 4 \[-7, 14\]                           | KS    | -8 \[-18, 3\]       |
 | OH    | 2 \[-9, 12\]                           | NE    | -8 \[-18, 3\]       |
@@ -207,21 +207,21 @@ how often that happens:
 
 | State | Tipping point chance (%) | State | Tipping point chance (%) |
 |:------|-------------------------:|:------|-------------------------:|
-| FL    |                     21.6 | OR    |                      0.7 |
-| PA    |                     11.8 | AK    |                      0.1 |
-| MI    |                      9.7 | MO    |                      0.1 |
-| AZ    |                      7.6 | NJ    |                      0.1 |
-| VA    |                      7.0 | CT    |                      0.0 |
-| WI    |                      6.9 | DE    |                      0.0 |
-| MN    |                      6.2 | IL    |                      0.0 |
+| FL    |                     21.5 | OR    |                      0.7 |
+| PA    |                     11.9 | AK    |                      0.1 |
+| MI    |                      9.8 | IL    |                      0.1 |
+| AZ    |                      7.7 | MO    |                      0.1 |
+| VA    |                      7.1 | NJ    |                      0.1 |
+| WI    |                      7.0 | CT    |                      0.0 |
+| MN    |                      6.3 | DE    |                      0.0 |
 | NC    |                      6.1 | KS    |                      0.0 |
-| OH    |                      3.9 | LA    |                      0.0 |
-| TX    |                      3.9 | MS    |                      0.0 |
+| TX    |                      3.9 | LA    |                      0.0 |
+| OH    |                      3.7 | MS    |                      0.0 |
 | CO    |                      3.5 | MT    |                      0.0 |
 | NV    |                      3.3 | NE    |                      0.0 |
-| GA    |                      3.0 | NY    |                      0.0 |
+| GA    |                      2.9 | NY    |                      0.0 |
 | IA    |                      1.5 | RI    |                      0.0 |
-| NH    |                      1.4 | SC    |                      0.0 |
+| NH    |                      1.3 | SC    |                      0.0 |
 | ME    |                      0.7 | UT    |                      0.0 |
 | NM    |                      0.7 | WA    |                      0.0 |
 
@@ -248,8 +248,8 @@ electoral college majority:
 | Republicans win the popular vote, but Democrats win the electoral college |          0 |
 
 The overall probability that Joe Biden win the national popular vote is
-99.34%. The overall probability that Joe Biden win the electoral college
-majority is 96.18%.
+99.35%. The overall probability that Joe Biden win the electoral college
+majority is 96.23%.
 
 **The gap between the popular vote and tipping-point state**
 
@@ -257,7 +257,7 @@ We can quantify either party’s edge as the average across simulations of
 Joe Biden’s margin in the tipping-point state and his margin nationally:
 
 On average, the tipping point state is **<span
-style="color: #3498DB;">2.3</span>** percentage points to the **<span
+style="color: #3498DB;">2.2</span>** percentage points to the **<span
 style="color: #3498DB;">right</span>** of the nation as a whole.
 
 But the actual divide could take on a host of other values:
