@@ -108,7 +108,7 @@ Automated report:
 
 These graphs are updated hourly with new polls.
 
-Last updated on **October 12, 2020 at 05:15 PM EDT.**
+Last updated on **October 12, 2020 at 06:13 PM EDT.**
 
 ### National polling average and popular vote prediction
 
@@ -153,8 +153,8 @@ In table form…
 
 | State | Biden margin, uncertainty interval (%) | State | Biden margin, … (%) |
 |:------|:---------------------------------------|:------|:--------------------|
-| DC    | 75 \[64, 86\]                          | NH    | 12 \[2, 23\]        |
-| MA    | 34 \[24, 45\]                          | VA    | 11 \[0, 21\]        |
+| DC    | 75 \[65, 85\]                          | NH    | 12 \[2, 23\]        |
+| MA    | 34 \[23, 45\]                          | VA    | 11 \[0, 21\]        |
 | CA    | 33 \[23, 44\]                          | CO    | 11 \[1, 22\]        |
 | HI    | 32 \[21, 42\]                          | MS    | -10 \[-20, 1\]      |
 | MD    | 31 \[21, 42\]                          | AL    | -11 \[-22, -1\]     |
@@ -207,22 +207,22 @@ how often that happens:
 
 | State | Tipping point chance (%) | State | Tipping point chance (%) |
 |:------|-------------------------:|:------|-------------------------:|
-| FL    |                     22.1 | OR    |                      0.7 |
-| PA    |                     12.0 | AK    |                      0.2 |
-| MI    |                     10.1 | MO    |                      0.1 |
-| AZ    |                      7.7 | NJ    |                      0.1 |
-| VA    |                      6.8 | SC    |                      0.1 |
-| WI    |                      6.5 | CT    |                      0.0 |
-| NC    |                      6.3 | DE    |                      0.0 |
-| MN    |                      6.2 | IL    |                      0.0 |
-| TX    |                      4.1 | KS    |                      0.0 |
-| CO    |                      3.5 | LA    |                      0.0 |
-| NV    |                      3.5 | MS    |                      0.0 |
-| OH    |                      3.1 | MT    |                      0.0 |
-| GA    |                      2.6 | NE    |                      0.0 |
-| IA    |                      1.4 | NY    |                      0.0 |
-| NH    |                      1.4 | RI    |                      0.0 |
-| ME    |                      0.7 | TN    |                      0.0 |
+| FL    |                     21.8 | OR    |                      0.7 |
+| PA    |                     12.3 | AK    |                      0.1 |
+| MI    |                     10.1 | IL    |                      0.1 |
+| AZ    |                      7.8 | MO    |                      0.1 |
+| VA    |                      6.8 | NJ    |                      0.1 |
+| WI    |                      6.6 | SC    |                      0.1 |
+| NC    |                      6.4 | AL    |                      0.0 |
+| MN    |                      6.3 | CT    |                      0.0 |
+| TX    |                      4.1 | DE    |                      0.0 |
+| CO    |                      3.4 | KS    |                      0.0 |
+| NV    |                      3.3 | LA    |                      0.0 |
+| OH    |                      3.0 | MS    |                      0.0 |
+| GA    |                      2.6 | MT    |                      0.0 |
+| IA    |                      1.4 | NE    |                      0.0 |
+| NH    |                      1.4 | NY    |                      0.0 |
+| ME    |                      0.7 | RI    |                      0.0 |
 | NM    |                      0.7 | UT    |                      0.0 |
 
 ### Electoral college outcomes
@@ -248,8 +248,8 @@ electoral college majority:
 | Republicans win the popular vote, but Democrats win the electoral college |          0 |
 
 The overall probability that Joe Biden win the national popular vote is
-99.5%. The overall probability that Joe Biden win the electoral college
-majority is 96.78%.
+99.53%. The overall probability that Joe Biden win the electoral college
+majority is 96.76%.
 
 **The gap between the popular vote and tipping-point state**
 
