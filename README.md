@@ -108,7 +108,7 @@ Automated report:
 
 These graphs are updated hourly with new polls.
 
-Last updated on **October 12, 2020 at 11:12 PM EDT.**
+Last updated on **October 13, 2020 at 12:16 AM EDT.**
 
 ### National polling average and popular vote prediction
 
@@ -116,7 +116,7 @@ Joe Biden’s margin in national polls is **<span
 style="color: #3498DB;">9.8</span>** percentage points.
 
 His margin implied by state-level polls and the demographic regression
-is **<span style="color: #3498DB;">8.5</span>** percentage points.
+is **<span style="color: #3498DB;">8.4</span>** percentage points.
 
 This chart draws a trend for Biden’s implied national margin and plots
 individual national polls alongside it. His implied national margin will
@@ -140,7 +140,7 @@ In table form…
 |:------|:---------------------------------------|:------|:--------------------|
 | MI    | 9 \[-2, 19\]                           | OH    | 1 \[-9, 12\]        |
 | WI    | 9 \[-2, 19\]                           | TX    | 0 \[-10, 11\]       |
-| MN    | 9 \[-1, 20\]                           | AK    | -2 \[-12, 8\]       |
+| MN    | 9 \[-1, 19\]                           | AK    | -2 \[-12, 8\]       |
 | PA    | 8 \[-2, 19\]                           | SC    | -4 \[-14, 7\]       |
 | NV    | 8 \[-2, 19\]                           | MO    | -4 \[-15, 6\]       |
 | AZ    | 6 \[-4, 16\]                           | MT    | -5 \[-15, 6\]       |
@@ -156,14 +156,14 @@ In table form…
 | DC    | 75 \[64, 85\]                          | NH    | 12 \[2, 23\]        |
 | MA    | 34 \[23, 44\]                          | VA    | 11 \[0, 21\]        |
 | CA    | 33 \[23, 44\]                          | CO    | 11 \[1, 22\]        |
-| HI    | 32 \[21, 42\]                          | MS    | -10 \[-21, 0\]      |
+| HI    | 32 \[21, 42\]                          | MS    | -10 \[-20, 0\]      |
 | MD    | 31 \[21, 42\]                          | AL    | -11 \[-22, -1\]     |
 | VT    | 28 \[18, 39\]                          | TN    | -12 \[-23, -2\]     |
-| NY    | 25 \[14, 35\]                          | SD    | -13 \[-23, -2\]     |
+| NY    | 25 \[14, 35\]                          | SD    | -13 \[-23, -3\]     |
 | CT    | 23 \[12, 33\]                          | ID    | -14 \[-25, -4\]     |
 | RI    | 22 \[11, 32\]                          | IN    | -14 \[-25, -4\]     |
-| WA    | 22 \[11, 32\]                          | ND    | -16 \[-26, -5\]     |
-| IL    | 21 \[10, 31\]                          | AR    | -17 \[-27, -7\]     |
+| IL    | 21 \[10, 31\]                          | ND    | -16 \[-26, -5\]     |
+| WA    | 21 \[11, 32\]                          | AR    | -17 \[-27, -7\]     |
 | NJ    | 20 \[9, 30\]                           | KY    | -18 \[-28, -7\]     |
 | DE    | 19 \[8, 29\]                           | WY    | -22 \[-32, -11\]    |
 | NM    | 15 \[4, 25\]                           | OK    | -22 \[-32, -11\]    |
@@ -207,23 +207,22 @@ how often that happens:
 
 | State | Tipping point chance (%) | State | Tipping point chance (%) |
 |:------|-------------------------:|:------|-------------------------:|
-| FL    |                     22.0 | OR    |                      0.7 |
-| PA    |                     12.1 | AK    |                      0.2 |
-| MI    |                     10.1 | MO    |                      0.1 |
-| AZ    |                      7.8 | NJ    |                      0.1 |
-| VA    |                      6.9 | SC    |                      0.1 |
+| FL    |                     22.1 | NM    |                      0.7 |
+| PA    |                     12.1 | OR    |                      0.7 |
+| MI    |                     10.0 | AK    |                      0.1 |
+| AZ    |                      7.8 | MO    |                      0.1 |
+| VA    |                      6.9 | NJ    |                      0.1 |
 | WI    |                      6.7 | CT    |                      0.0 |
-| MN    |                      6.3 | DE    |                      0.0 |
+| MN    |                      6.4 | DE    |                      0.0 |
 | NC    |                      6.3 | IL    |                      0.0 |
-| TX    |                      4.2 | KS    |                      0.0 |
+| TX    |                      4.1 | KS    |                      0.0 |
 | CO    |                      3.4 | LA    |                      0.0 |
-| NV    |                      3.3 | MS    |                      0.0 |
-| OH    |                      3.0 | MT    |                      0.0 |
-| GA    |                      2.6 | NE    |                      0.0 |
-| IA    |                      1.4 | NY    |                      0.0 |
-| NH    |                      1.4 | RI    |                      0.0 |
-| ME    |                      0.8 | UT    |                      0.0 |
-| NM    |                      0.7 | WA    |                      0.0 |
+| NV    |                      3.3 | MT    |                      0.0 |
+| OH    |                      3.1 | NE    |                      0.0 |
+| GA    |                      2.7 | NY    |                      0.0 |
+| IA    |                      1.3 | RI    |                      0.0 |
+| NH    |                      1.3 | SC    |                      0.0 |
+| ME    |                      0.7 | UT    |                      0.0 |
 
 ### Electoral college outcomes
 
@@ -249,7 +248,7 @@ electoral college majority:
 
 The overall probability that Joe Biden win the national popular vote is
 99.5%. The overall probability that Joe Biden win the electoral college
-majority is 96.66%.
+majority is 96.74%.
 
 **The gap between the popular vote and tipping-point state**
 
