@@ -17,8 +17,10 @@ library(data.table)
 RUN_DATE <- as_date(Sys.Date()) 
 
 # this much daily sd in election polls
-DAILY_SD <- 0.005773503
-DAILY_SD * sqrt(300)
+SD_AT_DAY_300 <- 0.1 
+SD_AT_DAY_0 <- 0
+DAILY_SD <- (SD_AT_DAY_300 - SD_AT_DAY_0) / 300
+DAILY_SD * c(0,100,200,300)
 
 # number of simulations to run
 NUM_SIMS <- 100000
@@ -335,7 +337,7 @@ simulation_election_day_x <- function(RUN_DATE, todays_polls, DAILY_SD){
   
   # toy simulations ---------------------------------------------------------
   # errors
-  national_error <- sqrt((0.025^2) + ((DAILY_SD * sqrt(days_til_election))^2)) # national error + drift
+  national_error <- sqrt((0.025^2) + ((DAILY_SD * days_til_election)^2) ) # national error + drift
   regional_error <- (0.025) 
   state_error <- (0.03) 
   
@@ -764,8 +766,7 @@ ev.histogram <- sims %>%
   ggplot(.,aes(x=dem_ev,fill=dem_ev >= 270)) +
   geom_histogram(binwidth=1) + 
   scale_fill_manual(values=c('TRUE'='blue','FALSE'='red')) +
-  scale_y_continuous(labels = function(x){paste0(round(x / max(sims$draw)*100,2),'%')},
-                     expand = expansion(mult = c(0, 0.2))) +
+  scale_y_continuous(labels = function(x){paste0(round(x / max(sims$draw)*100,2),'%')}) +
   scale_x_continuous(breaks = c(0, 130, 270, 400, 538),
                      limits = c(0, 538)) +
   labs(x='Democratic electoral votes',y='Probability') +
