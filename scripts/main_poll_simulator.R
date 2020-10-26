@@ -17,13 +17,11 @@ library(data.table)
 RUN_DATE <- as_date(Sys.Date()) 
 
 # this much daily sd in election polls
-SD_AT_DAY_300 <- 0.1 
-SD_AT_DAY_0 <- 0
-DAILY_SD <- (SD_AT_DAY_300 - SD_AT_DAY_0) / 300
-DAILY_SD * c(0,100,200,300)
+DAILY_SD <- 0.005773503		 
+DAILY_SD * sqrt(300)
 
 # number of simulations to run
-NUM_SIMS <- 100000
+NUM_SIMS <- 32768
 
 # number of cores to use
 NUM_CORES <- min(6, parallel::detectCores())
@@ -276,7 +274,7 @@ simulation_election_day_x <- function(RUN_DATE, todays_polls, DAILY_SD){
     mutate(mean_biden_margin = ifelse(mean_biden_margin == 999,NA,mean_biden_margin))
   
   
-  # adjust state projections to match average of national vote 
+  # adjust state projections to match average of national vote  ------------
   og_national_biden_margin <- last(national_poll_average$national_biden_margin)
   
   implied_national_biden_margin <- weighted.mean(state$mean_biden_margin_hat,state_weights) 
@@ -302,34 +300,34 @@ simulation_election_day_x <- function(RUN_DATE, todays_polls, DAILY_SD){
   
   multiplier <- optim(par = 1,fn = natl_diff,method = "Brent",upper = 5, lower = -5)$par
   
-  state$mean_biden_margin_hat <- state$mean_biden_margin_hat + 
-    (og_national_biden_margin - implied_national_biden_margin)*multiplier
+  # commenting this out removes the adjustment to national margin
+  # state$mean_biden_margin_hat <- state$mean_biden_margin_hat +  (og_national_biden_margin - implied_national_biden_margin)*multiplier
   
   
   # save margin for later
   national_biden_margin <- weighted.mean(state$mean_biden_margin_hat,state_weights) 
   
-  # plot final prediction against data
+  # plot final prediction against data ------------
   ggplot(na.omit(state), aes(mean_biden_margin, mean_biden_margin_hat, label=state)) +
     geom_text(aes(size=num_polls)) + 
     geom_abline() + 
     geom_smooth(method='lm')
   
   # generate new state lean variable based on adjusted biden national margin
-  state$dem_lean_2016 <-  state$mean_biden_margin_hat - national_biden_margin 
+  state$pred_dem_lean <-  state$mean_biden_margin_hat - national_biden_margin 
   
   state_evs <- read_csv('data/state_evs.csv')
   
   # clean up estimates
   final <- state %>%
-    dplyr::select(state,region,clinton_margin,dem_lean_2016,
+    dplyr::select(state,region,clinton_margin, pred_dem_lean,
                   mean_biden_margin = mean_biden_margin_hat,
                   dem_lean_2016_polls,
                   dem_lean_2016, 
                   num_polls,
                   pop_density,
                   wwc_pct) %>%
-    mutate(shift = dem_lean_2016 - dem_lean_2016)
+    mutate(shift = pred_dem_lean - dem_lean_2016)
   
   final <- final %>%
     left_join(state_evs)
@@ -337,16 +335,19 @@ simulation_election_day_x <- function(RUN_DATE, todays_polls, DAILY_SD){
   
   # toy simulations ---------------------------------------------------------
   # errors
-  national_error <- sqrt((0.025^2) + ((DAILY_SD * days_til_election)^2) ) # national error + drift
+  national_error <- sqrt((0.025^2) + ((DAILY_SD * sqrt(days_til_election))^2)) # national error + drift
   regional_error <- (0.025) 
   state_error <- (0.03) 
   
   sqrt(national_error^2 + regional_error^2 + state_error^2) # this is the total standard deviation on vote margin
   
   # sims
-  national_errors <- rnorm(NUM_SIMS, 0, national_error)
-  regional_errors <- replicate(NUM_SIMS, rnorm(length(unique(final$region)), 0, regional_error))
-  state_errors <- replicate(NUM_SIMS, rnorm(51, 0, state_error))
+  # national_errors <- rnorm(NUM_SIMS, 0, national_error)
+  # regional_errors <- replicate(NUM_SIMS, rnorm(length(unique(final$region)), 0, regional_error))
+  # state_errors <- replicate(NUM_SIMS, rnorm(51, 0, state_error))
+  national_errors <- rt(NUM_SIMS, 7, 0) * national_error
+  regional_errors <- replicate(NUM_SIMS, rt(length(unique(final$region)), 7, 0) * regional_error)
+  state_errors <- replicate(NUM_SIMS, rt(51, 7, 0) * state_error)
   
   # actual sims
   
@@ -397,10 +398,13 @@ simulation_election_day_x <- function(RUN_DATE, todays_polls, DAILY_SD){
   simulated_polling_errors <- simulate_polling_errors(state_errors, regional_errors, national_errors, state_region)
   
   sims <- simulated_polling_errors %>%
-    left_join(final %>% select(state, dem_lean_2016), by = "state") %>%
-    mutate(proj_biden_margin = dem_lean_2016 + national_biden_margin,
+    left_join(final %>% select(state, pred_dem_lean), by = "state") %>%
+    mutate(proj_biden_margin = pred_dem_lean + national_biden_margin,
            error = state_error + regional_error + national_error,
-           sim_biden_margin = proj_biden_margin + error) %>%
+           sim_biden_margin = proj_biden_margin + error)  %>%
+    mutate(sim_biden_margin = case_when(sim_biden_margin < -1 ~ -1,
+                                        sim_biden_margin > 1 ~ 1, 
+                                        TRUE ~ sim_biden_margin)) %>%
     group_by(state) %>%
     mutate(draw = row_number()) %>%
     left_join(state_evs, by='state') %>%
@@ -505,7 +509,6 @@ final <- state %>%
 final <- final %>%
   left_join(state_evs)
 
-
 # plot
 final %>% 
   filter(abs(clinton_margin) < 0.1) %>% # num_polls > 0
@@ -548,6 +551,14 @@ swing.map.gg <- urbnmapr::states %>%
 final %>% 
   filter(state != 'DC') %>%
   ggplot(., aes(x=wwc_pct,y=shift,
+                col = clinton_margin > 0,group=NA)) + 
+  geom_label(aes(label = state,size=ev)) +
+  geom_smooth(method='lm')
+
+# plot relationswhip between shift in lean with urbanicity
+final %>% 
+  filter(state != 'DC') %>%
+  ggplot(., aes(x=pop_density,y=shift,
                 col = clinton_margin > 0,group=NA)) + 
   geom_label(aes(label = state,size=ev)) +
   geom_smooth(method='lm')
@@ -948,7 +959,6 @@ bkdown %>%
 
 
 # EC gap ovter time
-
 results <- read_csv('data/potus_historical_results.csv')
 
 # apply the infaltor from multi- to two-party vote
@@ -1028,7 +1038,7 @@ results %>%
 
 # simulate for every day of the cycle so far ------------------------------
 # every day from today going back in time
-days_to_simulate <- as_date(na.omit(rev(seq.Date(ymd('2020-03-01'),RUN_DATE,'day'))))
+days_to_simulate <- as_date(na.omit(rev(seq.Date(ymd('2020-06-01'),RUN_DATE,'day'))))
 
 # filter to only days we don't have yet
 dates_done_already <- as_date(substr(list.files('output/model_runs/'),11,20))
@@ -1081,7 +1091,7 @@ biden_national_margin_overtime.gg <-
                  mutate(biden_margin = (biden-trump)/100,
                         date = mdy(end.date)) ,
                aes(x=date,y=biden_margin),alpha=0.2) +
-    coord_cartesian(xlim=c(ymd('2020-03-01'),Sys.Date())) +
+    coord_cartesian(xlim=c(ymd('2020-06-01'),Sys.Date())) +
     scale_x_date(date_breaks='month',date_labels='%b') +
     scale_y_continuous(breaks=seq(-1,1,0.05),labels = function(x){x*100}) +
     theme_minimal() +
@@ -1100,7 +1110,7 @@ biden_chance_of_winning_overtime.gg <-
     ggplot(.,aes(x=date,y=biden_ec_vote__win_prob)) +
     geom_hline(yintercept=0.5,col='#E74C3C',alpha=0.8) +
     geom_line() +
-    coord_cartesian(xlim=c(ymd('2020-03-01'),Sys.Date())) +
+    coord_cartesian(xlim=c(ymd('2020-06-01'),Sys.Date())) +
     scale_x_date(date_breaks='month',date_labels='%b') +
     scale_y_continuous(breaks=seq(0,1,0.1),labels = function(x){x*100},
                        limits=c(0,1)) +
@@ -1113,7 +1123,7 @@ biden_chance_of_winning_overtime.gg <-
 
 # dem margins in key states over time
 base_frame <- expand_grid(state = campaign_simulations[[1]]$state_summary$state,
-                          date = as_date(ymd('2020-03-01'):RUN_DATE))
+                          date = as_date(ymd('2020-06-01'):RUN_DATE))
 
 
 polls_and_trends <- 
@@ -1151,7 +1161,7 @@ biden_state_margins_overtime.gg <-
     scale_y_continuous(breaks = seq(-1,1,0.05),
                        labels = function(x){round(x*100)}) +
     facet_wrap(~state) +
-    coord_cartesian(xlim=c(ymd('2020-03-01'),Sys.Date())) +
+    coord_cartesian(xlim=c(ymd('2020-06-01'),Sys.Date())) +
     scale_x_date(date_breaks='month',date_labels='%b') +
     theme_minimal() +
     theme(panel.grid.minor = element_blank()) +
@@ -1170,7 +1180,7 @@ biden_state_chance_of_winning_overtime.gg <-
                        labels = function(x){round(x*100)},
                        limits = c(0,1)) +
     facet_wrap(~state) +
-    coord_cartesian(xlim=c(ymd('2020-03-01'),Sys.Date())) +
+    coord_cartesian(xlim=c(ymd('2020-06-01'),Sys.Date())) +
     scale_x_date(date_breaks='month',date_labels='%b') +
     theme_minimal() +
     theme(panel.grid.minor = element_blank())  +

@@ -53,7 +53,7 @@ Joe Biden's margin in national polls is **<span style="color: #3498DB;">`r round
 His margin implied by state-level polls and the demographic regression is **<span style="color: #3498DB;">`r round(implied_national_biden_margin*100,1)`</span>** percentage points.
 
 
-This chart draws a trend for Biden's implied national margin and plots individual national polls alongside it. His implied national margin will not always match the raw average of national polls.
+This chart draws a trend for Biden's implied national margin and plots individual national polls alongside it. His national margin implied by state polls will not always match the raw average of national polls.
 
 ```{r echo=FALSE,message=FALSE,warning=FALSE}
 biden_national_margin_overtime.gg
